@@ -10,6 +10,6 @@ lib_name = 'commandlines'
 # Version Number
 # ------------------------------------------------------------------------------
 major_version = "0"
-minor_version = "1"
+minor_version = "2"
 patch_version = "0"
 
