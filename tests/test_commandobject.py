@@ -108,3 +108,50 @@ def test_commandobj_property_has_args():
     set_sys_argv()
     c = Command()
     assert c.has_args is True
+
+
+# ////////////////////////////////////////////////////////////
+#
+# TESTS : Parsing >>> Command object Argument property
+#
+# ////////////////////////////////////////////////////////////
+
+def test_commandobj_property_arguments():
+    """Test: obj.arguments property is defined with instantiated Arguments object"""
+    set_sys_argv()
+    c = Command()
+    assert isinstance(c.arguments, list)
+    assert c.arguments == sys.argv       # the obj.arguments list is same as sys.argv
+
+
+# ////////////////////////////////////////////////////////////
+#
+# TESTS : Parsing >>> Command object Switches property
+#
+# ////////////////////////////////////////////////////////////
+
+def test_commandobj_property_switches():
+    """Test: obj.switches property is defined with instantiated Switches object and includes correct strings"""
+    set_sys_argv()
+    c = Command()
+    assert isinstance(c.switches, list)
+    for x in ['s', 'long', 'n', 'name']:
+        assert x in c.switches
+
+
+# ////////////////////////////////////////////////////////////
+#
+# TESTS : Parsing >>> Command object Definitions property
+#
+# ////////////////////////////////////////////////////////////
+
+def test_commandobj_property_definitions():
+    """Test: obj.defs property is defined with instantiated Definitions object and includes correct key:value pairs"""
+    set_sys_argv()
+    c = Command()
+    assert isinstance(c.defs, dict)
+    expected_keys = ['n', 'name', 'nameeq']
+    observed_keys = c.defs.keys()
+    assert len(observed_keys) == len(expected_keys)
+    for x in observed_keys:
+        assert x in expected_keys
