@@ -8,3 +8,7 @@ import pytest
 
 def test_alwayspass():
     return True
+
+
+def test_alwaysfail():
+    raise(Exception)
