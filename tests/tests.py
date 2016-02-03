@@ -6,8 +6,8 @@ import shlex
 
 from commandlines import Command
 
-command = "execute --help define -h --test=defarg lastpos"
-sys.argv = shlex.split(command)
+# command = "execute --help define -h --test=defarg lastpos"
+# sys.argv = shlex.split(command)
 
 c = Command()
-print(c.arg1)
+print(c.defs)

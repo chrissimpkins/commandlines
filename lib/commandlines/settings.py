@@ -12,4 +12,3 @@ lib_name = 'commandlines'
 major_version = "0"
 minor_version = "2"
 patch_version = "0"
-
