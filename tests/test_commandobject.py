@@ -24,20 +24,20 @@ def test_sysargv_set():
     """Test: confirm that sys.argv is mocked appropriately with the test command"""
     # set the sys.argv
     set_sys_argv()
-    assert sys.argv == ['executable', 'subcmd', '-s', '--long', '-n', 'shortdef', '--name', 'longdef', '--nameeq=longdef', 'lastpos']
+    assert sys.argv == ['executable', 'subcmd', '-s', '--long', '-n', 'shortdef', '--name', 'longdef', '--nameeq=longdefeq', 'lastpos']
 
 
-# ////////////////////////////////////////////
+# ////////////////////////////////////////////////////////////
 #
-# TESTS : Command object property definitions
+# TESTS : Parsing >>> Command object property definition tests
 #
-# ///////////////////////////////////////////
+# ////////////////////////////////////////////////////////////
 
 def test_commandobj_property_argv():
     """Test: test obj.argv Command object property uses 0 based index for first positional argument, not executable"""
     set_sys_argv()
     c = Command()
-    assert c.argv == ['subcmd', '-s', '--long', '-n', 'shortdef', '--name', 'longdef', '--nameeq=longdef', 'lastpos']
+    assert c.argv == ['subcmd', '-s', '--long', '-n', 'shortdef', '--name', 'longdef', '--nameeq=longdefeq', 'lastpos']
 
 
 def test_commandobj_property_argc():
@@ -45,6 +45,7 @@ def test_commandobj_property_argc():
     set_sys_argv()
     c = Command()
     assert c.argc == 9
+
 
 
 
