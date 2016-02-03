@@ -71,105 +71,36 @@ class Command(object):
         else:
             return ""
 
-
     # ------------------------------------------------------------------------------
-    # [flag_arg method] (string)
-    #   Return the argument string assigned to a flag
-    # ------------------------------------------------------------------------------
-    def flag_arg(self, flag_string):
-        for match_string in self.optobj:
-            if match_string.startswith(flag_string) and '=' in match_string:
-                flag_list = match_string.split("=") #split the flag on the equal symbol = list with [option, argument]
-                return flag_list[1] #return the argument to the flag option
-            else:
-                pass
-        return ""  # return an empty string if unable to parse the argument
-
-    # ------------------------------------------------------------------------------------------
-    # [ option method ] (boolean)
-    #   Test that the command includes an option (option_string parameter)
-    #    option_string = the option string to test for in the command
-    #    arugment_required = boolean - is an argument to this option required (default = no)?
-    #    returns boolean for presence of the cmd_str
-    # ------------------------------------------------------------------------------------------
-    def option(self, option_string, argument_required = False):
-        if option_string in self.optobj:
-            argument_to_option = self.arguments._get_arg_next(self.arguments._get_arg_position(option_string))
-            if argument_required and (argument_to_option == "" or argument_to_option.startswith("-")):
-                return False
-            else:
-                return True
-        else:
-            return False
-
-    # ------------------------------------------------------------------------------
-    # [ option_arg method ] (string)
-    #  Return the argument string to an option
-    # ------------------------------------------------------------------------------
-    def option_arg(self, option_string):
-        return self.arguments._get_arg_next(self.arguments._get_arg_position(option_string))
-
-    # ------------------------------------------------------------------------------------------
-    # [ option_with_arg method ] (boolean)
-    # Test that the command includes an option (option_string parameter) and argument to that option
-    #    option_string = the option string to test for in the command
-    #    arugment_required = boolean - is an argument to this option required (default = yes)?
-    #    returns boolean for presence of the option_string AND the argument
-    # ------------------------------------------------------------------------------------------
-    #  test that command includes an option (option_string parameter) that includes an argument (=option(option_string, True))
-
-    def option_with_arg(self, option_string, argument_required = True):
-        if option_string in self.optobj:
-            argument_to_option = self.arguments._get_arg_next(self.arguments._get_arg_position(option_string))
-            if argument_required and (argument_to_option == "" or argument_to_option.startswith("-")):
-                return False # argument is either missing or is another option, return false
-            else:
-                return True
-        else:
-            return False  # option is not present
-
-    # ------------------------------------------------------------------------------
-    # [ option_exists method ] (boolean)
-    #  Test whether there are any options in the command string
-    #  returns boolean value for test "Is there at least one option?"
-    # ------------------------------------------------------------------------------
-    def option_exists(self):
-        if len(self.optobj) > 0:
-            return True
-        else:
-            return False
-    # ------------------------------------------------------------------------------
-    #  Provides the following commands for all applications that use the framework:
+    #  Default command line switch support for:
     #  -- help
     #  -- usage
     #  -- version
-    #  These methods are accessed from the app.py module, main() as method calls on the command line object
-    #  Parsing logic is coded below
     # ------------------------------------------------------------------------------
 
     # ------------------------------------------------------------------------------
-    # Help Command/Switches Handler
+    # Help switches handler method
     # ------------------------------------------------------------------------------
-    def help(self):
-        if self.option("--help") or self.option("-h"):
+    def is_help_request(self):
+        if "--help" in self.switches or "-h" in self.switches:
             return True
         else:
             return False
 
     # ------------------------------------------------------------------------------
-    # Usage Command/Switches Handler
+    # Usage switch handler method
     # ------------------------------------------------------------------------------
-    def usage(self):
-        if self.option("--usage"):
+    def is_usage_request(self):
+        if "--usage" in self.switches:
             return True
         else:
             return False
 
     # ------------------------------------------------------------------------------
-    # Version Command/Switches Handler
+    # Version switches handler method
     # ------------------------------------------------------------------------------
-    def version(self):
-        if self.option("--version")  or self.option("-v"):
+    def is_version_request(self):
+        if "--version" in self.switches or "-v" in self.switches:
             return True
         else:
             return False
@@ -188,7 +119,6 @@ class Command(object):
 # [ Arguments Class ]
 #   All command line arguments
 #   Object type: Python list (inherited)
-#
 # ------------------------------------------------------------------------------
 
 
