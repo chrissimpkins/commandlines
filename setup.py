@@ -30,7 +30,7 @@ def version_read():
 setup(
     name='commandlines',
     version=version_read(),
-    description='Python command line parser',
+    description='A Python command line parser',
     long_description=(docs_read('README.rst')),
     url='https://github.com/chrissimpkins/commandlines',
     license='MIT license',
