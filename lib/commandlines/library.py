@@ -47,6 +47,9 @@ class Command(object):
     def validates_n(self, number):
         return self.argc == number
 
+    def does_not_validate(self):
+        return self.argc == 0
+
     def includes_switches(self):
         return len(self.switches) > 0
 
