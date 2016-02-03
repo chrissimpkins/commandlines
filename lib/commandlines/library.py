@@ -3,7 +3,6 @@
 
 import sys
 
-# Start Travis test
 
 class Command(object):
     def __init__(self):

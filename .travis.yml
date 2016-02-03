@@ -9,7 +9,8 @@ env:
     - TOX_ENV=py34
     - TOX_ENV=py35
     - TOX_ENV=pypy
-    - TOX_ENV=flake8
+    - TOX_ENV=pypy3
+#    - TOX_ENV=flake8
 
 script: tox -e $TOX_ENV
 
