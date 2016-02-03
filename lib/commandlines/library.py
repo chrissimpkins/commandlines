@@ -194,7 +194,9 @@ class Command(object):
 
 # ------------------------------------------------------------------------------
 # [ Arguments Class ]
-#   all command line arguments (object inherited from Python list)
+#   All command line arguments
+#   Object type: Python list (inherited)
+#
 # ------------------------------------------------------------------------------
 
 
@@ -228,8 +230,9 @@ class Arguments(list):
 
 # ------------------------------------------------------------------------------
 # [ Switches Class ]
-#   Command line switches (object inherited from Python list)
-#   Definition: string that begins with "-" (i.e. can be -s or --long)
+#   Command line switches
+#   Object type: Python list (inherited)
+#   Syntax included:  -s or --long
 # ------------------------------------------------------------------------------
 
 
@@ -247,6 +250,15 @@ class Switches(list):
                 switchargv.append(x)
 
         return switchargv
+
+
+# ---------------------------------------------------------------------------------------------
+# [ Definitions Class ]
+#   Command line options with definition syntax
+#   Object type: Python dictionary (inherited)
+#   Syntax included: -x <positional def>   --something <positional def>  --something=definition
+#   Mapping: {option1: definition1, option2: definition2, ... optionX: definitionX}
+# ---------------------------------------------------------------------------------------------
 
 
 class Definitions(dict):
