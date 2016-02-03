@@ -47,11 +47,24 @@ class Command(object):
     def validates_n(self, number):
         return self.argc == number
 
-    def contains_switches(self):
+    def includes_switches(self):
         return len(self.switches) > 0
 
-    def contains_definitions(self):
+    def includes_definitions(self):
         return len(self.defs) > 0
+
+    def contains_switch(self, switch_test_string):
+        if switch_test_string in self.switches:
+            return True
+        else:
+            return False
+
+    def contains_definition(self, def_test_string):
+        if def_test_string in self.defs.keys():
+            return True
+        else:
+            return False
+
 
     # ------------------------------------------------------------------------------
     # [flag_arg method] (string)
@@ -65,7 +78,6 @@ class Command(object):
             else:
                 pass
         return ""  # return an empty string if unable to parse the argument
-
 
     # ------------------------------------------------------------------------------------------
     # [ option method ] (boolean)
