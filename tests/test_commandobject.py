@@ -102,3 +102,9 @@ def test_commandobj_property_subsubcmd():
     c = Command()
     assert c.subsubcmd == "-s"
 
+
+def test_commandobj_property_has_args():
+    """Test: obj.has_args is defined as True when arguments are present"""
+    set_sys_argv()
+    c = Command()
+    assert c.has_args is True
