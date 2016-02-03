@@ -27,45 +27,25 @@ class Command(object):
         self.args_exist = (len(self.arguments) > 0)  # test for presence of at least one argument (boolean)
 
     # ------------------------------------------------------------------------------------------
-    # [ arg method ] (string)
-    # Return the NEXT positional argument to a command line object (e.g. an option that requires an argument)
-    #    arg_recipient = the positional argument (at position n) to test for next positional argument
-    #    returns next positional argument string at position n + 1
+    # [ next_positional method ] (string)
+    #  Return the NEXT positional argument to a command line argument
+    #    arg_recipient = the positional argument (at list index n) to test for next positional argument
+    #    returns next positional argument string at list index n + 1 or empty string if no next positional
     # ------------------------------------------------------------------------------------------
-    def arg(self, arg_recipient):
+    def next_positional(self, arg_recipient):
         recipient_position = self.arguments._get_arg_position(arg_recipient)
         return self.arguments._get_arg_next(recipient_position)
 
+    # ------------------------------------------------------------------------------------------
+    # [ validates method ] (boolean)
+    #    Test that there is at least one argument in the command string
+    #    returns boolean for presence of one or more arguments to the executable
+    # ------------------------------------------------------------------------------------------
+    def validates(self):
+        return self.argc > 0
 
-    # ------------------------------------------------------------------------------------------
-    # [ command_with_argument method ] (boolean)
-    # Test that the command includes requested primary command suite command (cmd_str parameter) and argument to it
-    #    cmd_str = the command string to test for in command
-    #    returns boolean for presence of the cmd_str AND presence of argument to the command
-    # ------------------------------------------------------------------------------------------
-    def command_with_argument(self, cmd_str):
-        if cmd_str == self.cmd:
-            argument_to_cmd = self.arguments._get_arg_next(0)
-            if argument_to_cmd == "":  # if the argument is missing, then return false
-                return False
-            else:
-                return True
-        else:
-            return False # if command is missing return false
-
-    # ------------------------------------------------------------------------------------------
-    # [ command_suite_validates method ] (boolean)
-    #    Test that there is a primary command in a command suite application
-    #    returns boolean for presence of the primary command
-    # ------------------------------------------------------------------------------------------
-    def command_suite_validates(self, accept_options_as_argument = True):
-        if self.argc > 0:
-            if self.arg0.startswith("-") and accept_options_as_argument == False:
-                return False  # if no command and option present, return False
-            else:
-                return True  # if a primary command present, return True
-        else:
-            return False  # if user only entered the application name, return False
+    def validates_n(self, number):
+        return self.argc == number
 
     # ------------------------------------------------------------------------------
     # [ flag method ] (boolean)
