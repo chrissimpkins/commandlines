@@ -24,15 +24,15 @@ class Command(object):
         self.thirdarg = self.arg2
         self.fourtharg = self.arg3
         self.fiftharg = self.arg4
-        self.args_exist = (len(self.arguments) > 0)  # test for presence of at least one argument (boolean)
+        self.has_args = (len(self.arguments) > 0)  # test for presence of at least one argument (boolean)
 
     # ------------------------------------------------------------------------------------------
-    # [ next_positional method ] (string)
+    # [ get_next_positional method ] (string)
     #  Return the NEXT positional argument to a command line argument
     #    arg_recipient = the positional argument (at list index n) to test for next positional argument
     #    returns next positional argument string at list index n + 1 or empty string if no next positional
     # ------------------------------------------------------------------------------------------
-    def next_positional(self, arg_recipient):
+    def get_next_positional(self, arg_recipient):
         recipient_position = self.arguments._get_arg_position(arg_recipient)
         return self.arguments._get_arg_next(recipient_position)
 
@@ -64,6 +64,12 @@ class Command(object):
             return True
         else:
             return False
+
+    def get_definition(self, def_name_string):
+        if def_name_string in self.defs.keys():
+            return self.defs[def_name_string]
+        else:
+            return ""
 
 
     # ------------------------------------------------------------------------------
