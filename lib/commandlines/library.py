@@ -133,7 +133,7 @@ class Command(object):
     # Help Command/Switches Handler
     # ------------------------------------------------------------------------------
     def help(self):
-        if self.option("--help") or self.cmd == "help" or self.option("-h"):
+        if self.option("--help") or self.option("-h"):
             return True
         else:
             return False
@@ -142,7 +142,7 @@ class Command(object):
     # Usage Command/Switches Handler
     # ------------------------------------------------------------------------------
     def usage(self):
-        if self.option("--usage") or self.cmd == "usage":
+        if self.option("--usage"):
             return True
         else:
             return False
@@ -151,7 +151,7 @@ class Command(object):
     # Version Command/Switches Handler
     # ------------------------------------------------------------------------------
     def version(self):
-        if self.option("--version") or self.cmd == "version" or self.option("-v"):
+        if self.option("--version")  or self.option("-v"):
             return True
         else:
             return False
