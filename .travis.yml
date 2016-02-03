@@ -22,3 +22,6 @@ install:
 #    # and export tox environment variables
 #    - pip install codecov
 #    - codecov -e TOX_ENV
+
+notifications:
+  email: false
