@@ -19,11 +19,6 @@ class Command(object):
         self.arglp = self.arguments._get_argument(self.argc - 1)  # define the last positional argument
         self.subcmd = self.arg0
         self.subsubcmd = self.arg1
-        self.firstarg = self.arg0
-        self.secondarg = self.arg1
-        self.thirdarg = self.arg2
-        self.fourtharg = self.arg3
-        self.fiftharg = self.arg4
         self.has_args = (len(self.arguments) > 0)  # test for presence of at least one argument (boolean)
 
     # ------------------------------------------------------------------------------------------
