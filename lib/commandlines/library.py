@@ -47,17 +47,11 @@ class Command(object):
     def validates_n(self, number):
         return self.argc == number
 
-    # ------------------------------------------------------------------------------
-    # [ flag method ] (boolean)
-    #   Test for presence of flag in the command
-    # ------------------------------------------------------------------------------
-    def flag(self, flag_string):
-        for match_string in self.optobj: #iterate through the options and attempt to match beginning of option to the requested flag
-            if match_string.startswith(flag_string):
-                return True
-            else:
-                pass
-        return False
+    def contains_switches(self):
+        return len(self.switches) > 0
+
+    def contains_definitions(self):
+        return len(self.defs) > 0
 
     # ------------------------------------------------------------------------------
     # [flag_arg method] (string)
