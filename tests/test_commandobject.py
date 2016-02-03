@@ -87,3 +87,18 @@ def test_commandobj_property_arglp():
     set_sys_argv()
     c = Command()
     assert c.arglp == "lastpos"
+
+
+def test_commandobj_property_subcmd():
+    """Test: obj.subcmd is defined as the first positional argument"""
+    set_sys_argv()
+    c = Command()
+    assert c.subcmd == "subcmd"
+
+
+def test_commandobj_property_subsubcmd():
+    """Test: obj.subsubcmd is defined as the second positional argument"""
+    set_sys_argv()
+    c = Command()
+    assert c.subsubcmd == "-s"
+
