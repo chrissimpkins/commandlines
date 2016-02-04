@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import sys
-import shlex
 
 from commandlines import Command
 
-# command = "execute --help define -h --test=defarg lastpos"
-# sys.argv = shlex.split(command)
+import sys
 
-c = Command()
-print(c.defs)
+from commandlines.library import Mops
+
+m = Mops(['-abcda', 'b', 'c', 'c', 'd'])
+print(m)
+print(m.contains('a'))
+print(m.contains('f'))
