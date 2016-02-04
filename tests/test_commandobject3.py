@@ -7,7 +7,7 @@ import pytest
 
 from commandlines import Command
 
-test_command_1 = "executable -s lastpos"
+test_command_1 = "executable --long lastpos"
 
 
 # ///////////////////////////////////////////
@@ -30,7 +30,7 @@ def test_sysargv_set():
     """Test: confirm that sys.argv is mocked appropriately with the test command"""
     # set the sys.argv
     set_sys_argv()
-    assert sys.argv == ['executable', '-s', 'lastpos']
+    assert sys.argv == ['executable', '--long', 'lastpos']
 
 
 # ////////////////////////////////////////////////////////////
@@ -43,7 +43,7 @@ def test_commandobj_property_argv():
     """Test: obj.argv Command object property uses 0 based index for first positional argument, not executable"""
     set_sys_argv()
     c = Command()
-    assert c.argv == ['-s', 'lastpos']
+    assert c.argv == ['--long', 'lastpos']
 
 
 def test_commandobj_property_argc():
@@ -57,7 +57,7 @@ def test_commandobj_property_arg0():
     """Test: obj.arg0 is defined as the first positional argument"""
     set_sys_argv()
     c = Command()
-    assert c.arg0 == "-s"
+    assert c.arg0 == "--long"
 
 
 def test_commandobj_property_arg1():
@@ -99,7 +99,7 @@ def test_commandobj_property_subcmd():
     """Test: obj.subcmd is defined as the first positional argument"""
     set_sys_argv()
     c = Command()
-    assert c.subcmd == "-s"
+    assert c.subcmd == "--long"
 
 
 def test_commandobj_property_subsubcmd():
@@ -141,7 +141,7 @@ def test_commandobj_property_switches():
     set_sys_argv()
     c = Command()
     assert isinstance(c.switches, set)
-    assert 's' in c.switches
+    assert 'long' in c.switches
     assert len(c.switches) == 1
 
 
@@ -171,5 +171,5 @@ def test_commandobj_property_definitions():
     c = Command()
     assert isinstance(c.defs, dict)
     assert len(c.defs) == 1
-    assert 's' in c.defs.keys()
+    assert 'long' in c.defs.keys()
     assert c.defs['s'] == 'lastpos'
