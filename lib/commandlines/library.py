@@ -110,21 +110,21 @@ class Command(object):
 
     def is_help_request(self):
         """Tests for -h and --help options.  Returns boolean"""
-        if "--help" in self.switches or "-h" in self.switches:
+        if "help" in self.switches or "h" in self.switches:
             return True
         else:
             return False
 
     def is_usage_request(self):
         """Tests for --usage option.  Returns boolean"""
-        if "--usage" in self.switches:
+        if "usage" in self.switches:
             return True
         else:
             return False
 
     def is_version_request(self):
         """Tests for -v and --version options.  Returns boolean"""
-        if "--version" in self.switches or "-v" in self.switches:
+        if "version" in self.switches or "v" in self.switches:
             return True
         else:
             return False
@@ -135,7 +135,7 @@ class Arguments(list):
 
       The class is derived from the Python list type.
 
-      :param argv: ordered command line argument list with index range [1:]"""
+      :param argv: ordered command line argument list with sys.argv index range [1:]"""
     def __init__(self, argv):
         self.argv = argv
         list.__init__(self, self.argv)
@@ -168,7 +168,7 @@ class Switches(set):
 
        The class is derived from the Python list type.
 
-       :param argv: ordered command line argument list with index range [1:]"""
+       :param argv: ordered command line argument list with sys.argv index range [1:]"""
     def __init__(self, argv):
         self.argv = argv
         set.__init__(self, self._make_switch_set())
@@ -198,7 +198,7 @@ class Mops(set):
 
     The class is derived from the Python set type and the option switches are stored as set items.
 
-    :param argv: ordered command line argument list with index range [1:]"""
+    :param argv: ordered command line argument list with sys.argv index range [1:]"""
     def __init__(self, argv):
         self.argv = argv
         set.__init__(self, self._make_mops_set())
@@ -231,7 +231,7 @@ class Definitions(dict):
         key = option string (with the '-' character(s) removed)
         value = definition argument string
 
-        :param argv: ordered command line argument list with index range [1:]"""
+        :param argv: ordered command line argument list with sys.argv index range [1:]"""
     def __init__(self, argv):
         self.argv = argv
         dict.__init__(self, self._make_definitions_obj())

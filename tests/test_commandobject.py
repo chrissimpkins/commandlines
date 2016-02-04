@@ -8,7 +8,7 @@ import pytest
 from commandlines import Command
 
 test_command_1 = "executable subcmd -s --long -n shortdef --name longdef --nameeq=longdefeq lastpos"
-test_command_2 = "executable -mops lastpos"
+test_command_2 = "executable -mops -t lastpos"
 
 
 # ///////////////////////////////////////////
@@ -163,7 +163,7 @@ def test_commandobj_property_mops():
     assert isinstance(c.mops, set)
     for x in "mops":
         assert x in c.mops
-    assert "l" not in c.mops  # confirm that 'l' character from lastpos argument is not included
+    assert "t" not in c.mops  # confirm that 't' character from short switch is not included
 
 
 # ////////////////////////////////////////////////////////////
