@@ -35,8 +35,8 @@ class Command(object):
         :returns: boolean"""
         return self.argc == 0
 
-    def does_not_validate_n(self, number):
-        """Command string validation for inclusion fo at least n arguments to executable.
+    def does_not_validate_n_args(self, number):
+        """Command string validation for inclusion of exactly n arguments to executable.
 
            :param number: an integer that defines the number of expected arguments for this test
            :returns: boolean"""
@@ -51,12 +51,16 @@ class Command(object):
         :returns: boolean"""
         return self.argc > 0
 
-    def validates_n(self, number):
-        """Command string validation for inclusion fo at least n arguments to executable.
+    def validates_n_args(self, number):
+        """Command string validation for inclusion of exactly n arguments to executable.
 
         :param number: an integer that defines the number of expected arguments for this test
         :returns: boolean"""
         return self.argc == number
+
+    def validates_mandatory_args(self, arglist):
+        pass
+        # TODO: implement mandatory argument test that supports short / long option alternatives
 
     # //////////////////////////////////////////////////////////////
     #
@@ -79,23 +83,14 @@ class Command(object):
     #
     # //////////////////////////////////////////////////////////////
 
-    def contains_switch(self, switch_test_string):
-        if switch_test_string in self.switches:
-            return True
-        else:
-            return False
+    def contains_switch(self, switch_needle):
+        return self.switches.contains(switch_needle)
 
-    def contains_definition(self, def_test_string):
-        if def_test_string in self.defs.keys():
-            return True
-        else:
-            return False
+    def contains_definition(self, def_needle):
+        return self.defs.contains(def_needle)
 
-    def get_definition(self, def_name_string):
-        if def_name_string in self.defs.keys():
-            return self.defs[def_name_string]
-        else:
-            return ""
+    def get_definition(self, def_needle):
+        return self.defs.get_def_argument(def_needle)
 
     # /////////////////////////////////////////////////////////////
     #
@@ -215,7 +210,7 @@ class Mops(set):
         mopsset = set()
         for x in self.argv:
             if x.startswith("-") and "=" not in x:
-                if len(x) > 2:  # the argument includes - and more than one alphabetic characters
+                if len(x) > 2:  # the argument includes '-' and more than one character following dash
                     if x[1] != "-":  # it is not long option syntax (e.g. --long)
                         x = x.replace("-", "")
                         for switch in x:
@@ -263,3 +258,12 @@ class Definitions(dict):
             counter += 1
 
         return defmap
+
+    def contains(self, needle):
+        return needle in self.keys()
+
+    def get_def_argument(self, needle):
+        if needle in self.keys():
+            return self[needle]
+        else:
+            return ""
