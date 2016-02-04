@@ -8,10 +8,21 @@ import pytest
 from commandlines import Command
 
 test_command_1 = "executable subcmd -s --long -n shortdef --name longdef --nameeq=longdefeq lastpos"
+test_command_2 = "executable -mops lastpos"
 
+
+# ///////////////////////////////////////////
+#
+# SETUP functions
+#
+# ///////////////////////////////////////////
 
 def set_sys_argv():
     sys.argv = test_command_1.split(" ")
+
+
+def set_sys_argv2():
+    sys.argv = test_command_2.split(" ")
 
 
 # ///////////////////////////////////////////
@@ -134,9 +145,25 @@ def test_commandobj_property_switches():
     """Test: obj.switches property is defined with instantiated Switches object and includes correct strings"""
     set_sys_argv()
     c = Command()
-    assert isinstance(c.switches, list)
+    assert isinstance(c.switches, set)
     for x in ['s', 'long', 'n', 'name']:
         assert x in c.switches
+
+
+# ////////////////////////////////////////////////////////////
+#
+# TESTS : Parsing >>> Command object Mops property
+#
+# ////////////////////////////////////////////////////////////
+
+def test_commandobj_property_mops():
+    """Test: obj.mops property is defined with instantiated Mops object and includes correct characters"""
+    set_sys_argv2()
+    c = Command()
+    assert isinstance(c.mops, set)
+    for x in "mops":
+        assert x in c.mops
+    assert "l" not in c.mops  # confirm that 'l' character from lastpos argument is not included
 
 
 # ////////////////////////////////////////////////////////////
