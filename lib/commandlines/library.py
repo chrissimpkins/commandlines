@@ -187,7 +187,10 @@ class Switches(set):
         switchset = set()
         for x in self.argv:
             if x.startswith("-") and "=" not in x:
-                x = x.replace("-", "")  # remove the '-' character(s from the switch before adding to list
+                prefix = x[:2]  # will only replace up to the first 2 dash characters in the option
+                suffix = x[2:]
+                prefix = prefix.replace("-", "")  # remove the '-' character(s) from the switch before adding to list
+                x = prefix + suffix
                 switchset.add(x)
 
         return switchset
@@ -268,12 +271,18 @@ class Definitions(dict):
             # defines -option=definition syntax
             if x.startswith("-") and "=" in x:
                 split_def = x.split("=")
-                cleaned_key = split_def[0].replace('-', '')
+                prefix = split_def[0][:2]  # will only remove dashes in first two positions of the string
+                suffix = split_def[0][2:]
+                prefix = prefix.replace("-", "")
+                cleaned_key = prefix + suffix
                 defmap[cleaned_key] = split_def[1]
             # defines -d <positional def> or --define <positional def> syntax
             elif x.startswith("-") and counter < arglist_length:
                 if not self.argv[counter + 1].startswith("-"):
-                    x = x.replace('-', '')
+                    prefix = x[:2]  # will only remove dashes in first two positions of the string
+                    suffix = x[2:]
+                    prefix = prefix.replace('-', '')
+                    x = prefix + suffix
                     defmap[x] = self.argv[counter + 1]
 
             counter += 1
