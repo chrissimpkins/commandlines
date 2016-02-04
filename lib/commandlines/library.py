@@ -83,11 +83,16 @@ class Command(object):
     #
     # //////////////////////////////////////////////////////////////
 
-    def contains_switch(self, switch_needle):
-        return self.switches.contains(switch_needle)
+    def contains_switches(self, switch_needles):
+        """Returns boolean that indicates presence (True) or absence (False) of one or more switches.
 
-    def contains_definition(self, def_needle):
-        return self.defs.contains(def_needle)
+        :param switch_needles: can be a string (single argument test) or list of strings (multi-argument test)
+        :returns: boolean
+           """
+        return self.switches.contains(switch_needles)
+
+    def contains_definitions(self, def_needles):
+        return self.defs.contains(def_needles)
 
     def get_definition(self, def_needle):
         return self.defs.get_def_argument(def_needle)
@@ -174,6 +179,7 @@ class Switches(set):
        :param argv: ordered command line argument list with sys.argv index range [1:]"""
     def __init__(self, argv):
         self.argv = argv
+        self.missing_switches = []
         set.__init__(self, self._make_switch_set())
 
     # make a list of the options in the command (defined as anything that starts with "-" character)
@@ -187,10 +193,25 @@ class Switches(set):
         return switchset
 
     def contains(self, needle):
-        if needle in self:
-            return True
+        # if a list is passed that contains multiple expected arguments
+        if isinstance(needle, list):
+            missing_needles = False
+            for expected_switch in needle:
+                if expected_switch in self:
+                    pass
+                else:
+                    missing_needles = True
+                    self.missing_switches.append(expected_switch)
+            if missing_needles is True:
+                return False
+            else:
+                return True
+        # if a string is passed that defines a single expected argument
         else:
-            return False
+            if needle in self:
+                return True
+            else:
+                return False
 
 
 class Mops(set):
