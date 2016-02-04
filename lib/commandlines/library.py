@@ -23,31 +23,11 @@ class Command(object):
         self.subsubcmd = self.arg1                  # second positional argument if not option
         self.has_args = (len(self.arguments) > 0)   # test for presence of at least one argument (boolean)
 
-    def get_next_positional(self, target_arg):
-        """Returns the next positional argument at position n + 1 to a command line argument at index position n
-
-           :param target_arg: argument string for the search """
-        recipient_position = self.arguments.get_arg_position(target_arg)
-        return self.arguments.get_arg_next(recipient_position)
-
     # //////////////////////////////////////////////////////////////
     #
     #  Validation methods
     #
     # //////////////////////////////////////////////////////////////
-
-    def validates_hasargs(self):
-        """Command string validation for inclusion of at least one argument to the executable
-
-        :returns: boolean"""
-        return self.argc > 0
-
-    def validates_n(self, number):
-        """Command string validation for inclusion fo at least n arguments to executable.
-
-        :param number: an integer that defines the number of expected arguments for this test
-        :returns: boolean"""
-        return self.argc == number
 
     def does_not_validate_missingargs(self):
         """Command string validation for inclusion of at least one argument to the executable
@@ -65,17 +45,33 @@ class Command(object):
         else:
             return True
 
+    def validates_hasargs(self):
+        """Command string validation for inclusion of at least one argument to the executable
+
+        :returns: boolean"""
+        return self.argc > 0
+
+    def validates_n(self, number):
+        """Command string validation for inclusion fo at least n arguments to executable.
+
+        :param number: an integer that defines the number of expected arguments for this test
+        :returns: boolean"""
+        return self.argc == number
+
     # //////////////////////////////////////////////////////////////
     #
     # Inclusion testing methods
     #
     # //////////////////////////////////////////////////////////////
 
-    def includes_switches(self):
-        return len(self.switches) > 0
-
     def includes_definitions(self):
         return len(self.defs) > 0
+
+    def includes_mops(self):
+        return len(self.mops) > 0
+
+    def includes_switches(self):
+        return len(self.switches) > 0
 
     # //////////////////////////////////////////////////////////////
     #
@@ -101,11 +97,23 @@ class Command(object):
         else:
             return ""
 
+    # /////////////////////////////////////////////////////////////
+    #
+    # Positional argument methods
+    #
+    # /////////////////////////////////////////////////////////////
+
+    def get_next_positional(self, target_arg):
+        """Returns the next positional argument at position n + 1 to a command line argument at index position n
+
+           :param target_arg: argument string for the search """
+        recipient_position = self.arguments.get_arg_position(target_arg)
+        return self.arguments.get_arg_next(recipient_position)
+
     # ///////////////////////////////////////////////////
-    #  Default command line option parsing support for:
-    #  -- help requests
-    #  -- usage requests
-    #  -- version requests
+    #
+    #  Default help, usage, and version parser methods
+    #
     # ///////////////////////////////////////////////////
 
     def is_help_request(self):
