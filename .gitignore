@@ -62,3 +62,7 @@ target/
 
 # PyCharm files
 .idea/
+
+# Project files
+tests/runner.py
+lib/profiler.py
