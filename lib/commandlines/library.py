@@ -7,49 +7,81 @@ import sys
 class Command(object):
     """An object that is parsed from a command line command string"""
     def __init__(self):
-        self.argv = sys.argv[1:]  # removes executable from CL argument list
-        self.arguments = Arguments(self.argv)  # create a positional arguments object
-        self.switches = Switches(self.argv)    # create a set of command line switches
-        self.defs = Definitions(self.argv)     # create a command line definition dictionary
-        self.argc = len(self.argv)  # length of the argument list
-        self.arg0 = self.arguments.get_argument(0)  # define the first positional argument
-        self.arg1 = self.arguments.get_argument(1)  # define the second positional argument
-        self.arg2 = self.arguments.get_argument(2)  # define the third postitional argument
-        self.arg3 = self.arguments.get_argument(3)  # define the fourth positional argument
-        self.arg4 = self.arguments.get_argument(4)  # define the fifth positional argument
+        self.argv = sys.argv[1:]                    # removes executable from CL argument list
+        self.arguments = Arguments(self.argv)       # ordered positional args (list)
+        self.switches = Switches(self.argv)         # short and long switches (set)
+        self.mops = Mops(self.argv)                 # multi-option short syntax switches (set)
+        self.defs = Definitions(self.argv)          # definitions (dict)
+        self.argc = len(self.argv)                  # length of the argument list
+        self.arg0 = self.arguments.get_argument(0)  # first positional argument
+        self.arg1 = self.arguments.get_argument(1)  # second positional argument (or "")
+        self.arg2 = self.arguments.get_argument(2)  # third postitional argument (or "")
+        self.arg3 = self.arguments.get_argument(3)  # fourth positional argument (or "")
+        self.arg4 = self.arguments.get_argument(4)  # fifth positional argument  (or "")
         self.arglp = self.arguments.get_argument(self.argc - 1)  # define the last positional argument
-        self.subcmd = self.arg0
-        self.subsubcmd = self.arg1
-        self.has_args = (len(self.arguments) > 0)  # test for presence of at least one argument (boolean)
+        self.subcmd = self.arg0                     # first positional argument if not option
+        self.subsubcmd = self.arg1                  # second positional argument if not option
+        self.has_args = (len(self.arguments) > 0)   # test for presence of at least one argument (boolean)
 
-    # ------------------------------------------------------------------------------------------
-    # [ get_next_positional method ] (string)
-    #  Return the NEXT positional argument to a command line argument
-    #    arg_recipient = the positional argument (at list index n) to test for next positional argument
-    #    returns next positional argument string at list index n + 1 or empty string if no next positional
-    # ------------------------------------------------------------------------------------------
     def get_next_positional(self, target_arg):
-        """Returns the next positional argument to a command line argument
+        """Returns the next positional argument at position n + 1 to a command line argument at index position n
 
-           Parameters:
-             target_arg:  the string  """
+           :param target_arg: argument string for the search """
         recipient_position = self.arguments.get_arg_position(target_arg)
         return self.arguments.get_arg_next(recipient_position)
 
-    def validates(self):
+    # //////////////////////////////////////////////////////////////
+    #
+    #  Validation methods
+    #
+    # //////////////////////////////////////////////////////////////
+
+    def validates_hasargs(self):
+        """Command string validation for inclusion of at least one argument to the executable
+
+        :returns: boolean"""
         return self.argc > 0
 
     def validates_n(self, number):
+        """Command string validation for inclusion fo at least n arguments to executable.
+
+        :param number: an integer that defines the number of expected arguments for this test
+        :returns: boolean"""
         return self.argc == number
 
-    def does_not_validate(self):
+    def does_not_validate_missingargs(self):
+        """Command string validation for inclusion of at least one argument to the executable
+
+        :returns: boolean"""
         return self.argc == 0
+
+    def does_not_validate_n(self, number):
+        """Command string validation for inclusion fo at least n arguments to executable.
+
+           :param number: an integer that defines the number of expected arguments for this test
+           :returns: boolean"""
+        if self.argc == number:
+            return False
+        else:
+            return True
+
+    # //////////////////////////////////////////////////////////////
+    #
+    # Inclusion testing methods
+    #
+    # //////////////////////////////////////////////////////////////
 
     def includes_switches(self):
         return len(self.switches) > 0
 
     def includes_definitions(self):
         return len(self.defs) > 0
+
+    # //////////////////////////////////////////////////////////////
+    #
+    # Contains testing methods
+    #
+    # //////////////////////////////////////////////////////////////
 
     def contains_switch(self, switch_test_string):
         if switch_test_string in self.switches:
@@ -69,12 +101,12 @@ class Command(object):
         else:
             return ""
 
-    # ------------------------------------------------------------------------------
+    # ///////////////////////////////////////////////////
     #  Default command line option parsing support for:
     #  -- help requests
     #  -- usage requests
     #  -- version requests
-    # ------------------------------------------------------------------------------
+    # ///////////////////////////////////////////////////
 
     def is_help_request(self):
         """Tests for -h and --help options.  Returns boolean"""
@@ -99,9 +131,11 @@ class Command(object):
 
 
 class Arguments(list):
-    """A class that includes all command line arguments
+    """A class that includes all command line arguments with positional order maintained.
 
-      The class is derived from the Python list type."""
+      The class is derived from the Python list type.
+
+      :param argv: ordered command line argument list with index range [1:]"""
     def __init__(self, argv):
         self.argv = argv
         list.__init__(self, self.argv)
@@ -132,7 +166,9 @@ class Arguments(list):
 class Switches(set):
     """A class that is instantiated with all command line switches that have the syntax `-s` or `--longswitch`
 
-       The class is derived from the Python list type."""
+       The class is derived from the Python list type.
+
+       :param argv: ordered command line argument list with index range [1:]"""
     def __init__(self, argv):
         self.argv = argv
         set.__init__(self, self._make_switch_set())
@@ -155,12 +191,14 @@ class Switches(set):
 
 
 class Mops(set):
-    """A class that is instantiated with unique switches from multiple option command line options that use the
+    """A class that is instantiated with unique switches from multi-option command line options that use the
     short syntax.
 
     Examples: -rnj -tlx
 
-    The class is derived from the Python set type and the option switches are stored as set items."""
+    The class is derived from the Python set type and the option switches are stored as set items.
+
+    :param argv: ordered command line argument list with index range [1:]"""
     def __init__(self, argv):
         self.argv = argv
         set.__init__(self, self._make_mops_set())
@@ -191,7 +229,9 @@ class Definitions(dict):
         This class is derived from the Python dictionary type.  The mapping is
 
         key = option string (with the '-' character(s) removed)
-        value = definition argument string"""
+        value = definition argument string
+
+        :param argv: ordered command line argument list with index range [1:]"""
     def __init__(self, argv):
         self.argv = argv
         dict.__init__(self, self._make_definitions_obj())
