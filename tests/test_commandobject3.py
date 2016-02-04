@@ -172,4 +172,4 @@ def test_commandobj_property_definitions():
     assert isinstance(c.defs, dict)
     assert len(c.defs) == 1
     assert 'long' in c.defs.keys()
-    assert c.defs['s'] == 'lastpos'
+    assert c.defs['long'] == 'lastpos'
