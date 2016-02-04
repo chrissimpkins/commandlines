@@ -9,7 +9,7 @@ class Command(object):
     def __init__(self):
         self.argv = sys.argv[1:]  # removes executable from CL argument list
         self.arguments = Arguments(self.argv)  # create a positional arguments object
-        self.switches = Switches(self.argv)    # create a list of command line switches
+        self.switches = Switches(self.argv)    # create a set of command line switches
         self.defs = Definitions(self.argv)     # create a command line definition dictionary
         self.argc = len(self.argv)  # length of the argument list
         self.arg0 = self.arguments.get_argument(0)  # define the first positional argument
@@ -129,23 +129,58 @@ class Arguments(list):
             return ""
 
 
-class Switches(list):
+class Switches(set):
     """A class that is instantiated with all command line switches that have the syntax `-s` or `--longswitch`
 
        The class is derived from the Python list type."""
     def __init__(self, argv):
         self.argv = argv
-        list.__init__(self, self._make_switch_list())
+        set.__init__(self, self._make_switch_set())
 
     # make a list of the options in the command (defined as anything that starts with "-" character)
-    def _make_switch_list(self):
-        switchargv = []
+    def _make_switch_set(self):
+        switchset = set()
         for x in self.argv:
             if x.startswith("-") and "=" not in x:
                 x = x.replace("-", "")  # remove the '-' character(s from the switch before adding to list
-                switchargv.append(x)
+                switchset.add(x)
 
-        return switchargv
+        return switchset
+
+    def contains(self, needle):
+        if needle in self:
+            return True
+        else:
+            return False
+
+
+class Mops(set):
+    """A class that is instantiated with unique switches from multiple option command line options that use the
+    short syntax.
+
+    Examples: -rnj -tlx
+
+    The class is derived from the Python set type and the option switches are stored as set items."""
+    def __init__(self, argv):
+        self.argv = argv
+        set.__init__(self, self._make_mops_set())
+
+    def _make_mops_set(self):
+        mopsset = set()
+        for x in self.argv:
+            if x.startswith("-") and "=" not in x:
+                if len(x) > 2:  # the argument includes - and more than one alphabetic characters
+                    if x[1] != "-":  # it is not long option syntax (e.g. --long)
+                        x = x.replace("-", "")
+                        for switch in x:
+                            mopsset.add(switch)
+        return mopsset
+
+    def contains(self, needle):
+        if needle in self:
+            return True
+        else:
+            return False
 
 
 class Definitions(dict):
