@@ -7,6 +7,8 @@ import pytest
 
 from commandlines import Command
 
+# TEST OVERVIEW: object instantation with syntax `executable shortopt lastposarg`
+
 test_command_1 = "executable -s lastpos"
 
 
@@ -156,7 +158,7 @@ def test_commandobj_property_mops():
     set_sys_argv()
     c = Command()
     assert isinstance(c.mops, set)
-    assert len(c.mops) == 0 # should be empty, no mops included in command
+    assert len(c.mops) == 0  # should be empty, no mops included in command
 
 
 # ////////////////////////////////////////////////////////////
