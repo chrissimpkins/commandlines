@@ -121,7 +121,7 @@ def test_commandobj_property_arguments():
     set_sys_argv()
     c = Command()
     assert isinstance(c.arguments, list)
-    assert c.arguments == sys.argv       # the obj.arguments list is same as sys.argv
+    assert c.arguments == sys.argv[1:]       # the obj.arguments list is same as sys.argv[1:]
 
 
 # ////////////////////////////////////////////////////////////

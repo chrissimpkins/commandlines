@@ -166,7 +166,7 @@ class Switches(list):
         switchargv = []
         for x in self.argv:
             if x.startswith("-") and "=" not in x:
-                x.replace("-", "")  # remove the '-' character(s from the switch before adding to list
+                x = x.replace("-", "")  # remove the '-' character(s from the switch before adding to list
                 switchargv.append(x)
 
         return switchargv
