@@ -194,10 +194,12 @@ class Definitions(dict):
             # defines -option=definition syntax
             if x.startswith("-") and "=" in x:
                 split_def = x.split("=")
-                defmap[split_def[0]] = split_def[1]
+                cleaned_key = split_def[0].replace('-', '')
+                defmap[cleaned_key] = split_def[1]
             # defines -d <positional def> or --define <positional def> syntax
             elif x.startswith("-") and counter < arglist_length:
                 if not self.argv[counter + 1].startswith("-"):
+                    x = x.replace('-', '')
                     defmap[x] = self.argv[counter + 1]
 
             counter += 1
