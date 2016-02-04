@@ -45,7 +45,7 @@ def test_commandobj_property_argv():
     """Test: obj.argv Command object property uses 0 based index for first positional argument, not executable"""
     set_sys_argv()
     c = Command()
-    assert c.argv == ['-v', '--V', 'lastpos']
+    assert c.argv == ['-v', '-V', 'lastpos']
 
 
 def test_commandobj_property_argc():
