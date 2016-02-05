@@ -6,6 +6,8 @@ environment:
     - TOXENV: py33
     - TOXENV: py34
     - TOXENV: py35
+    - TOXENV: pypy
+    - TOXENV: pypy3
 init:
   - "ECHO %TOXENV%"
   - ps: "ls C:\\Python*"
