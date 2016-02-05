@@ -94,6 +94,12 @@ class Command(object):
     def contains_definitions(self, def_needles):
         return self.defs.contains(def_needles)
 
+    # //////////////////////////////////////////////////////////////
+    #
+    # Getter methods
+    #
+    # //////////////////////////////////////////////////////////////
+
     def get_definition(self, def_needle):
         return self.defs.get_def_argument(def_needle)
 
@@ -110,11 +116,33 @@ class Command(object):
         recipient_position = self.arguments.get_arg_position(target_arg)
         return self.arguments.get_arg_next(recipient_position)
 
-    # ///////////////////////////////////////////////////
+    # //////////////////////////////////////////////////////////////
+    #
+    # Application logic methods
+    #
+    # //////////////////////////////////////////////////////////////
+
+    def is_command_sequence(self, *cmd_list):
+        """Test for a sequence of command line tokens in the command string.  The test begins at index position 0
+        of the argument list and is case-sensitive.
+
+        :param cmd_list: tuple of expected commands in expected order starting at Command.argv index 0"""
+        if len(cmd_list) > len(self.argv):   # request does not inlude more args than the Command.argv property includes
+            return False
+        else:
+            index = 0
+            for test_arg in cmd_list:
+                if self.argv[index] == test_arg:   # test that argument at index position matches in parameter order
+                    index += 1
+                else:
+                    return False
+            return True
+
+    # /////////////////////////////////////////////////////////////
     #
     #  Default help, usage, and version parser methods
     #
-    # ///////////////////////////////////////////////////
+    # /////////////////////////////////////////////////////////////
 
     def is_help_request(self):
         """Tests for -h and --help options.  Returns boolean"""
