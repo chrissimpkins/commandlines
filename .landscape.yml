@@ -1,7 +1,4 @@
 strictness: high
-ignore-patterns:
-    - *settings.py
-    - *profiler.py
 python-targets:
     - 2
     - 3
