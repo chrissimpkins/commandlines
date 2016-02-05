@@ -1,0 +1,10 @@
+doc-warnings: yes
+test-warnings: no
+strictness: high
+autodetect: yes
+ignore-paths:
+    - docs
+    - tests
+python-targets:
+    - 2
+    - 3
