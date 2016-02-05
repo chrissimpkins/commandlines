@@ -17,8 +17,8 @@ script: tox -e $TOX_ENV
 
 install:
     - pip install tox
-    - pip install coverage
     - pip install pytest-cov
+    - pip install pytest
     - pip install codecov
 
 after_success:
