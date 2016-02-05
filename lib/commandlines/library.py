@@ -64,7 +64,7 @@ class Command(object):
 
     # //////////////////////////////////////////////////////////////
     #
-    # Inclusion testing methods
+    # Presence of general argument types methods
     #
     # //////////////////////////////////////////////////////////////
 
@@ -79,11 +79,11 @@ class Command(object):
 
     # //////////////////////////////////////////////////////////////
     #
-    # Contains testing methods
+    # Presence of specific argument type X argument string methods
     #
     # //////////////////////////////////////////////////////////////
 
-    def contains_switches(self, switch_needles):
+    def contains_switches(self, *switch_needles):
         """Returns boolean that indicates presence (True) or absence (False) of one or more switches.
 
         :param switch_needles: can be a string (single argument test) or list of strings (multi-argument test)
@@ -91,7 +91,7 @@ class Command(object):
            """
         return self.switches.contains(switch_needles)
 
-    def contains_definitions(self, def_needles):
+    def contains_definitions(self, *def_needles):
         return self.defs.contains(def_needles)
 
     # //////////////////////////////////////////////////////////////
@@ -102,12 +102,6 @@ class Command(object):
 
     def get_definition(self, def_needle):
         return self.defs.get_def_argument(def_needle)
-
-    # /////////////////////////////////////////////////////////////
-    #
-    # Positional argument methods
-    #
-    # /////////////////////////////////////////////////////////////
 
     def get_next_positional(self, target_arg):
         """Returns the next positional argument at position n + 1 to a command line argument at index position n
@@ -122,7 +116,7 @@ class Command(object):
     #
     # //////////////////////////////////////////////////////////////
 
-    def is_command_sequence(self, *cmd_list):
+    def has_command_sequence(self, *cmd_list):
         """Test for a sequence of command line tokens in the command string.  The test begins at index position 0
         of the argument list and is case-sensitive.
 
@@ -137,6 +131,14 @@ class Command(object):
                 else:
                     return False
             return True
+
+    def has_args_after_argument(self, argument_needle, number=1):
+        """Test for presence of one or more positional arguments (indicated by numbers) following an existing
+        argument (argument_needle).
+
+        :param number: The number of expected arguments after the test argument that is known to be present
+        :param argument_needle: The test argument that is known to be present in the command"""
+        pass
 
     # /////////////////////////////////////////////////////////////
     #
@@ -198,6 +200,21 @@ class Arguments(list):
         else:
             return ""
 
+    def contains(self, *needle):
+        """Returns boolean that indicates the presence (True) or absence (False) of a tuple of test arguments
+
+        :returns: boolean"""
+        missing_needles = False
+        for expected_argument in needle:
+            if expected_argument in self:
+                pass
+            else:
+                missing_needles = True
+        if missing_needles is True:
+            return False
+        else:
+            return True
+
 
 class Switches(set):
     """A class that is instantiated with all command line switches that have the syntax `-s` or `--longswitch`
@@ -223,26 +240,23 @@ class Switches(set):
 
         return switchset
 
-    def contains(self, needle):
-        # if a list is passed that contains multiple expected arguments
-        if isinstance(needle, list):
-            missing_needles = False
-            for expected_switch in needle:
-                if expected_switch in self:
-                    pass
-                else:
-                    missing_needles = True
-                    self.missing_switches.append(expected_switch)
-            if missing_needles is True:
-                return False
+    def contains(self, *needle):
+        """Returns boolean that indicates the presence (True) or absence (False) of a tuple of test switches.
+        Switch parameters in needle tuple should be passed without initial dash character(s) in the test switch
+        argument name.
+
+        :type needle: tuple of one or more switch strings for contains test
+        :returns: boolean"""
+        missing_needles = False
+        for expected_argument in needle:
+            if expected_argument in self:
+                pass
             else:
-                return True
-        # if a string is passed that defines a single expected argument
+                missing_needles = True
+        if missing_needles is True:
+            return False
         else:
-            if needle in self:
-                return True
-            else:
-                return False
+            return True
 
 
 class Mops(set):
@@ -269,11 +283,22 @@ class Mops(set):
                             mopsset.add(switch)
         return mopsset
 
-    def contains(self, needle):
-        if needle in self:
-            return True
-        else:
+    def contains(self, *needle):
+        """Returns boolean that indicates the presence (True) or absence (False) of a tuple of test Mops syntax option
+        switches.  These should be a single character list of one or more expected options without dashes.
+
+        :type needle: tuple of one or more multiple option short syntax strings for contains test
+        :returns: boolean"""
+        missing_needles = False
+        for expected_argument in needle:
+            if expected_argument in self:
+                pass
+            else:
+                missing_needles = True
+        if missing_needles is True:
             return False
+        else:
+            return True
 
 
 class Definitions(dict):
@@ -317,8 +342,22 @@ class Definitions(dict):
 
         return defmap
 
-    def contains(self, needle):
-        return needle in self.keys()
+    def contains(self, *needle):
+        """Returns boolean that indicates the presence (True) or absence (False) of a tuple of test definitions.
+        The definitions should be passed without initial dash characters in the definition argument name.
+
+        :type needle: tuple of one or more definition argument strings for contains test
+        :returns: boolean"""
+        missing_needles = False
+        for expected_definition in needle:
+            if expected_definition in self.keys():
+                pass
+            else:
+                missing_needles = True
+        if missing_needles is True:
+            return False
+        else:
+            return True
 
     def get_def_argument(self, needle):
         if needle in self.keys():
