@@ -185,13 +185,13 @@ class Switches(set):
     # make a list of the options in the command (defined as anything that starts with "-" character)
     def _make_switch_set(self):
         switchset = set()
-        for x in self.argv:
-            if x.startswith("-") and "=" not in x:
-                prefix = x[:2]  # will only replace up to the first 2 dash characters in the option
-                suffix = x[2:]
+        for switch_candidate in self.argv:
+            if switch_candidate.startswith("-") and "=" not in switch_candidate:
+                prefix = switch_candidate[:2]  # will only replace up to the first 2 dash characters in the option
+                suffix = switch_candidate[2:]
                 prefix = prefix.replace("-", "")  # remove the '-' character(s) from the switch before adding to list
-                x = prefix + suffix
-                switchset.add(x)
+                switch_candidate = prefix + suffix
+                switchset.add(switch_candidate)
 
         return switchset
 
@@ -232,12 +232,12 @@ class Mops(set):
 
     def _make_mops_set(self):
         mopsset = set()
-        for x in self.argv:
-            if x.startswith("-") and "=" not in x:
-                if len(x) > 2:  # the argument includes '-' and more than one character following dash
-                    if x[1] != "-":  # it is not long option syntax (e.g. --long)
-                        x = x.replace("-", "")
-                        for switch in x:
+        for mops_candidate in self.argv:
+            if mops_candidate.startswith("-") and "=" not in mops_candidate:
+                if len(mops_candidate) > 2:  # the argument includes '-' and more than one character following dash
+                    if mops_candidate[1] != "-":  # it is not long option syntax (e.g. --long)
+                        mops_candidate = mops_candidate.replace("-", "")
+                        for switch in mops_candidate:
                             mopsset.add(switch)
         return mopsset
 
@@ -267,23 +267,23 @@ class Definitions(dict):
         defmap = {}
         arglist_length = len(self.argv)
         counter = 0
-        for x in self.argv:
+        for def_candidate in self.argv:
             # defines -option=definition syntax
-            if x.startswith("-") and "=" in x:
-                split_def = x.split("=")
+            if def_candidate.startswith("-") and "=" in def_candidate:
+                split_def = def_candidate.split("=")
                 prefix = split_def[0][:2]  # will only remove dashes in first two positions of the string
                 suffix = split_def[0][2:]
                 prefix = prefix.replace("-", "")
                 cleaned_key = prefix + suffix
                 defmap[cleaned_key] = split_def[1]
             # defines -d <positional def> or --define <positional def> syntax
-            elif x.startswith("-") and counter < arglist_length:
+            elif def_candidate.startswith("-") and counter < arglist_length:
                 if not self.argv[counter + 1].startswith("-"):
-                    prefix = x[:2]  # will only remove dashes in first two positions of the string
-                    suffix = x[2:]
+                    prefix = def_candidate[:2]  # will only remove dashes in first two positions of the string
+                    suffix = def_candidate[2:]
                     prefix = prefix.replace('-', '')
-                    x = prefix + suffix
-                    defmap[x] = self.argv[counter + 1]
+                    def_candidate = prefix + suffix
+                    defmap[def_candidate] = self.argv[counter + 1]
 
             counter += 1
 
