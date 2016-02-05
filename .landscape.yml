@@ -1,4 +1,7 @@
 strictness: high
+ignore-paths:
+    - lib/commandlines/settings.py
+    - lib/profiler.py
 python-targets:
     - 2
     - 3
