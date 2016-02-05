@@ -17,14 +17,15 @@ script: tox -e $TOX_ENV
 
 install:
     - pip install tox
-    - pip install pytest-cov
-    - pip install pytest
+    - pip install coverage
     - pip install codecov
 
 after_success:
     # Report coverage results to codecov.io
     # and export tox environment variables
-    - codecov -e TOX_ENV
+    - coverage run --source lib/commandlines/library.py -m py.test
+    - coverage report
+    - codecov
 
 notifications:
   email: false
