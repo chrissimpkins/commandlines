@@ -24,6 +24,7 @@ after_success:
     - pip install https://github.com/chrissimpkins/commandlines/archive/master.zip
     - pip install coverage
     - pip install pytest
+    - pip install codecov
     - coverage run --source commandlines -m py.test
     - coverage report
     - codecov
