@@ -18,16 +18,16 @@ script: tox -e $TOX_ENV
 install:
     - pip install tox
 
-after_success:
+#after_success:
     # Report coverage results to codecov.io
     # and export tox environment variables
-    - pip install https://github.com/chrissimpkins/commandlines/archive/master.zip
-    - pip install coverage
-    - pip install pytest
-    - pip install codecov
-    - coverage run --source commandlines -m py.test
-    - coverage report
-    - codecov
+#    - pip install https://github.com/chrissimpkins/commandlines/archive/master.zip
+#    - pip install coverage
+#    - pip install pytest
+#    - pip install codecov
+#    - coverage run --source commandlines -m py.test
+#    - coverage report
+#    - codecov -e TOX_ENV
 
 notifications:
   email: false
