@@ -140,7 +140,7 @@ class Command(object):
         :param argument_needle: The test argument that is known to be present in the command"""
         if self.arguments.contains(argument_needle):
             position = self.arguments.get_arg_position(argument_needle)
-            if len(self.argv) > (position + 1):
+            if len(self.argv) > (position + number):
                 return True
             else:
                 return False
