@@ -337,7 +337,7 @@ class Definitions(dict):
                 cleaned_key = prefix + suffix
                 defmap[cleaned_key] = split_def[1]
             # defines -d <positional def> or --define <positional def> syntax
-            elif def_candidate.startswith("-") and counter < arglist_length:
+            elif counter < (arglist_length - 1) and def_candidate.startswith("-"):
                 if not self.argv[counter + 1].startswith("-"):
                     prefix = def_candidate[:2]  # will only remove dashes in first two positions of the string
                     suffix = def_candidate[2:]
