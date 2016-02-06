@@ -99,10 +99,9 @@ class Command(object):
     #     pass
     #     # TODO: implement mandatory argument test that supports short / long option alternatives
 
-
     # //////////////////////////////////////////////////////////////
     #
-    # Presence of specific argument type X argument string methods
+    # Application logic methods
     #
     # //////////////////////////////////////////////////////////////
 
@@ -116,28 +115,6 @@ class Command(object):
 
     def contains_definitions(self, *def_needles):
         return self.defs.contains(def_needles)
-
-    # //////////////////////////////////////////////////////////////
-    #
-    # Getter methods
-    #
-    # //////////////////////////////////////////////////////////////
-
-    def get_definition(self, def_needle):
-        return self.defs.get_def_argument(def_needle)
-
-    def get_arg_after(self, target_arg):
-        """Returns the next positional argument at position n + 1 to a command line argument at index position n
-
-           :param target_arg: argument string for the search """
-        recipient_position = self.arguments.get_arg_position(target_arg)
-        return self.arguments.get_arg_next(recipient_position)
-
-    # //////////////////////////////////////////////////////////////
-    #
-    # Application logic methods
-    #
-    # //////////////////////////////////////////////////////////////
 
     def has_command_sequence(self, *cmd_list):
         """Test for a sequence of command line tokens in the command string.  The test begins at index position 0
@@ -187,6 +164,23 @@ class Command(object):
         else:
             return False
 
+    # //////////////////////////////////////////////////////////////
+    #
+    # Getter methods
+    #
+    # //////////////////////////////////////////////////////////////
+
+    def get_definition(self, def_needle):
+        return self.defs.get_def_argument(def_needle)
+
+    def get_arg_after(self, target_arg):
+        """Returns the next positional argument at position n + 1 to a command line argument at index position n
+
+           :param target_arg: argument string for the search
+           :returns: string"""
+        recipient_position = self.arguments.get_arg_position(target_arg)
+        return self.arguments.get_arg_next(recipient_position)
+
     # /////////////////////////////////////////////////////////////
     #
     #  Default help, usage, and version parser methods
@@ -194,21 +188,27 @@ class Command(object):
     # /////////////////////////////////////////////////////////////
 
     def is_help_request(self):
-        """Tests for -h and --help options.  Returns boolean"""
+        """Tests for -h and --help options in command string
+
+        :returns: boolean"""
         if "help" in self.switches or "h" in self.switches:
             return True
         else:
             return False
 
     def is_usage_request(self):
-        """Tests for --usage option.  Returns boolean"""
+        """Tests for --usage option in command string
+
+        :returns: boolean"""
         if "usage" in self.switches:
             return True
         else:
             return False
 
     def is_version_request(self):
-        """Tests for -v and --version options.  Returns boolean"""
+        """Tests for -v and --version options in command string.
+
+        :returns: boolean"""
         if "version" in self.switches or "v" in self.switches:
             return True
         else:
