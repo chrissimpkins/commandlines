@@ -54,7 +54,45 @@ test_commands_with_defs = [
 
 test_commands_without_defs = [
     test_command_6,
-    test_command_10
+    test_command_10,
+    test_command_empty_1,
+    test_command_empty_2
+]
+
+test_commands_with_mops = [
+    test_command_8,
+    test_command_9
+]
+
+test_commands_without_mops = [
+    test_command_1,
+    test_command_2,
+    test_command_3,
+    test_command_4,
+    test_command_5,
+    test_command_6,
+    test_command_7,
+    test_command_10,
+    test_command_empty_1,
+    test_command_empty_2
+]
+
+test_commands_with_switches = [
+    test_command_1,
+    test_command_2,
+    test_command_3,
+    test_command_4,
+    test_command_5,
+    test_command_7,
+    test_command_8,
+    test_command_9
+]
+
+test_commands_without_switches = [
+    test_command_6,
+    test_command_10,
+    test_command_empty_1,
+    test_command_empty_2
 ]
 
 
@@ -78,3 +116,45 @@ def test_command_dnval_args_when_missing():
         set_sysargv(command)
         c = Command()
         assert c.does_not_validate_missing_args() == True
+
+
+def test_command_dnval_defs():
+    for command in test_commands_with_defs:
+        set_sysargv(command)
+        c = Command()
+        assert c.does_not_validate_missing_defs() == False
+
+
+def test_command_dnval_defs_when_missing():
+    for command in test_commands_without_defs:
+        set_sysargv(command)
+        c = Command()
+        assert c.does_not_validate_missing_defs() == True
+
+
+def test_command_dnval_mops():
+    for command in test_commands_with_mops:
+        set_sysargv(command)
+        c = Command()
+        assert c.does_not_validate_missing_mops() == False
+
+
+def test_command_dnval_mops_when_missing():
+    for command in test_commands_without_mops:
+        set_sysargv(command)
+        c = Command()
+        assert c.does_not_validate_missing_mops() == True
+
+
+def test_command_dnval_switches():
+    for command in test_commands_with_switches:
+        set_sysargv(command)
+        c = Command()
+        assert c.does_not_validate_missing_switches() == False
+
+
+def test_command_dnval_switches_when_missing():
+    for command in test_commands_without_switches:
+        set_sysargv(command)
+        c = Command()
+        assert c.does_not_validate_missing_switches() == True
