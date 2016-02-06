@@ -58,9 +58,9 @@ class Command(object):
         :returns: boolean"""
         return self.argc == number
 
-    def validates_mandatory_args(self, arglist):
-        pass
-        # TODO: implement mandatory argument test that supports short / long option alternatives
+    # def validates_mandatory_args(self, arglist):
+    #     pass
+    #     # TODO: implement mandatory argument test that supports short / long option alternatives
 
     # //////////////////////////////////////////////////////////////
     #
@@ -103,7 +103,7 @@ class Command(object):
     def get_definition(self, def_needle):
         return self.defs.get_def_argument(def_needle)
 
-    def get_next_positional(self, target_arg):
+    def get_positional_arg_after(self, target_arg):
         """Returns the next positional argument at position n + 1 to a command line argument at index position n
 
            :param target_arg: argument string for the search """
@@ -132,13 +132,20 @@ class Command(object):
                     return False
             return True
 
-    def has_args_after_argument(self, argument_needle, number=1):
+    def has_args_after(self, argument_needle, number=1):
         """Test for presence of one or more positional arguments (indicated by numbers) following an existing
         argument (argument_needle).
 
         :param number: The number of expected arguments after the test argument that is known to be present
         :param argument_needle: The test argument that is known to be present in the command"""
-        pass
+        if self.arguments.contains(argument_needle):
+            position = self.arguments.get_arg_position(argument_needle)
+            if len(self.argv) > (position + 1):
+                return True
+            else:
+                return False
+        else:
+            return False
 
     # /////////////////////////////////////////////////////////////
     #
