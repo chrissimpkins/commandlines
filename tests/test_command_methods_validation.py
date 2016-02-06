@@ -233,12 +233,12 @@ def test_command_valid_switches_when_missing():
 def test_command_valid_nargs():
     set_sysargv(test_command_2)
     c = Command()
-    assert c.does_not_validate_n_args(2) == True
+    assert c.validates_includes_n_args(2) == True
 
     set_sysargv(test_command_3)
     c = Command()
-    assert c.does_not_validate_n_args(2) == True
+    assert c.validates_includes_n_args(2) == True
 
     set_sysargv(test_command_empty_1)
     c = Command()
-    assert c.does_not_validate_n_args(0) == True
+    assert c.validates_includes_n_args(0) == True
