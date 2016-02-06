@@ -164,14 +164,17 @@ def test_command_dnval_nargs():
     set_sysargv(test_command_2)
     c = Command()
     assert c.does_not_validate_n_args(2) == False
+    assert c.does_not_validate_n_args(3) == True
 
     set_sysargv(test_command_3)
     c = Command()
     assert c.does_not_validate_n_args(2) == False
+    assert c.does_not_validate_n_args(3) == True
 
     set_sysargv(test_command_empty_1)
     c = Command()
     assert c.does_not_validate_n_args(0) == False
+    assert c.does_not_validate_n_args(1) == True
 
 
 def test_command_valid_args():
@@ -234,11 +237,14 @@ def test_command_valid_nargs():
     set_sysargv(test_command_2)
     c = Command()
     assert c.validates_includes_n_args(2) == True
+    assert c.validates_includes_n_args(3) == False
 
     set_sysargv(test_command_3)
     c = Command()
     assert c.validates_includes_n_args(2) == True
+    assert c.validates_includes_n_args(3) == False
 
     set_sysargv(test_command_empty_1)
     c = Command()
     assert c.validates_includes_n_args(0) == True
+    assert c.validates_includes_n_args(1) == False
