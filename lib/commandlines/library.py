@@ -29,11 +29,29 @@ class Command(object):
     #
     # //////////////////////////////////////////////////////////////
 
-    def does_not_validate_missingargs(self):
-        """Command string validation for inclusion of at least one argument to the executable
+    def does_not_validate_missing_args(self):
+        """Command string validation for missing arguments to the executable
 
         :returns: boolean"""
         return self.argc == 0
+
+    def does_not_validate_missing_defs(self):
+        """Command string validation for missing definitions to the executable
+
+        :returns: boolean"""
+        return len(self.defs) == 0
+
+    def does_not_validate_missing_mops(self):
+        """Command string validation for missing multi-option short syntax arguments to the executable
+
+        :returns: boolean"""
+        return len(self.mops) == 0
+
+    def does_not_validate_missing_switches(self):
+        """Command string validation for missing switches to the executable
+
+        :returns: boolean"""
+        return len(self.switches) == 0
 
     def does_not_validate_n_args(self, number):
         """Command string validation for inclusion of exactly n arguments to executable.
@@ -45,37 +63,42 @@ class Command(object):
         else:
             return True
 
-    def validates_hasargs(self):
+    def validates_includes_args(self):
         """Command string validation for inclusion of at least one argument to the executable
 
         :returns: boolean"""
         return self.argc > 0
 
-    def validates_n_args(self, number):
-        """Command string validation for inclusion of exactly n arguments to executable.
+    def validates_includes_definitions(self):
+        """Command string validation for inclusion of at least one definition (option-argument) to the executable
+
+        :returns: boolean"""
+        return len(self.defs) > 0
+
+    def validates_includes_mops(self):
+        """Command string validation for inclusion of at least one multi-option short syntax argument to the
+        executable.
+
+        :returns: boolean"""
+        return len(self.mops) > 0
+
+    def validates_includes_switches(self):
+        """Command string validation for inclusion of at least one switch argument to the executable.
+
+        :returns: boolean"""
+        return len(self.switches) > 0
+
+    def validates_includes_n_args(self, number):
+        """Command string validation for inclusion of exactly `number` arguments to executable.
 
         :param number: an integer that defines the number of expected arguments for this test
         :returns: boolean"""
         return self.argc == number
 
-    # def validates_mandatory_args(self, arglist):
+    # def validates_includes_mandatory_args(self, arglist):
     #     pass
     #     # TODO: implement mandatory argument test that supports short / long option alternatives
 
-    # //////////////////////////////////////////////////////////////
-    #
-    # Presence of general argument types methods
-    #
-    # //////////////////////////////////////////////////////////////
-
-    def includes_definitions(self):
-        return len(self.defs) > 0
-
-    def includes_mops(self):
-        return len(self.mops) > 0
-
-    def includes_switches(self):
-        return len(self.switches) > 0
 
     # //////////////////////////////////////////////////////////////
     #
