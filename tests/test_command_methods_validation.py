@@ -158,3 +158,87 @@ def test_command_dnval_switches_when_missing():
         set_sysargv(command)
         c = Command()
         assert c.does_not_validate_missing_switches() == True
+
+
+def test_command_dnval_nargs():
+    set_sysargv(test_command_2)
+    c = Command()
+    assert c.does_not_validate_n_args(2) == False
+
+    set_sysargv(test_command_3)
+    c = Command()
+    assert c.does_not_validate_n_args(2) == False
+
+    set_sysargv(test_command_empty_1)
+    c = Command()
+    assert c.does_not_validate_n_args(0) == False
+
+
+def test_command_valid_args():
+    for command in test_commands_with_args:
+        set_sysargv(command)
+        c = Command()
+        assert c.validates_includes_args() == True
+
+
+def test_command_valid_args_when_missing():
+    for command in test_commands_without_args:
+        set_sysargv(command)
+        c = Command()
+        assert c.validates_includes_args() == False
+
+
+def test_command_valid_defs():
+    for command in test_commands_with_defs:
+        set_sysargv(command)
+        c = Command()
+        assert c.validates_includes_definitions() == True
+
+
+def test_command_valid_defs_when_missing():
+    for command in test_commands_without_defs:
+        set_sysargv(command)
+        c = Command()
+        assert c.validates_includes_definitions() == False
+
+
+def test_command_valid_mops():
+    for command in test_commands_with_mops:
+        set_sysargv(command)
+        c = Command()
+        assert c.validates_includes_mops() == True
+
+
+def test_command_valid_mops_when_missing():
+    for command in test_commands_without_mops:
+        set_sysargv(command)
+        c = Command()
+        assert c.validates_includes_mops() == False
+
+
+def test_command_valid_switches():
+    for command in test_commands_with_switches:
+        set_sysargv(command)
+        c = Command()
+        assert c.validates_includes_switches() == True
+
+
+def test_command_valid_switches_when_missing():
+    for command in test_commands_without_switches:
+        set_sysargv(command)
+        c = Command()
+        assert c.validates_includes_switches() == False
+
+
+def test_command_valid_nargs():
+    set_sysargv(test_command_2)
+    c = Command()
+    assert c.does_not_validate_n_args(2) == True
+
+    set_sysargv(test_command_3)
+    c = Command()
+    assert c.does_not_validate_n_args(2) == True
+
+    set_sysargv(test_command_empty_1)
+    c = Command()
+    assert c.does_not_validate_n_args(0) == True
