@@ -103,7 +103,7 @@ class Command(object):
     def get_definition(self, def_needle):
         return self.defs.get_def_argument(def_needle)
 
-    def get_positional_arg_after(self, target_arg):
+    def get_arg_after(self, target_arg):
         """Returns the next positional argument at position n + 1 to a command line argument at index position n
 
            :param target_arg: argument string for the search """
@@ -136,11 +136,28 @@ class Command(object):
         """Test for presence of one or more positional arguments (indicated by numbers) following an existing
         argument (argument_needle).
 
-        :param number: The number of expected arguments after the test argument that is known to be present
+        :param number: The number of expected arguments after the test argument
         :param argument_needle: The test argument that is known to be present in the command"""
         if self.arguments.contains(argument_needle):
             position = self.arguments.get_arg_position(argument_needle)
             if len(self.argv) > (position + number):
+                return True
+            else:
+                return False
+        else:
+            return False
+
+    def next_arg_is_in(self, start_argument, supported_at_next_position):
+        """Test for the presence of a supported argument in the n+1 index position for a known argument at the
+        n position.  start_argument is called as the full argument string including any expected dashes.
+
+        :param start_argument: The argument string including any expected dashes
+        :param supported_at_next_position: list of strings that define supported arguments in the n+1 index position
+        """
+        if self.arguments.contains(start_argument):
+            position = self.arguments.get_arg_position(start_argument)
+            test_argument = self.arguments.get_arg_next(position)
+            if test_argument in supported_at_next_position:
                 return True
             else:
                 return False
