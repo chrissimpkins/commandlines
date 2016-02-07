@@ -298,10 +298,7 @@ class Switches(set):
         switchset = set()
         for switch_candidate in self.argv:
             if switch_candidate.startswith("-") and "=" not in switch_candidate:
-                prefix = switch_candidate[:2]  # will only replace up to the first 2 dash characters in the option
-                suffix = switch_candidate[2:]
-                prefix = prefix.replace("-", "")  # remove the '-' character(s) from the switch before adding to list
-                switch_candidate = prefix + suffix
+                switch_candidate = switch_candidate.lstrip("-")
                 switchset.add(switch_candidate)
 
         return switchset
