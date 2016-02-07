@@ -194,9 +194,11 @@ class Command(object):
 
            :param target_arg: argument string for the search
            :returns: string"""
-
-        recipient_position = self.arguments.get_arg_position(target_arg)
-        return self.arguments.get_arg_next(recipient_position)
+        if target_arg in self.argv:
+            recipient_position = self.arguments.get_arg_position(target_arg)
+            return self.arguments.get_arg_next(recipient_position)
+        else:
+            return ""
 
     # /////////////////////////////////////////////////////////////
     #
