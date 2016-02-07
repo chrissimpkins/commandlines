@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 
-import sys
 import shlex
+import sys
 import pytest
 
 from commandlines import Command
