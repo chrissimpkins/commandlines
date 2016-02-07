@@ -248,3 +248,4 @@ def test_command_valid_nargs():
     c = Command()
     assert c.validates_includes_n_args(0) == True
     assert c.validates_includes_n_args(1) == False
+
