@@ -23,6 +23,9 @@ class Command(object):
         self.subsubcmd = self.arg1                  # second positional argument if not option
         self.has_args = (len(self.arguments) > 0)   # test for presence of at least one argument (boolean)
 
+        # TODO: add support for double dash command line idiom (e.g. -- -badfilename)
+        # TODO: add support for multiple same option definitions (e.g. -o <path1> -o <path2>)
+
     # //////////////////////////////////////////////////////////////
     #
     #  Validation methods
@@ -108,19 +111,25 @@ class Command(object):
     def contains_switches(self, *switch_needles):
         """Returns boolean that indicates presence (True) or absence (False) of one or more switches.
 
-        :param switch_needles: can be a string (single argument test) or list of strings (multi-argument test)
-        :returns: boolean
-           """
+        :param switch_needles: a tuple of one or more expected switch strings
+        :returns: boolean"""
+
         return self.switches.contains(switch_needles)
 
     def contains_definitions(self, *def_needles):
+        """Returns boolean that indicates presence (True) or absence (False) of one or more definition options
+
+        :returns: boolean"""
+
         return self.defs.contains(def_needles)
 
     def has_command_sequence(self, *cmd_list):
         """Test for a sequence of command line tokens in the command string.  The test begins at index position 0
         of the argument list and is case-sensitive.
 
-        :param cmd_list: tuple of expected commands in expected order starting at Command.argv index 0"""
+        :param cmd_list: tuple of expected commands in expected order starting at Command.argv index 0
+        :returns: boolean"""
+
         if len(cmd_list) > len(self.argv):   # request does not inlude more args than the Command.argv property includes
             return False
         else:
@@ -138,6 +147,7 @@ class Command(object):
 
         :param number: The number of expected arguments after the test argument
         :param argument_needle: The test argument that is known to be present in the command"""
+
         if self.arguments.contains(argument_needle):
             position = self.arguments.get_arg_position(argument_needle)
             if len(self.argv) > (position + number):
@@ -152,8 +162,8 @@ class Command(object):
         n position.  start_argument is called as the full argument string including any expected dashes.
 
         :param start_argument: The argument string including any expected dashes
-        :param supported_at_next_position: list of strings that define supported arguments in the n+1 index position
-        """
+        :param supported_at_next_position: list of strings that define supported arguments in the n+1 index position"""
+
         if self.arguments.contains(start_argument):
             position = self.arguments.get_arg_position(start_argument)
             test_argument = self.arguments.get_arg_next(position)
@@ -171,6 +181,12 @@ class Command(object):
     # //////////////////////////////////////////////////////////////
 
     def get_definition(self, def_needle):
+        """Returns the argument to an option that is part of an option-argument pair (defined as a definition
+        argument here).
+
+        :param def_needle: The option portion of the option-argument pair for the request
+        :returns: string when present, empty string when not present"""
+
         return self.defs.get_def_argument(def_needle)
 
     def get_arg_after(self, target_arg):
@@ -178,6 +194,7 @@ class Command(object):
 
            :param target_arg: argument string for the search
            :returns: string"""
+
         recipient_position = self.arguments.get_arg_position(target_arg)
         return self.arguments.get_arg_next(recipient_position)
 
