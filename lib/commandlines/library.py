@@ -142,13 +142,13 @@ class Command(object):
             return True
 
     def has_args_after(self, argument_needle, number=1):
-        """Test for presence of one or more positional arguments (indicated by numbers) following an existing
+        """Test for presence of at least one or more positional arguments (indicated by numbers) following an existing
         argument (argument_needle).
 
         :param number: The number of expected arguments after the test argument
         :param argument_needle: The test argument that is known to be present in the command"""
 
-        if self.arguments.contains(argument_needle):
+        if argument_needle in self.arguments:
             position = self.arguments.get_arg_position(argument_needle)
             if len(self.argv) > (position + number):
                 return True
@@ -164,7 +164,7 @@ class Command(object):
         :param start_argument: The argument string including any expected dashes
         :param supported_at_next_position: list of strings that define supported arguments in the n+1 index position"""
 
-        if self.arguments.contains(start_argument):
+        if start_argument in self.arguments:
             position = self.arguments.get_arg_position(start_argument)
             test_argument = self.arguments.get_arg_next(position)
             if test_argument in supported_at_next_position:
@@ -306,7 +306,7 @@ class Switches(set):
 
         return switchset
 
-    def contains(self, *needle):
+    def contains(self, needle):
         """Returns boolean that indicates the presence (True) or absence (False) of a tuple of test switches.
         Switch parameters in needle tuple should be passed without initial dash character(s) in the test switch
         argument name.
@@ -349,7 +349,7 @@ class Mops(set):
                             mopsset.add(switch)
         return mopsset
 
-    def contains(self, *needle):
+    def contains(self, needle):
         """Returns boolean that indicates the presence (True) or absence (False) of a tuple of test Mops syntax option
         switches.  These should be a single character list of one or more expected options without dashes.
 
@@ -408,7 +408,7 @@ class Definitions(dict):
 
         return defmap
 
-    def contains(self, *needle):
+    def contains(self, needle):
         """Returns boolean that indicates the presence (True) or absence (False) of a tuple of test definitions.
         The definitions should be passed without initial dash characters in the definition argument name.
 
