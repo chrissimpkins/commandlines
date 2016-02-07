@@ -387,18 +387,12 @@ class Definitions(dict):
             # defines -option=definition syntax
             if def_candidate.startswith("-") and "=" in def_candidate:
                 split_def = def_candidate.split("=")
-                prefix = split_def[0][:2]  # will only remove dashes in first two positions of the string
-                suffix = split_def[0][2:]
-                prefix = prefix.replace("-", "")
-                cleaned_key = prefix + suffix
+                cleaned_key = split_def[0].lstrip("-")  # remove dash characters from the option
                 defmap[cleaned_key] = split_def[1]
             # defines -d <positional def> or --define <positional def> syntax
             elif counter < (arglist_length - 1) and def_candidate.startswith("-"):
                 if not self.argv[counter + 1].startswith("-"):
-                    prefix = def_candidate[:2]  # will only remove dashes in first two positions of the string
-                    suffix = def_candidate[2:]
-                    prefix = prefix.replace('-', '')
-                    def_candidate = prefix + suffix
+                    def_candidate = def_candidate.lstrip("-")
                     defmap[def_candidate] = self.argv[counter + 1]
 
             counter += 1
