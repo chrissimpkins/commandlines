@@ -24,12 +24,19 @@ class Command(object):
         self.subsubcmd = self.arg1
         self.has_args = (len(self.arguments) > 0)
 
-        # v0.2.2
-        # [X] refactor contains methods to fail early and return False
-        # v0.3.0
-        # TODO: add support for double dash command line idiom (e.g. -- -badfilename)
-        # TODO: add support for multiple same option definitions (e.g. -o <path1> -o <path2>)
-        # TODO: implement mandatory argument test that supports short / long option alternatives
+    # v0.2.3
+    # [X] add __repr__ and __str__ methods to the Command class
+
+    # v0.3.0
+    # TODO: add support for double dash command line idiom (e.g. -- -badfilename)
+    # TODO: add support for multiple same option definitions (e.g. -o <path1> -o <path2>)
+    # TODO: implement mandatory argument test that supports short / long option alternatives
+
+    def __repr__(self):
+        return "< Command object > instantiated from arguments: " + self.argv.__str__()
+
+    def __str__(self):
+        return "< Command object > instantiated from arguments: " + self.argv.__str__()
 
     # //////////////////////////////////////////////////////////////
     #

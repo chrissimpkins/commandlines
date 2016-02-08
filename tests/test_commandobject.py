@@ -40,6 +40,24 @@ def test_sysargv_set():
     assert sys.argv == ['executable', 'subcmd', '-s', '--long', '-n', 'shortdef', '--name', 'longdef', '--nameeq=longdefeq', 'lastpos']
 
 
+# ///////////////////////////////////////////
+#
+# TESTS : __repr__ and __str__ methods
+#
+# ///////////////////////////////////////////
+
+def test_commandobj_repr_method():
+    set_sys_argv2()
+    c = Command()
+    assert c.__repr__() == "< Command object > instantiated from arguments: ['-mops', '-t', 'lastpos']"
+
+
+def test_commandobj_str_method():
+    set_sys_argv2()
+    c = Command()
+    assert c.__str__() == "< Command object > instantiated from arguments: ['-mops', '-t', 'lastpos']"
+
+
 # ////////////////////////////////////////////////////////////
 #
 # TESTS : Parsing >>> Command object property definition tests

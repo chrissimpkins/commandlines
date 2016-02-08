@@ -17,3 +17,5 @@ def set_sysargv(argstring):
 set_sysargv(test_command_1)
 
 c = Command()
+print(c)
+
