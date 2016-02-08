@@ -6,6 +6,7 @@ import shlex
 import pytest
 
 from commandlines.library import Arguments
+from commandlines.exceptions import IndexOutOfRangeError, MissingArgumentError
 
 # TESTS OVERVIEW: Command object getter method tests
 
@@ -50,7 +51,8 @@ def test_argument_get_argument_method():
     assert argu.get_argument(1) == "-s"
     assert argu.get_argument(2) == "--long"
     assert argu.get_argument(7) == "--nameeq=longdefeq"
-    assert argu.get_argument(20) == ""   # should be empty string because out of index range
+    with pytest.raises(IndexOutOfRangeError):
+        argu.get_argument(20) == ""
 
 
 def test_argument_get_arg_position():
@@ -60,7 +62,8 @@ def test_argument_get_arg_position():
     assert argu.get_arg_position("-s") == 1
     assert argu.get_arg_position("--long") == 2
     assert argu.get_arg_position("lastpos") == 8
-    assert argu.get_arg_position("bogus") == -1   # when not inclued in the arguments parsed, returns -1
+    with pytest.raises(MissingArgumentError):
+        argu.get_arg_position("bogus")
 
 
 def test_argument_contains():

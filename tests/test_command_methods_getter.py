@@ -7,6 +7,7 @@ import sys
 import pytest
 
 from commandlines import Command
+from commandlines.exceptions import IndexOutOfRangeError, MissingArgumentError, MissingDictionaryKeyError
 
 # TESTS OVERVIEW: Command object getter method tests
 
@@ -73,13 +74,15 @@ def test_command_get_alternate_short_def_syntax():
 def test_command_get_def_when_no_defs():
     set_sysargv(test_command_6)
     c = Command()
-    assert c.get_definition('bogus') == ""  # should return empty string
+    with pytest.raises(MissingDictionaryKeyError):
+        c.get_definition('bogus')
 
 
 def test_command_get_def_when_unavailable_def():
     set_sysargv(test_command_1)
     c = Command()
-    assert c.get_definition('bogus') == ""  # should return empty string
+    with pytest.raises(MissingDictionaryKeyError):
+        c.get_definition('bogus')
 
 
 #
@@ -126,16 +129,19 @@ def test_command_get_arg_after_shortopt_multiword():
 def test_command_get_arg_after_lastposition():
     set_sysargv(test_command_2)
     c = Command()
-    assert c.get_arg_after('lastpos') == ""   # should be empty string because no additional arguments
+    with pytest.raises(IndexOutOfRangeError):
+        c.get_arg_after('lastpos')
 
 
 def test_command_get_arg_after_nonexistent_argument():
     set_sysargv(test_command_1)
     c = Command()
-    assert c.get_arg_after('--bogus') == ""
+    with pytest.raises(MissingArgumentError):
+        c.get_arg_after('--bogus')
 
 
 def test_command_get_arg_after_with_empty_arglist():
     set_sysargv(test_command_empty_1)
     c = Command()
-    assert c.get_arg_after('--test') == ""
+    with pytest.raises(MissingArgumentError):
+        c.get_arg_after('--test')

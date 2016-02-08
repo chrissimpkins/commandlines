@@ -2,26 +2,27 @@
 # -*- coding: utf-8 -*-
 
 import sys
+from commandlines.exceptions import IndexOutOfRangeError, MissingArgumentError, MissingDictionaryKeyError
 
 
 class Command(object):
     """An object that is parsed from a command line command string"""
     def __init__(self):
-        self.argv = sys.argv[1:]                    # removes executable from CL argument list
-        self.arguments = Arguments(self.argv)       # ordered positional args (list)
-        self.switches = Switches(self.argv)         # short and long switches (set)
-        self.mops = Mops(self.argv)                 # multi-option short syntax switches (set)
-        self.defs = Definitions(self.argv)          # definitions (dict)
-        self.argc = len(self.argv)                  # length of the argument list
-        self.arg0 = self.arguments.get_argument(0)  # first positional argument
-        self.arg1 = self.arguments.get_argument(1)  # second positional argument (or "")
-        self.arg2 = self.arguments.get_argument(2)  # third postitional argument (or "")
-        self.arg3 = self.arguments.get_argument(3)  # fourth positional argument (or "")
-        self.arg4 = self.arguments.get_argument(4)  # fifth positional argument  (or "")
-        self.arglp = self.arguments.get_argument(self.argc - 1)  # define the last positional argument
-        self.subcmd = self.arg0                     # first positional argument if not option
-        self.subsubcmd = self.arg1                  # second positional argument if not option
-        self.has_args = (len(self.arguments) > 0)   # test for presence of at least one argument (boolean)
+        self.argv = sys.argv[1:]
+        self.arguments = Arguments(self.argv)
+        self.switches = Switches(self.argv)
+        self.mops = Mops(self.argv)
+        self.defs = Definitions(self.argv)
+        self.argc = len(self.argv)
+        self.arg0 = self.arguments.get_argument_for_commandobj(0)
+        self.arg1 = self.arguments.get_argument_for_commandobj(1)
+        self.arg2 = self.arguments.get_argument_for_commandobj(2)
+        self.arg3 = self.arguments.get_argument_for_commandobj(3)
+        self.arg4 = self.arguments.get_argument_for_commandobj(4)
+        self.arglp = self.arguments.get_argument_for_commandobj(self.argc - 1)
+        self.subcmd = self.arg0
+        self.subsubcmd = self.arg1
+        self.has_args = (len(self.arguments) > 0)
 
         # TODO: add support for double dash command line idiom (e.g. -- -badfilename)
         # TODO: add support for multiple same option definitions (e.g. -o <path1> -o <path2>)
@@ -155,7 +156,7 @@ class Command(object):
             else:
                 return False
         else:
-            return False
+            raise MissingArgumentError(argument_needle)
 
     def next_arg_is_in(self, start_argument, supported_at_next_position):
         """Test for the presence of a supported argument in the n+1 index position for a known argument at the
@@ -172,7 +173,7 @@ class Command(object):
             else:
                 return False
         else:
-            return False
+            raise MissingArgumentError(start_argument)
 
     # //////////////////////////////////////////////////////////////
     #
@@ -198,7 +199,7 @@ class Command(object):
             recipient_position = self.arguments.get_arg_position(target_arg)
             return self.arguments.get_arg_next(recipient_position)
         else:
-            return ""
+            raise MissingArgumentError(target_arg)
 
     # /////////////////////////////////////////////////////////////
     #
@@ -244,12 +245,18 @@ class Arguments(list):
         self.argv = argv
         list.__init__(self, self.argv)
 
-    #  return argument at position specified by the 'position' parameter
-    def get_argument(self, position):
-        if self.argv and len(self.argv) > position:
+    def get_argument_for_commandobj(self, position):
+        if (len(self.argv) > position) and (position >= 0):
             return self.argv[position]
         else:
-            return ""
+            return ""   # intentionally set as empty string rather than raise exception for Command obj instantation
+
+    #  return argument at position specified by the 'position' parameter
+    def get_argument(self, position):
+        if (len(self.argv) > position) and (position >= 0):
+            return self.argv[position]
+        else:
+            raise IndexOutOfRangeError()
 
     # return position of user specified argument in the argument list
     def get_arg_position(self, test_arg):
@@ -257,14 +264,14 @@ class Arguments(list):
             if test_arg in self.argv:
                 return self.argv.index(test_arg)
             else:
-                return -1
+                raise MissingArgumentError(test_arg)
 
     # return the argument at the next position following a user specified positional argument
     def get_arg_next(self, position):
         if len(self.argv) > (position + 1):
             return self.argv[position + 1]
         else:
-            return ""
+            raise IndexOutOfRangeError()
 
     def contains(self, *needle):
         """Returns boolean that indicates the presence (True) or absence (False) of a tuple of test arguments
@@ -420,4 +427,4 @@ class Definitions(dict):
         if needle in self.keys():
             return self[needle]
         else:
-            return ""
+            raise MissingDictionaryKeyError(needle)

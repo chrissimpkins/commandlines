@@ -7,6 +7,7 @@ import sys
 import pytest
 
 from commandlines import Command
+from commandlines.exceptions import MissingArgumentError
 
 # TESTS OVERVIEW: Command object getter method tests
 
@@ -33,6 +34,7 @@ def set_sysargv(argstring):
 #
 # Switches
 #
+
 
 def test_command_contains_switches_single():
     set_sysargv(test_command_1)
@@ -199,7 +201,8 @@ def test_command_has_args_after_default_number_1_fail():
 def test_command_has_args_after_default_number_1_parameter_noexist():
     set_sysargv(test_command_empty_1)
     c = Command()
-    assert c.has_args_after("bogus") == False
+    with pytest.raises(MissingArgumentError):
+        c.has_args_after("bogus")
 
 
 def test_command_has_args_after_number_2():
@@ -217,7 +220,8 @@ def test_command_has_args_after_number_2_fail():
 def test_command_has_args_after_noargs():
     set_sysargv(test_command_empty_1)
     c = Command()
-    assert c.has_args_after("subcmd") == False
+    with pytest.raises(MissingArgumentError):
+        c.has_args_after("subcmd")
 
 
 #
@@ -251,4 +255,5 @@ def test_command_next_arg_isin_correct_notcontained_multi():
 def test_command_next_arg_isin_correct_badargument():
     set_sysargv(test_command_10)
     c = Command()
-    assert c.next_arg_is_in("bogus", ['subsubcmd', 'test', 'bogus']) == False
+    with pytest.raises(MissingArgumentError):
+        c.next_arg_is_in("bogus", ['subsubcmd', 'test', 'bogus'])
