@@ -413,13 +413,17 @@ class Mops(set):
 
 
 class Definitions(dict):
-    """A class that is instantiated with all command line definition options with syntax
+    """A class that is instantiated with all command line definition options as defined by the syntax
        `-s <defintion argument>` or `--longoption <defintion argument>` or
-        `--longoption=<definition argument>`
+        `--longoption=<definition argument>` or `-longoption <definition argument>`.
 
-        This class is derived from the Python dictionary type.  The mapping is
+        To parse as a definition option, the argument to the option must not contain any dashes at the beginning of
+        the argument string.  For example, `-o --long` is not considered a definition option-arg pair, whereas
+        `-o long` is.
 
-        key = option string (with the '-' character(s) removed)
+        This class is derived from the Python dictionary type.  The mapping is:
+
+        key = option string with all dash '-' character(s) at the beginning of the string removed
         value = definition argument string"""
     def __init__(self, argv):
         dict.__init__(self, self._make_definitions_obj(argv))
