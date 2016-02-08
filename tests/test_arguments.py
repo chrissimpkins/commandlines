@@ -33,6 +33,7 @@ def create_argv(argstring):
 def test_argument_instantiation():
     argu = Arguments(create_argv(test_command_1))
     assert len(argu) == 9
+    assert isinstance(argu, list)
 
     assert argu[0] == "subcmd"
     assert argu[1] == "-s"
@@ -69,10 +70,10 @@ def test_argument_get_arg_position():
 def test_argument_contains():
     argu = Arguments(create_argv(test_command_1))
     assert len(argu) == 9
-    assert argu.contains('subcmd') == True
-    assert argu.contains('subcmd', '-s') == True
-    assert argu.contains('subcmd', '-s', '--long') == True
-    assert argu.contains('subcmd', '-s', 'lastpos') == True
-    assert argu.contains('bogus') == False   # missing argument test returns False
-    assert argu.contains('subcmd', 'bogus') == False   # if any arguments are missing, returns False
+    assert argu.contains(['subcmd']) == True
+    assert argu.contains(['subcmd', '-s']) == True
+    assert argu.contains(['subcmd', '-s', '--long']) == True
+    assert argu.contains(['subcmd', '-s', 'lastpos']) == True
+    assert argu.contains(['bogus']) == False   # missing argument test returns False
+    assert argu.contains(['subcmd', 'bogus']) == False   # if any arguments are missing, returns False
 

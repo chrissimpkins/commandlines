@@ -25,7 +25,7 @@ class Command(object):
         self.has_args = (len(self.arguments) > 0)
 
         # v0.2.2
-        # TODO: refactor contains methods to fail early and return False
+        # [X] refactor contains methods to fail early and return False
         # v0.3.0
         # TODO: add support for double dash command line idiom (e.g. -- -badfilename)
         # TODO: add support for multiple same option definitions (e.g. -o <path1> -o <path2>)
@@ -313,7 +313,7 @@ class Arguments(list):
         else:
             raise IndexOutOfRangeError()
 
-    def contains(self, *needle):
+    def contains(self, needle):
         """Returns boolean that indicates the presence (True) or absence (False) of a tuple of test arguments
 
         :returns: boolean"""
@@ -363,7 +363,6 @@ class Switches(set):
                 return False
 
         return True  # if all tests above pass
-
 
 
 class Mops(set):
