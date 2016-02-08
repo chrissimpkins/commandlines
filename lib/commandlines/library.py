@@ -255,36 +255,56 @@ class Command(object):
 
 
 class Arguments(list):
-    """A class that includes all command line arguments with positional order maintained.
+    """A class that includes all command line arguments with positional order maintained.  Instantiated with a list
+    of strings.
 
-      The class is derived from the Python list type.
-
-      :param argv: ordered command line argument list with sys.argv index range [1:]"""
+      The class is derived from the Python list type."""
     def __init__(self, argv):
         list.__init__(self, argv)
 
     def get_argument_for_commandobj(self, position):
+        """An argument parsing method for the instantation of the Command object.  This is not intended for public use.
+        Public calls should use the get_argument() method instead.
+
+        :param position: The command line index position
+        :returns: string or empty string if the index position is out of the index range"""
+
         if (len(self) > position) and (position >= 0):
             return self[position]
         else:
             return ""   # intentionally set as empty string rather than raise exception for Command obj instantation
 
-    #  return argument at position specified by the 'position' parameter
     def get_argument(self, position):
+        """Returns argument by argument index position in the Argument object list.
+
+        :param position: The command line index position
+        :returns: string
+        :raises: IndexOutOfRangeError if the requested index falls outside of the list index range"""
+
         if (len(self) > position) and (position >= 0):
             return self[position]
         else:
             raise IndexOutOfRangeError()
 
-    # return position of user specified argument in the argument list
     def get_arg_position(self, test_arg):
+        """Returns the index position of a candidate argument string (test_arg)
+
+        :param test_arg: the argument string for which the index position is requested
+        :returns: string
+        :raises: MissingArgumentError if the requested argument is not in the Argument list"""
+
         if test_arg in self:
             return self.index(test_arg)
         else:
             raise MissingArgumentError(test_arg)
 
-    # return the argument at the next position following a user specified positional argument
     def get_arg_next(self, position):
+        """Returns the next argument at index position + 1 in the command sequence.
+
+        :param position: the argument string for which the next positional argument is requested
+        :returns: string
+        :raises: IndexOutOfRangeError if the position + 1 falls outside of the index range"""
+
         if len(self) > (position + 1):
             return self[position + 1]
         else:
@@ -294,6 +314,7 @@ class Arguments(list):
         """Returns boolean that indicates the presence (True) or absence (False) of a tuple of test arguments
 
         :returns: boolean"""
+
         missing_needles = False
         for expected_argument in needle:
             if expected_argument in self:
@@ -309,15 +330,17 @@ class Arguments(list):
 class Switches(set):
     """A class that is instantiated with all command line switches that have the syntax `-s` or `--longswitch`
 
-       The class is derived from the Python list type.
-
-       :param argv: ordered command line argument list with sys.argv index range [1:]"""
+       The class is derived from the Python list type."""
     def __init__(self, argv):
         self.missing_switches = []
         set.__init__(self, self._make_switch_set(argv))
 
-    # make a list of the options in the command (defined as anything that starts with "-" character)
     def _make_switch_set(self, argv):
+        """Returns a set that includes all switches that are parsed from the command string.
+
+        :param argv: a list of ordered command line argument strings
+        :returns: set"""
+
         switchset = set()
         for switch_candidate in argv:
             if switch_candidate.startswith("-") and "=" not in switch_candidate:
@@ -333,6 +356,7 @@ class Switches(set):
 
         :type needle: tuple of one or more switch strings for contains test
         :returns: boolean"""
+
         missing_needles = False
         for expected_argument in needle:
             if expected_argument in self:
@@ -351,13 +375,18 @@ class Mops(set):
 
     Examples: -rnj -tlx
 
-    The class is derived from the Python set type and the option switches are stored as set items.
+    The class is derived from the Python set type and the option switches are stored as set items."""
 
-    :param argv: ordered command line argument list with sys.argv index range [1:]"""
     def __init__(self, argv):
         set.__init__(self, self._make_mops_set(argv))
 
     def _make_mops_set(self, argv):
+        """Returns a set of multi-option short syntax option characters that are parsed from a list of ordered
+        command string arguments in argv
+
+        :param argv: ordered list of command line arguments
+        :returns: set"""
+
         mopsset = set()
         for mops_candidate in argv:
             if mops_candidate.startswith("-") and "=" not in mops_candidate:
@@ -374,6 +403,7 @@ class Mops(set):
 
         :type needle: tuple of one or more multiple option short syntax strings for contains test
         :returns: boolean"""
+
         missing_needles = False
         for expected_argument in needle:
             if expected_argument in self:
@@ -394,13 +424,17 @@ class Definitions(dict):
         This class is derived from the Python dictionary type.  The mapping is
 
         key = option string (with the '-' character(s) removed)
-        value = definition argument string
-
-        :param argv: ordered command line argument list with sys.argv index range [1:]"""
+        value = definition argument string"""
     def __init__(self, argv):
         dict.__init__(self, self._make_definitions_obj(argv))
 
     def _make_definitions_obj(self, argv):
+        """Parses definition options from a list of ordered command line arguments to define the dictionary that
+        is used to instantiate the Definitions class.  Option string keys are stripped of dash characters before the
+        first alphabetic character in the option name.
+
+        :param argv: ordered list of command line string arguments
+        :returns: dictionary with key = option string : value = definition argument string mapping"""
         defmap = {}
         arglist_length = len(argv)
         counter = 0
@@ -438,6 +472,13 @@ class Definitions(dict):
             return True
 
     def get_def_argument(self, needle):
+        """Returns the defintion option string for an option needle.  The needle parameter should not include
+        dash characters at the beginning of the option string (i.e. use 'test' rather than '--test' and
+        't' rather than '-t'.
+
+        :param needle: the requested definition option string.
+        :returns: string
+        :raises: MissingDictionaryKeyError if the option needle is not a key defined in the Definitions object"""
         if needle in self.keys():
             return self[needle]
         else:
