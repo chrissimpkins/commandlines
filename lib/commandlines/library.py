@@ -290,7 +290,8 @@ class Arguments(list):
             raise IndexOutOfRangeError()
 
     def get_arg_position(self, test_arg):
-        """Returns the index position of a candidate argument string (test_arg)
+        """Returns the index position of a candidate argument string (test_arg).  The argument string should include
+        any expected dashes at the beginning of the argument string.
 
         :param test_arg: the argument string for which the index position is requested
         :returns: string
@@ -316,6 +317,7 @@ class Arguments(list):
     def contains(self, needle):
         """Returns boolean that indicates the presence (True) or absence (False) of a tuple of test arguments
 
+        :param needle: an iterable that contains one or more test argument strings
         :returns: boolean"""
 
         for expected_argument in needle:
@@ -328,9 +330,10 @@ class Arguments(list):
 
 
 class Switches(set):
-    """A class that is instantiated with all command line switches that have the syntax `-s` or `--longswitch`
+    """A class that is instantiated with all command line switches that have the syntax `-s`, `--longswitch`,
+    or `-longswitch`
 
-       The class is derived from the Python list type."""
+       The class is derived from the Python set type and arguments with this syntax are saved as set items."""
     def __init__(self, argv):
         set.__init__(self, self._make_switch_set(argv))
 
@@ -353,7 +356,7 @@ class Switches(set):
         Switch parameters in needle tuple should be passed without initial dash character(s) in the test switch
         argument name.
 
-        :type needle: tuple of one or more switch strings for contains test
+        :type needle: an iterable that contains one or more test argument strings
         :returns: boolean"""
 
         for expected_argument in needle:
@@ -371,7 +374,7 @@ class Mops(set):
 
     Examples: -rnj -tlx
 
-    The class is derived from the Python set type and the option switches are stored as set items."""
+    The class is derived from the Python set type and the single character option switches are stored as set items."""
 
     def __init__(self, argv):
         set.__init__(self, self._make_mops_set(argv))
@@ -397,7 +400,7 @@ class Mops(set):
         """Returns boolean that indicates the presence (True) or absence (False) of a tuple of test Mops syntax option
         switches.  These should be a single character list of one or more expected options without dashes.
 
-        :type needle: tuple of one or more multiple option short syntax strings for contains test
+        :type needle: an iterable that contains one or more test argument strings
         :returns: boolean"""
 
         for expected_argument in needle:
@@ -428,6 +431,7 @@ class Definitions(dict):
 
         :param argv: ordered list of command line string arguments
         :returns: dictionary with key = option string : value = definition argument string mapping"""
+
         defmap = {}
         arglist_length = len(argv)
         counter = 0
@@ -470,6 +474,7 @@ class Definitions(dict):
         :param needle: the requested definition option string.
         :returns: string
         :raises: MissingDictionaryKeyError if the option needle is not a key defined in the Definitions object"""
+
         if needle in self.keys():
             return self[needle]
         else:
