@@ -24,8 +24,12 @@ class Command(object):
         self.subsubcmd = self.arg1
         self.has_args = (len(self.arguments) > 0)
 
+        # v0.2.2
+        # TODO: refactor contains methods to fail early and return False
+        # v0.3.0
         # TODO: add support for double dash command line idiom (e.g. -- -badfilename)
         # TODO: add support for multiple same option definitions (e.g. -o <path1> -o <path2>)
+        # TODO: implement mandatory argument test that supports short / long option alternatives
 
     # //////////////////////////////////////////////////////////////
     #
@@ -111,7 +115,6 @@ class Command(object):
 
     # def validates_includes_mandatory_args(self, arglist):
     #     pass
-    #     # TODO: implement mandatory argument test that supports short / long option alternatives
 
     # //////////////////////////////////////////////////////////////
     #
@@ -315,16 +318,13 @@ class Arguments(list):
 
         :returns: boolean"""
 
-        missing_needles = False
         for expected_argument in needle:
             if expected_argument in self:
                 pass
             else:
-                missing_needles = True
-        if missing_needles is True:
-            return False
-        else:
-            return True
+                return False
+
+        return True  # if all tests above pass
 
 
 class Switches(set):
@@ -357,16 +357,14 @@ class Switches(set):
         :type needle: tuple of one or more switch strings for contains test
         :returns: boolean"""
 
-        missing_needles = False
         for expected_argument in needle:
             if expected_argument in self:
                 pass
             else:
-                missing_needles = True
-        if missing_needles is True:
-            return False
-        else:
-            return True
+                return False
+
+        return True  # if all tests above pass
+
 
 
 class Mops(set):
@@ -404,16 +402,13 @@ class Mops(set):
         :type needle: tuple of one or more multiple option short syntax strings for contains test
         :returns: boolean"""
 
-        missing_needles = False
         for expected_argument in needle:
             if expected_argument in self:
                 pass
             else:
-                missing_needles = True
-        if missing_needles is True:
-            return False
-        else:
-            return True
+                return False
+
+        return True
 
 
 class Definitions(dict):
@@ -460,16 +455,14 @@ class Definitions(dict):
 
         :type needle: tuple of one or more definition argument strings for contains test
         :returns: boolean"""
-        missing_needles = False
+
         for expected_definition in needle:
             if expected_definition in self.keys():
                 pass
             else:
-                missing_needles = True
-        if missing_needles is True:
-            return False
-        else:
-            return True
+                return False
+
+        return True  # if all tests above pass returns True
 
     def get_def_argument(self, needle):
         """Returns the defintion option string for an option needle.  The needle parameter should not include

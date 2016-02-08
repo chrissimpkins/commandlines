@@ -72,6 +72,7 @@ def test_argument_contains():
     assert argu.contains('subcmd') == True
     assert argu.contains('subcmd', '-s') == True
     assert argu.contains('subcmd', '-s', '--long') == True
+    assert argu.contains('subcmd', '-s', 'lastpos') == True
     assert argu.contains('bogus') == False   # missing argument test returns False
     assert argu.contains('subcmd', 'bogus') == False   # if any arguments are missing, returns False
 
