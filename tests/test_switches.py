@@ -40,6 +40,20 @@ def test_switches_instantiation():
     assert ("name" in switch) == True
 
 
+def test_switch_instantiation_noswitches():
+    switch = Switches(create_argv(test_command_6))
+    assert isinstance(switch, set)
+    assert len(switch) == 0
+
+
+def test_switch_instantiation_with_mops():
+    switch = Switches(create_argv(test_command_9))
+    assert isinstance(switch, set)
+    assert len(switch) == 2
+    assert ("t" in switch) == True
+    assert ("mops" in switch) == True
+
+
 def test_switches_contains():
     switch = Switches(create_argv(test_command_1))
     assert len(switch) == 4
