@@ -332,7 +332,6 @@ class Switches(set):
 
        The class is derived from the Python list type."""
     def __init__(self, argv):
-        self.missing_switches = []
         set.__init__(self, self._make_switch_set(argv))
 
     def _make_switch_set(self, argv):
