@@ -37,24 +37,28 @@ class Command(object):
         """Command string validation for missing arguments to the executable
 
         :returns: boolean"""
+
         return self.argc == 0
 
     def does_not_validate_missing_defs(self):
         """Command string validation for missing definitions to the executable
 
         :returns: boolean"""
+
         return len(self.defs) == 0
 
     def does_not_validate_missing_mops(self):
         """Command string validation for missing multi-option short syntax arguments to the executable
 
         :returns: boolean"""
+
         return len(self.mops) == 0
 
     def does_not_validate_missing_switches(self):
         """Command string validation for missing switches to the executable
 
         :returns: boolean"""
+
         return len(self.switches) == 0
 
     def does_not_validate_n_args(self, number):
@@ -62,6 +66,7 @@ class Command(object):
 
            :param number: an integer that defines the number of expected arguments for this test
            :returns: boolean"""
+
         if self.argc == number:
             return False
         else:
@@ -71,12 +76,14 @@ class Command(object):
         """Command string validation for inclusion of at least one argument to the executable
 
         :returns: boolean"""
+
         return self.argc > 0
 
     def validates_includes_definitions(self):
         """Command string validation for inclusion of at least one definition (option-argument) to the executable
 
         :returns: boolean"""
+
         return len(self.defs) > 0
 
     def validates_includes_mops(self):
@@ -84,12 +91,14 @@ class Command(object):
         executable.
 
         :returns: boolean"""
+
         return len(self.mops) > 0
 
     def validates_includes_switches(self):
         """Command string validation for inclusion of at least one switch argument to the executable.
 
         :returns: boolean"""
+
         return len(self.switches) > 0
 
     def validates_includes_n_args(self, number):
@@ -97,6 +106,7 @@ class Command(object):
 
         :param number: an integer that defines the number of expected arguments for this test
         :returns: boolean"""
+
         return self.argc == number
 
     # def validates_includes_mandatory_args(self, arglist):
@@ -147,7 +157,8 @@ class Command(object):
         argument (argument_needle).
 
         :param number: The number of expected arguments after the test argument
-        :param argument_needle: The test argument that is known to be present in the command"""
+        :param argument_needle: The test argument that is known to be present in the command
+        :raises: MissingArgumentError when argument_needle is not found in the parsed argument list"""
 
         if argument_needle in self.arguments:
             position = self.arguments.get_arg_position(argument_needle)
@@ -163,7 +174,8 @@ class Command(object):
         n position.  start_argument is called as the full argument string including any expected dashes.
 
         :param start_argument: The argument string including any expected dashes
-        :param supported_at_next_position: list of strings that define supported arguments in the n+1 index position"""
+        :param supported_at_next_position: list of strings that define supported arguments in the n+1 index position
+        :raises: MissingArgumentError when start_argument is not found in the parsed argument list"""
 
         if start_argument in self.arguments:
             position = self.arguments.get_arg_position(start_argument)
@@ -186,7 +198,8 @@ class Command(object):
         argument here).
 
         :param def_needle: The option portion of the option-argument pair for the request
-        :returns: string when present, empty string when not present"""
+        :returns: string
+        :raises: MissingDictionaryKeyError when the option is not found in the parsed definitions dictionary"""
 
         return self.defs.get_def_argument(def_needle)
 
@@ -194,7 +207,10 @@ class Command(object):
         """Returns the next positional argument at position n + 1 to a command line argument at index position n
 
            :param target_arg: argument string for the search
-           :returns: string"""
+           :returns: string
+           :raises: MissingArgumentError when target_arg is not found in the parsed argument list
+           :raises: IndexOutOfRangeError when target_arg is the last positional argument"""
+
         if target_arg in self.argv:
             recipient_position = self.arguments.get_arg_position(target_arg)
             return self.arguments.get_arg_next(recipient_position)
@@ -211,6 +227,7 @@ class Command(object):
         """Tests for -h and --help options in command string
 
         :returns: boolean"""
+
         if "help" in self.switches or "h" in self.switches:
             return True
         else:
@@ -220,6 +237,7 @@ class Command(object):
         """Tests for --usage option in command string
 
         :returns: boolean"""
+
         if "usage" in self.switches:
             return True
         else:
@@ -229,6 +247,7 @@ class Command(object):
         """Tests for -v and --version options in command string.
 
         :returns: boolean"""
+
         if "version" in self.switches or "v" in self.switches:
             return True
         else:
