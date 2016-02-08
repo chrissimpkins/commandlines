@@ -261,34 +261,32 @@ class Arguments(list):
 
       :param argv: ordered command line argument list with sys.argv index range [1:]"""
     def __init__(self, argv):
-        self.argv = argv
-        list.__init__(self, self.argv)
+        list.__init__(self, argv)
 
     def get_argument_for_commandobj(self, position):
-        if (len(self.argv) > position) and (position >= 0):
-            return self.argv[position]
+        if (len(self) > position) and (position >= 0):
+            return self[position]
         else:
             return ""   # intentionally set as empty string rather than raise exception for Command obj instantation
 
     #  return argument at position specified by the 'position' parameter
     def get_argument(self, position):
-        if (len(self.argv) > position) and (position >= 0):
-            return self.argv[position]
+        if (len(self) > position) and (position >= 0):
+            return self[position]
         else:
             raise IndexOutOfRangeError()
 
     # return position of user specified argument in the argument list
     def get_arg_position(self, test_arg):
-        if self.argv:
-            if test_arg in self.argv:
-                return self.argv.index(test_arg)
-            else:
-                raise MissingArgumentError(test_arg)
+        if test_arg in self:
+            return self.index(test_arg)
+        else:
+            raise MissingArgumentError(test_arg)
 
     # return the argument at the next position following a user specified positional argument
     def get_arg_next(self, position):
-        if len(self.argv) > (position + 1):
-            return self.argv[position + 1]
+        if len(self) > (position + 1):
+            return self[position + 1]
         else:
             raise IndexOutOfRangeError()
 
@@ -315,14 +313,13 @@ class Switches(set):
 
        :param argv: ordered command line argument list with sys.argv index range [1:]"""
     def __init__(self, argv):
-        self.argv = argv
         self.missing_switches = []
-        set.__init__(self, self._make_switch_set())
+        set.__init__(self, self._make_switch_set(argv))
 
     # make a list of the options in the command (defined as anything that starts with "-" character)
-    def _make_switch_set(self):
+    def _make_switch_set(self, argv):
         switchset = set()
-        for switch_candidate in self.argv:
+        for switch_candidate in argv:
             if switch_candidate.startswith("-") and "=" not in switch_candidate:
                 switch_candidate = switch_candidate.lstrip("-")
                 switchset.add(switch_candidate)
@@ -358,12 +355,11 @@ class Mops(set):
 
     :param argv: ordered command line argument list with sys.argv index range [1:]"""
     def __init__(self, argv):
-        self.argv = argv
-        set.__init__(self, self._make_mops_set())
+        set.__init__(self, self._make_mops_set(argv))
 
-    def _make_mops_set(self):
+    def _make_mops_set(self, argv):
         mopsset = set()
-        for mops_candidate in self.argv:
+        for mops_candidate in argv:
             if mops_candidate.startswith("-") and "=" not in mops_candidate:
                 if len(mops_candidate) > 2:  # the argument includes '-' and more than one character following dash
                     if mops_candidate[1] != "-":  # it is not long option syntax (e.g. --long)
@@ -402,14 +398,13 @@ class Definitions(dict):
 
         :param argv: ordered command line argument list with sys.argv index range [1:]"""
     def __init__(self, argv):
-        self.argv = argv
-        dict.__init__(self, self._make_definitions_obj())
+        dict.__init__(self, self._make_definitions_obj(argv))
 
-    def _make_definitions_obj(self):
+    def _make_definitions_obj(self, argv):
         defmap = {}
-        arglist_length = len(self.argv)
+        arglist_length = len(argv)
         counter = 0
-        for def_candidate in self.argv:
+        for def_candidate in argv:
             # defines -option=definition syntax
             if def_candidate.startswith("-") and "=" in def_candidate:
                 split_def = def_candidate.split("=")
@@ -417,9 +412,9 @@ class Definitions(dict):
                 defmap[cleaned_key] = split_def[1]
             # defines -d <positional def> or --define <positional def> syntax
             elif counter < (arglist_length - 1) and def_candidate.startswith("-"):
-                if not self.argv[counter + 1].startswith("-"):
+                if not argv[counter + 1].startswith("-"):
                     def_candidate = def_candidate.lstrip("-")
-                    defmap[def_candidate] = self.argv[counter + 1]
+                    defmap[def_candidate] = argv[counter + 1]
 
             counter += 1
 
