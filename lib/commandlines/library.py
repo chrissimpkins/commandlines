@@ -378,6 +378,26 @@ class Switches(set):
     def __init__(self, argv):
         set.__init__(self, self._make_switch_set(argv))
 
+    def __repr__(self):
+        switch_string = ""
+        if len(self) > 0:
+            for switch in self:
+                switch_string = switch_string + "'" + switch + "', "
+            switch_string = switch_string.rstrip()
+            switch_string = switch_string.rstrip(",")
+
+        return "Switches({" + switch_string + "})"
+
+    def __str__(self):
+        switch_string = ""
+        if len(self) > 0:
+            for switch in self:
+                switch_string = switch_string + "'" + switch + "', "
+            switch_string = switch_string.rstrip()
+            switch_string = switch_string.rstrip(",")
+
+        return "Switches({" + switch_string + "})"
+
     def _make_switch_set(self, argv):
         """Returns a set that includes all switches that are parsed from the command string.
 
@@ -419,6 +439,26 @@ class Mops(set):
 
     def __init__(self, argv):
         set.__init__(self, self._make_mops_set(argv))
+
+    def __repr__(self):
+        mops_string = ""
+        if len(self) > 0:
+            for switch in self:
+                mops_string = mops_string + "'" + switch + "', "
+            mops_string = mops_string.rstrip()
+            mops_string = mops_string.rstrip(",")
+
+        return "Mops({" + mops_string + "})"
+
+    def __str__(self):
+        mops_string = ""
+        if len(self) > 0:
+            for switch in self:
+                mops_string = mops_string + "'" + switch + "', "
+            mops_string = mops_string.rstrip()
+            mops_string = mops_string.rstrip(",")
+
+        return "Mops({" + mops_string + "})"
 
     def _make_mops_set(self, argv):
         """Returns a set of multi-option short syntax option characters that are parsed from a list of ordered
