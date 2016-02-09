@@ -57,9 +57,9 @@ def test_command_obj_string():
     returned_string = c.obj_string()
     returned_string_list = returned_string.split("\n")
     assert returned_string_list[0] == """obj.arguments = ['subcmd', '-s', '--long', '-n', 'shortdef', '--name', 'longdef', '--nameeq=longdefeq', 'lastpos']"""
-    # sets are not ordered, __repr__ and __str__ methods are tested with fewer values in Mops and Switches test modules
+    # sets/dicts are not ordered, __repr__ and __str__ methods are tested with fewer values in Mops and Switches test modules
     # assert returned_string_list[1] == """obj.switches = Switches({'s', 'name', 'long', 'n'})"""
-    assert returned_string_list[2] == """obj.defs = {'n': 'shortdef', 'nameeq': 'longdefeq', 'name': 'longdef'}"""
+    #assert returned_string_list[2] == """obj.defs = {'n': 'shortdef', 'nameeq': 'longdefeq', 'name': 'longdef'}"""
     assert returned_string_list[3] == """obj.mops = Mops({})"""
     assert returned_string_list[4] == """obj.argc = 9"""
     assert returned_string_list[5] == """obj.arg0 = 'subcmd'"""
