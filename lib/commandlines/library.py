@@ -26,6 +26,7 @@ class Command(object):
 
     # v0.2.3
     # [X] add __repr__ and __str__ methods to the Command class
+    # TODO: add testing method that displays a string of Command instance attributes that are parsed from command string
 
     # v0.3.0
     # TODO: add support for double dash command line idiom (e.g. -- -badfilename)
@@ -262,6 +263,43 @@ class Command(object):
             return True
         else:
             return False
+
+    # /////////////////////////////////////////////////////////////
+    #
+    #  Development + Testing methods
+    #
+    # /////////////////////////////////////////////////////////////
+
+    def obj_string(self):
+        """Returns a string of the instance attributes of the Command object intended for display.
+
+        :returns: string"""
+
+        the_string = "obj.arguments = " + str(self.arguments)
+        the_string = the_string + "\n" + "obj.switches = " + str(self.switches)
+        the_string = the_string + "\n" + "obj.defs = " + str(self.defs)
+        the_string = the_string + "\n" + "obj.mops = " + str(self.mops)
+        the_string = the_string + "\n" + "obj.argc = " + str(self.argc)
+        the_string = the_string + "\n" + "obj.arg0 = " + self._get_obj_string_format_arg(self.arg0)
+        the_string = the_string + "\n" + "obj.arg1 = " + self._get_obj_string_format_arg(self.arg1)
+        the_string = the_string + "\n" + "obj.arg2 = " + self._get_obj_string_format_arg(self.arg2)
+        the_string = the_string + "\n" + "obj.arg3 = " + self._get_obj_string_format_arg(self.arg3)
+        the_string = the_string + "\n" + "obj.arg4 = " + self._get_obj_string_format_arg(self.arg4)
+        the_string = the_string + "\n" + "obj.arglp = " + self._get_obj_string_format_arg(self.arglp)
+        the_string = the_string + "\n" + "obj.subcmd = " + self._get_obj_string_format_arg(self.subcmd)
+        the_string = the_string + "\n" + "obj.subsubcmd = " + self._get_obj_string_format_arg(self.subsubcmd)
+
+        return the_string
+
+    def _get_obj_string_format_arg(self, the_string):
+        """Formats argument strings for standard output display
+
+        :returns: string"""
+
+        if the_string == "":
+            return "''"
+        else:
+            return "'" + the_string + "'"
 
 
 class Arguments(list):
