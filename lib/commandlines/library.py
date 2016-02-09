@@ -24,10 +24,6 @@ class Command(object):
         self.subsubcmd = self.arg1
         self.has_args = (len(self.arguments) > 0)
 
-    # v0.2.3
-    # [X] add __repr__ and __str__ methods to the Command class
-    # TODO: add testing method that displays a string of Command instance attributes that are parsed from command string
-
     # v0.3.0
     # TODO: add support for double dash command line idiom (e.g. -- -badfilename)
     # TODO: add support for multiple same option definitions (e.g. -o <path1> -o <path2>)
