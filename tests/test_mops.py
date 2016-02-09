@@ -20,6 +20,7 @@ test_command_8 = "find . -name tests/aaa.txt"
 test_command_9 = "executable -mops -t lastpos"
 test_command_10 = "executable subcmd subsubcmd"
 test_command_11 = "executable -mops -test lastpos"
+test_command_12 = "executable -mo -t lastpos"
 test_command_empty_1 = "executable"
 test_command_empty_2 = "exe-dash"
 
@@ -28,6 +29,29 @@ def create_argv(argstring):
     return shlex.split(argstring)[1:]
 
 # BEGIN TESTS
+
+def test_mops_repr_method():
+    mops_set = Mops(create_argv(test_command_12))
+    assert len(mops_set) == 2
+    assert mops_set.__repr__() == """Mops({'m', 'o'})""" or mops_set.__repr__() == """Mops({'o', 'm'})"""
+
+
+def test_mops_repr_method_empty():
+    mops_set = Mops(create_argv(test_command_2))
+    assert len(mops_set) == 0
+    assert mops_set.__repr__() == """Mops({})"""
+
+
+def test_mops_str_method():
+    mops_set = Mops(create_argv(test_command_12))
+    assert len(mops_set) == 2
+    assert mops_set.__str__() == """Mops({'m', 'o'})""" or mops_set.__repr__() == """Mops({'o', 'm'})"""
+
+
+def test_mops_str_method_empty():
+    mops_set = Mops(create_argv(test_command_2))
+    assert len(mops_set) == 0
+    assert mops_set.__str__() == """Mops({})""" or mops_set.__repr__() == """Mops({})"""
 
 
 def test_mops_instantiation():
