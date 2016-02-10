@@ -8,7 +8,7 @@ import sys
 import shlex
 
 
-test_command_1 = "executable -- lastpos -s another"
+test_command_1 = "executable -t --tapas -- "
 
 
 def set_sysargv(argstring):
@@ -17,5 +17,5 @@ def set_sysargv(argstring):
 set_sysargv(test_command_1)
 
 c = Command()
-print(c.obj_string())
+print(c.get_double_dash_args())
 

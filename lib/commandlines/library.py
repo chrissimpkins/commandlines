@@ -198,7 +198,21 @@ class Command(object):
 
     # //////////////////////////////////////////////////////////////
     #
-    # Getter methods
+    # Special command line idiom testing methods
+    #
+    # //////////////////////////////////////////////////////////////
+
+    def has_double_dash(self):
+        """Test for the presence of the double dash `--` command line idiom and return boolean."""
+
+        if "--" in self.arguments:
+            return True
+        else:
+            return False
+
+    # //////////////////////////////////////////////////////////////
+    #
+    # Getter methods for command line argument strings
     #
     # //////////////////////////////////////////////////////////////
 
@@ -225,6 +239,16 @@ class Command(object):
             return self.arguments.get_arg_next(recipient_position)
         else:
             raise MissingArgumentError(target_arg)
+
+    def get_double_dash_args(self):
+        """Returns the arguments after the double dash `--` command line idiom as a list."""
+
+        if "--" in self.arguments:
+            dd_position = self.arguments.get_arg_position("--")
+            start_position = dd_position + 1
+            return self.arguments[start_position:]
+        else:
+            raise MissingArgumentError("--")
 
     # /////////////////////////////////////////////////////////////
     #

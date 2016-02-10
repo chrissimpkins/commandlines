@@ -21,6 +21,9 @@ test_command_7 = "git commit -m 'initial commit'"
 test_command_8 = "find . -name tests/aaa.txt"
 test_command_9 = "executable -mops -t lastpos"
 test_command_10 = "executable subcmd subsubcmd"
+test_command_11 = "executable -t --name -- lastpos -n --long another"
+test_command_12 = "executable --file path -- lastpos --test path2 another"
+test_command_13 = "executable --f path -- lastpos -t path2 another"
 test_command_empty_1 = "executable"
 test_command_empty_2 = "exe-dash"
 
@@ -145,3 +148,46 @@ def test_command_get_arg_after_with_empty_arglist():
     c = Command()
     with pytest.raises(MissingArgumentError):
         c.get_arg_after('--test')
+
+
+#
+# get_double_dash_args method
+#
+
+# test_command_11 = "executable -t --name -- lastpos -n --long another"
+# test_command_12 = "executable --file path -- lastpos --test path2 another"
+# test_command_13 = "executable --f path -- lastpos -t path2 another"
+
+def test_command_get_doubledash_1():
+    set_sysargv(test_command_11)
+    c = Command()
+    assert len(c.get_double_dash_args()) == 4
+    assert c.get_double_dash_args() == ['lastpos', '-n', '--long', 'another']
+
+
+def test_command_get_doubledash_2():
+    set_sysargv(test_command_12)
+    c = Command()
+    assert len(c.get_double_dash_args()) == 4
+    assert c.get_double_dash_args() == ['lastpos', '--test', 'path2', 'another']
+
+
+def test_command_get_doubledash_3():
+    set_sysargv(test_command_13)
+    c = Command()
+    assert len(c.get_double_dash_args()) == 4
+    assert c.get_double_dash_args() == ['lastpos', '-t', 'path2', 'another']
+
+
+def test_command_get_doubledash_not_present_1():
+    set_sysargv(test_command_1)
+    c = Command()
+    with pytest.raises(MissingArgumentError):
+        c.get_double_dash_args()
+
+
+def test_command_get_doubledash_not_present_2():
+    set_sysargv(test_command_empty_1)
+    c = Command()
+    with pytest.raises(MissingArgumentError):
+        c.get_double_dash_args()
