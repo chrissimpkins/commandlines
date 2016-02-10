@@ -8,7 +8,7 @@ import sys
 import shlex
 
 
-test_command_1 = "executable -s lastpos"
+test_command_1 = "executable -- lastpos -s another"
 
 
 def set_sysargv(argstring):

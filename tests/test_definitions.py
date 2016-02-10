@@ -20,6 +20,8 @@ test_command_7 = "git commit -m 'initial commit'"
 test_command_8 = "find . -name tests/aaa.txt"
 test_command_9 = "executable -mops -t lastpos"
 test_command_10 = "executable subcmd subsubcmd"
+test_command_11 = "executable -t name -- -s other"  # double dash command line idiom
+test_command_12 = "executable --file name -- --path other"  # double dash command line idiom
 test_command_empty_1 = "executable"
 test_command_empty_2 = "exe-dash"
 
@@ -48,6 +50,24 @@ def test_definitions_instantiation_2():
     assert len(defin) == 1
     assert ("name" in defin.keys()) == True
     assert defin['name'] == "tests/aaa.txt"
+
+
+def test_definitions_instantiation_3():
+    defin = Definitions(create_argv(test_command_11))
+    assert isinstance(defin, dict)
+    assert len(defin) == 1
+    assert ("t" in defin.keys()) == True
+    assert defin['t'] == "name"
+    assert ("s" in defin.keys()) == False
+
+
+def test_definitions_instantiation_4():
+    defin = Definitions(create_argv(test_command_12))
+    assert isinstance(defin, dict)
+    assert len(defin) == 1
+    assert ("file" in defin.keys()) == True
+    assert defin['file'] == "name"
+    assert ("path" in defin.keys()) == False
 
 
 def test_definitions_instantiation_nodefs():
