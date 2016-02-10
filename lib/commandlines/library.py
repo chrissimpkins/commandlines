@@ -26,7 +26,9 @@ class Command(object):
 
     # v0.3.0
     # TODO: add support for double dash command line idiom (e.g. -- -badfilename)
-    # TODO: add support for multiple same option definitions (e.g. -o <path1> -o <path2>)
+    # TODO: add support for multiple same option definitions (e.g. -o <path1> -o <path2>) - New MultiDefinitions class
+    # v0.4.0
+    # TODO: support for default arguments in definitions
     # TODO: implement mandatory argument test that supports short / long option alternatives
 
     def __repr__(self):
@@ -427,8 +429,12 @@ class Switches(set):
         switchset = set()
         for switch_candidate in argv:
             if switch_candidate.startswith("-") and "=" not in switch_candidate:
-                switch_candidate = switch_candidate.lstrip("-")
-                switchset.add(switch_candidate)
+                # ignore everything after the double dash idiom, no longer considered switch context
+                if switch_candidate == "--":
+                    break
+                else:
+                    switch_candidate = switch_candidate.lstrip("-")
+                    switchset.add(switch_candidate)
 
         return switchset
 

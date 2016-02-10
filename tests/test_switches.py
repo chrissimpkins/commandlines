@@ -20,6 +20,7 @@ test_command_7 = "git commit -m 'initial commit'"
 test_command_8 = "find . -name tests/aaa.txt"
 test_command_9 = "executable -mops -t lastpos"
 test_command_10 = "executable subcmd subsubcmd"
+test_command_11 = "executable -t --name -- lastpos -s --long another"  # double dash command line idiom
 test_command_empty_1 = "executable"
 test_command_empty_2 = "exe-dash"
 
@@ -75,6 +76,18 @@ def test_switch_instantiation_with_mops():
     assert len(switch) == 2
     assert ("t" in switch) == True
     assert ("mops" in switch) == True
+
+
+def test_switch_instantiation_with_doubledash():
+    """This test should ignore any switches that meet switch syntax definition after the `--` idiom"""
+    switch = Switches(create_argv(test_command_11))
+    assert isinstance(switch, set)
+    assert len(switch) == 2
+    assert ("t" in switch) == True
+    assert ("name" in switch) == True
+    assert ("s" in switch) == False
+    assert ("--" in switch) == False
+    assert ("" in switch) == False
 
 
 def test_switches_contains():
