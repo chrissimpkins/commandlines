@@ -306,6 +306,26 @@ class Arguments(list):
     def __init__(self, argv):
         list.__init__(self, argv)
 
+    def __repr__(self):
+        argument_string = ""
+        if len(self) > 0:
+            for argument in self:
+                argument_string = argument_string + "'" + argument + "', "
+        argument_string = argument_string.rstrip()
+        argument_string = argument_string.rstrip(',')
+
+        return "[" + argument_string + "]"
+
+    def __str__(self):
+        argument_string = ""
+        if len(self) > 0:
+            for argument in self:
+                argument_string = argument_string + "'" + argument + "', "
+        argument_string = argument_string.rstrip()
+        argument_string = argument_string.rstrip(',')
+
+        return "[" + argument_string + "]"
+
     def get_argument_for_commandobj(self, position):
         """An argument parsing method for the instantation of the Command object.  This is not intended for public use.
         Public calls should use the get_argument() method instead.
@@ -386,7 +406,7 @@ class Switches(set):
             switch_string = switch_string.rstrip()
             switch_string = switch_string.rstrip(",")
 
-        return "Switches({" + switch_string + "})"
+        return "{" + switch_string + "}"
 
     def __str__(self):
         switch_string = ""
@@ -396,7 +416,7 @@ class Switches(set):
             switch_string = switch_string.rstrip()
             switch_string = switch_string.rstrip(",")
 
-        return "Switches({" + switch_string + "})"
+        return "{" + switch_string + "}"
 
     def _make_switch_set(self, argv):
         """Returns a set that includes all switches that are parsed from the command string.
@@ -448,7 +468,7 @@ class Mops(set):
             mops_string = mops_string.rstrip()
             mops_string = mops_string.rstrip(",")
 
-        return "Mops({" + mops_string + "})"
+        return "{" + mops_string + "}"
 
     def __str__(self):
         mops_string = ""
@@ -458,7 +478,7 @@ class Mops(set):
             mops_string = mops_string.rstrip()
             mops_string = mops_string.rstrip(",")
 
-        return "Mops({" + mops_string + "})"
+        return "{" + mops_string + "}"
 
     def _make_mops_set(self, argv):
         """Returns a set of multi-option short syntax option characters that are parsed from a list of ordered

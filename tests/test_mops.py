@@ -33,25 +33,25 @@ def create_argv(argstring):
 def test_mops_repr_method():
     mops_set = Mops(create_argv(test_command_12))
     assert len(mops_set) == 2
-    assert mops_set.__repr__() == """Mops({'m', 'o'})""" or mops_set.__repr__() == """Mops({'o', 'm'})"""
+    assert mops_set.__repr__() == """{'m', 'o'}""" or mops_set.__repr__() == """{'o', 'm'}"""
 
 
 def test_mops_repr_method_empty():
     mops_set = Mops(create_argv(test_command_2))
     assert len(mops_set) == 0
-    assert mops_set.__repr__() == """Mops({})"""
+    assert mops_set.__repr__() == """{}"""
 
 
 def test_mops_str_method():
     mops_set = Mops(create_argv(test_command_12))
     assert len(mops_set) == 2
-    assert mops_set.__str__() == """Mops({'m', 'o'})""" or mops_set.__repr__() == """Mops({'o', 'm'})"""
+    assert mops_set.__str__() == """{'m', 'o'}""" or mops_set.__repr__() == """{'o', 'm'}"""
 
 
 def test_mops_str_method_empty():
     mops_set = Mops(create_argv(test_command_2))
     assert len(mops_set) == 0
-    assert mops_set.__str__() == """Mops({})""" or mops_set.__repr__() == """Mops({})"""
+    assert mops_set.__str__() == """{}""" or mops_set.__repr__() == """{}"""
 
 
 def test_mops_instantiation():

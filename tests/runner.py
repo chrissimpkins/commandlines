@@ -8,7 +8,7 @@ import sys
 import shlex
 
 
-test_command_1 = "executable subcmd -s --long -n shortdef --name longdef --nameeq=longdefeq lastpos"
+test_command_1 = "executable -s lastpos"
 
 
 def set_sysargv(argstring):

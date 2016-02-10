@@ -32,25 +32,25 @@ def create_argv(argstring):
 def test_switches_repr_method():
     switches_set = Switches(create_argv(test_command_4))
     assert len(switches_set) == 2
-    assert switches_set.__repr__() == """Switches({'v', 'V'})""" or switches_set.__repr__() == """Switches({'V', 'v'})"""
+    assert switches_set.__repr__() == """{'v', 'V'}""" or switches_set.__repr__() == """{'V', 'v'}"""
 
 
 def test_switches_repr_method_empty():
     switches_set = Switches(create_argv(test_command_6))
     assert len(switches_set) == 0
-    assert switches_set.__repr__() == """Switches({})"""
+    assert switches_set.__repr__() == """{}"""
 
 
 def test_mops_str_method():
     switches_set = Switches(create_argv(test_command_4))
     assert len(switches_set) == 2
-    assert switches_set.__str__() == """Switches({'v', 'V'})""" or switches_set.__repr__() == """Switches({'V', 'v'})"""
+    assert switches_set.__str__() == """{'v', 'V'}""" or switches_set.__repr__() == """{'V', 'v'}"""
 
 
 def test_mops_str_method_empty():
     switches_set = Switches(create_argv(test_command_6))
     assert len(switches_set) == 0
-    assert switches_set.__str__() == """Switches({})"""
+    assert switches_set.__str__() == """{}"""
 
 
 def test_switches_instantiation():

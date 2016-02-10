@@ -30,6 +30,30 @@ def create_argv(argstring):
 # BEGIN TESTS
 
 
+def test_argument_repr_method():
+    argu = Arguments(create_argv(test_command_2))
+    assert len(argu) == 2
+    assert argu.__repr__() == "['-s', 'lastpos']"
+
+
+def test_argument_repr_method_empty():
+    argu = Arguments(create_argv(test_command_empty_1))
+    assert len(argu) == 0
+    assert argu.__repr__() == "[]"
+
+
+def test_argument_str_method():
+    argu = Arguments(create_argv(test_command_2))
+    assert len(argu) == 2
+    assert argu.__str__() == "['-s', 'lastpos']"
+
+
+def test_argument_str_method_empty():
+    argu = Arguments(create_argv(test_command_empty_1))
+    assert len(argu) == 0
+    assert argu.__str__() == "[]"
+
+
 def test_argument_instantiation():
     argu = Arguments(create_argv(test_command_1))
     assert len(argu) == 9
