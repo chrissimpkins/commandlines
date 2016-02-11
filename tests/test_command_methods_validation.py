@@ -20,6 +20,7 @@ test_command_7 = "git commit -m 'initial commit'"
 test_command_8 = "find . -name tests/aaa.txt"
 test_command_9 = "executable -mops -t lastpos"
 test_command_10 = "executable subcmd subsubcmd"
+test_command_15 = "executable --file path1 --file path2 -t --flag"
 test_command_empty_1 = "executable"
 test_command_empty_2 = "exe-dash"
 
@@ -49,7 +50,8 @@ test_commands_with_defs = [
     test_command_5,
     test_command_7,
     test_command_8,
-    test_command_9
+    test_command_9,
+    test_command_15
 ]
 
 test_commands_without_defs = [

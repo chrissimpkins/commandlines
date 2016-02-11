@@ -8,14 +8,16 @@ import sys
 import shlex
 
 
-test_command_1 = "executable -t --tapas -- "
+test_command_1 = "executable --taylor swift"
+test_command_13 = "executable -o path1 -o path2 -t --flag"
+test_command_18 = "executable -o path1 -o path2 --file tests/path1 --file tests/path2"
 
 
 def set_sysargv(argstring):
     sys.argv = shlex.split(argstring)
 
-set_sysargv(test_command_1)
+set_sysargv(test_command_18)
 
 c = Command()
-print(c.get_double_dash_args())
+print(c.mdefs)
 

@@ -13,6 +13,7 @@ class Command(object):
         self.switches = Switches(self.argv)
         self.mops = Mops(self.argv)
         self.defs = Definitions(self.argv)
+        self.mdefs = MultiDefinitions(self.argv)
         self.argc = len(self.argv)
         self.arg0 = self.arguments.get_argument_for_commandobj(0)
         self.arg1 = self.arguments.get_argument_for_commandobj(1)
@@ -23,10 +24,14 @@ class Command(object):
         self.subcmd = self.arg0
         self.subsubcmd = self.arg1
         self.has_args = (len(self.arguments) > 0)
+        self.has_switches = (len(self.switches) > 0)
+        self.has_mops = (len(self.mops) > 0)
+        self.has_defs = (len(self.defs) > 0)
+        self.has_mdefs = (len(self.mdefs) > 0)
 
     # v0.3.0
-    # TODO: add support for double dash command line idiom (e.g. -- -badfilename)
-    # TODO: add support for multiple same option definitions (e.g. -o <path1> -o <path2>) - New MultiDefinitions class
+    # [X] add support for double dash command line idiom (e.g. -- -badfilename)
+    # [X] add support for multiple same option definitions (e.g. -o <path1> -o <path2>) - New MultiDefinitions class
     # v0.4.0
     # TODO: support for default arguments in definitions
     # TODO: implement mandatory argument test that supports short / long option alternatives
@@ -55,7 +60,7 @@ class Command(object):
 
         :returns: boolean"""
 
-        return len(self.defs) == 0
+        return len(self.defs) == 0 and len(self.mdefs) == 0
 
     def does_not_validate_missing_mops(self):
         """Command string validation for missing multi-option short syntax arguments to the executable
@@ -139,9 +144,19 @@ class Command(object):
     def contains_definitions(self, *def_needles):
         """Returns boolean that indicates presence (True) or absence (False) of one or more definition options
 
+        :param def_needles: a tuple of one or more expected definition key(s)
         :returns: boolean"""
 
         return self.defs.contains(def_needles)
+
+    def contains_multi_definitions(self, *def_needles):
+        """Returns boolean that indicates presence (True) or absence (False) of one or more multi definition
+        options
+
+        :param def_needles: a tuple of one or more expected definition key(s)
+        :returns: boolean"""
+
+        return self.mdefs.contains(def_needles)
 
     def has_command_sequence(self, *cmd_list):
         """Test for a sequence of command line tokens in the command string.  The test begins at index position 0
@@ -217,14 +232,23 @@ class Command(object):
     # //////////////////////////////////////////////////////////////
 
     def get_definition(self, def_needle):
-        """Returns the argument to an option that is part of an option-argument pair (defined as a definition
-        argument here).
+        """Returns the argument to an option that is part of an option-argument pair.
 
-        :param def_needle: The option portion of the option-argument pair for the request
+        :param def_needle: The option string of the option-argument pair
         :returns: string
-        :raises: MissingDictionaryKeyError when the option is not found in the parsed definitions dictionary"""
+        :raises: MissingDictionaryKeyError when the option string is not found"""
 
         return self.defs.get_def_argument(def_needle)
+
+    def get_multiple_definitions(self, def_needle):
+        """Returns the list of arguments to an option that is included multiple times in an option-argument
+        syntax on the command line.
+
+        :param def_needle: The option string of the option-argument pair
+        :returns: string
+        :raises: MissingDictionaryKeyError when the option string is not found"""
+
+        return self.mdefs.get_def_argument(def_needle)
 
     def get_arg_after(self, target_arg):
         """Returns the next positional argument at position n + 1 to a command line argument at index position n
@@ -618,3 +642,43 @@ class Definitions(dict):
             return self[needle]
         else:
             raise MissingDictionaryKeyError(needle)
+
+
+class MultiDefinitions(Definitions):
+    def __init__(self, argv):
+        Definitions.__init__(self, argv)
+
+    def _make_definitions_obj(self, argv):
+        defmap = {}
+        arglist_length = len(argv)
+        counter = 0
+        for def_candidate in argv:
+            # ignore all definition syntax strings after the double dash `--` command line idiom
+            if def_candidate == "--":
+                break
+            else:
+                # defines -option=definition syntax
+                if def_candidate.startswith("-") and "=" in def_candidate:
+                    split_def = def_candidate.split("=")
+                    cleaned_key = split_def[0].lstrip("-")  # remove dash characters from the option
+                    if cleaned_key in defmap.keys():
+                        defmap[cleaned_key].append(split_def[1])
+                    else:
+                        defmap[cleaned_key] = [split_def[1]]
+                # defines -d <positional def> or --define <positional def> syntax
+                elif counter < (arglist_length - 1) and def_candidate.startswith("-"):
+                    if not argv[counter + 1].startswith("-"):
+                        def_candidate = def_candidate.lstrip("-")
+                        if def_candidate in defmap.keys():
+                            defmap[def_candidate].append(argv[counter + 1])
+                        else:
+                            defmap[def_candidate] = [argv[counter + 1]]
+
+                counter += 1
+
+        # keep only the dictionary key:value pairs that include multiple values from key:value items parsed above
+        multi_map = {key: value for key, value in defmap.items() if len(value) > 1}
+
+        return multi_map
+
+

@@ -141,6 +141,34 @@ def test_commandobj_property_has_args():
     assert c.has_args is True
 
 
+def test_commandobj_property_has_switches():
+    """Test obj.has_switches is defined as True when switches are present"""
+    set_sys_argv()
+    c = Command()
+    assert c.has_switches is True
+
+
+def test_commandobj_property_has_mops():
+    """Test obj.has_mops is defined as False when Mops are not present"""
+    set_sys_argv()
+    c = Command()
+    assert c.has_mops is False
+
+
+def test_commandobj_property_has_defs():
+    """Test obj.has_defs is defined as True when defs are present"""
+    set_sys_argv()
+    c = Command()
+    assert c.has_defs is True
+
+
+def test_commandobj_property_has_mdefs():
+    """Test obj.has_mdefs is defined as False when mdefs are not present"""
+    set_sys_argv()
+    c = Command()
+    assert c.has_mdefs is False
+
+
 # ////////////////////////////////////////////////////////////
 #
 # TESTS : Parsing >>> Command object Argument property
