@@ -677,7 +677,12 @@ class MultiDefinitions(Definitions):
                 counter += 1
 
         # keep only the dictionary key:value pairs that include multiple values from key:value items parsed above
-        multi_map = {key: value for key, value in defmap.items() if len(value) > 1}
+        multi_map = {}
+        for key in defmap.keys():
+            if len(defmap[key]) > 1:
+                multi_map[key] = defmap[key]
+            else:
+                pass
 
         return multi_map
 
