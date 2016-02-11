@@ -681,8 +681,6 @@ class MultiDefinitions(Definitions):
         for key in defmap.keys():
             if len(defmap[key]) > 1:
                 multi_map[key] = defmap[key]
-            else:
-                pass
 
         return multi_map
 
