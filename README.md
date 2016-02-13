@@ -10,7 +10,7 @@ Commandlines is a Python library for command line application development that s
 
 ## Project Status
 
-*Commandlines is in active development and, while it is tested and usable in the current release version, there is no assurance of a stable API and backwards compatibility across minor and patch versions at this stage of development. Please freeze the library version in your remote deployment scripts or include the Commandlines library modules released in the master branch of the repository as part of your own project if you elect to use it in a production environment. This message will disappear when this is no longer the case and at that stage the library will be released as version 1.0.x under semantic versioning specifications.*
+*Commandlines is in active development and, while it is tested and usable in the current release version, there is no assurance of a stable API and backwards compatibility across minor and patch versions at this stage of development. Please freeze the library version in your remote deployment scripts or include the Commandlines library modules released in the master branch of the repository as part of your own project if you elect to use it in a production environment. This message will disappear when this is no longer the case and at that stage the library will be released as version 1.0.x under [semantic versioning specifications](http://semver.org/).*
 
 ## How Do I Use It?
 
