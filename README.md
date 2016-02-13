@@ -10,13 +10,13 @@ Commandlines is a Python library for command line application development that s
 
 ## Project Status
 
-*Commandlines is in active development and, while it is tested and usable in the current release version, there is no assurance of a stable API and backwards compatibility across minor and patch versions at this stage of development. Please freeze the library version in your remote deployment scripts or include the Commandlines library modules released in the master branch of the repository as part of your own project if you elect to use it in a production environment. This message will disappear when this is no longer the case and at that stage the library will be released as version 1.0.0 under [semantic versioning specifications](http://semver.org/).*
+*Commandlines is in active development and, while it is tested and usable in the current release version, there is no assurance of a stable API or backwards compatibility across minor and patch versions at this stage of development. Please freeze the library version in your deployment/installation scripts or include the Commandlines library modules released in the master branch of the repository as part of your own project if you elect to use it in a production environment. This message will disappear when this is no longer the case and at that stage the library will be released as version 1.0.0 under [semantic versioning specifications](http://semver.org/).*
 
 ## How Do I Use It?
 
 Commandlines supports explicit, expressive command line application source code with a broad, permissive command syntax range. The goal is to make application logic simple to implement, instantly understandable, and easy to maintain.  
 
-The command line string is parsed to multiple objects that are derived from builtin Python container types.
+The command line string to your executable script is parsed to multiple objects that are derived from builtin Python container types.
 
 
 #### The Command Object
@@ -89,6 +89,17 @@ Positional arguments use a 0 based index starting at the first argument to the e
 | Missing opt-arg definitions | `$ spam -o --eggs` | `c.does_not_validate_missing_defs()` |
 | Missing switches | `$ spam eggs` | `c.does_not_validate_missing_switches()` |
 | Missing multi-option short syntax switches | `$ spam -o eggs` | `c.does_not_validate_missing_mops()` |
+
+#### Help, Usage, and Version Request Testing Methods
+
+| Test Type  | Command Example  | Tested With |
+| :------------: |:---------------:| :---------------:|
+| Help request, short | `$ spam -h` | `c.is_help_request()`|
+| Help request, long | `$ spam --help` | `c.is_help_request()`|
+| Usage request | `$ spam --usage` | `c.is_usage_request()` |
+| Version request, short | `$ spam -v` | `c.is_version_request()`|
+| Version request, long| `$ spam --version` | `c.is_version_request()`|
+
 
 
 
