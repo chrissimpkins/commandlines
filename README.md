@@ -16,7 +16,7 @@ Commandlines is a Python library for command line application development that s
 
 Commandlines supports explicit, expressive command line application source code with a broad, permissive command syntax range. The goal is to make application logic simple to implement, instantly understandable, and easy to maintain.  
 
-The command line string to your executable script is parsed to multiple objects that are derived from builtin Python container types.
+The command line string to your executable script is parsed to multiple objects that are derived from builtin Python types.
 
 
 #### The Command Object
@@ -48,7 +48,7 @@ and you have access to:
 
 #### Positional Arguments
 
-Positional arguments use a 0 based index starting at the first argument to the executable (i.e. `sys.argv[1:]`) and are maintained as attributes in the Command object.  Support is provided for the first five positional arguments and the last positional argument.
+Positional arguments use a 0 based index starting at the first argument to the executable (i.e. `sys.argv[1:]`) and are maintained as attributes in the Command object.  Individual attribute support is provided for the first five positional arguments and the last positional argument.  An ordered list of all positional arguments is available in the `arguments` attribute.
 
 | Positional Argument  | Command Example  | Accessed/Tested With |
 | :------------: |:---------------:| :---------------:|
@@ -58,6 +58,7 @@ Positional arguments use a 0 based index starting at the first argument to the e
 | Positional argument at index 3 | `$ spam eggs bacon toast cereal` | `c.arg3` |
 | Positional argument at index 4 | `$ spam eggs bacon toast cereal coffee` | `c.arg4` |
 | Last positional argument | `$ spam eggs -b --toast filepath` | `c.arglp` |
+| All positional arguments |  `$ spam eggs -b --toast filepath` | `c.arguments` |
 
 
 #### Special Command Line Idioms
@@ -152,6 +153,10 @@ from commandlines import Command
 c = Command()
 ```
 
+
+## License
+
+Commandlines is licensed under the [MIT license](docs/LICENSE).
 
 
 
