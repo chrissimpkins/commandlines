@@ -101,6 +101,60 @@ Positional arguments use a 0 based index starting at the first argument to the e
 | Version request, long| `$ spam --version` | `c.is_version_request()`|
 
 
+## How to Include Commandlines in Your Project
+
+### For Projects That Will Be Distributed to Others
+
+Add the `commandlines` package dependency to your project `setup.py` file in the `install_requires` field like so:
+
+```python
+setup(
+    ...
+    install_requires=["commandlines == x.x.x"],
+	...
+)
+```
+
+It is **highly recommended** that you explicitly define the library version by replacing `x.x.x` with the version that you used for testing.  The project is in active development and backwards compatibility is not assured at this stage.
+
+Then, enter the following command to test your project locally:
+
+```
+$ python setup.py develop
+```
+
+Import the `commandlines` package in your project and instantiate a Command object by adding the following lines to your Python script:
+
+```python
+from commandlines import Command
+
+c = Command()
+```
+
+And away you go...
+
+The Commandlines package will be installed automatically for users who install your releases via `pip` or your project `setup.py` file (i.e. with the command `$ python setup.py install`).
+
+
+### For Local Projects That Are Not Intended for Redistribution
+
+Install the Commandlines package with the command:
+
+```
+$ pip install commandlines
+```
+
+Import the `commandlines` package in your project and instantiate a Command object by adding the following lines to your Python script:
+
+```python
+from commandlines import Command
+
+c = Command()
+```
+
+
+
+
 
 
 
