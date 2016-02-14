@@ -141,6 +141,15 @@ class Command(object):
 
         return self.switches.contains(switch_needles)
 
+    def contains_mops(self, *mops_needles):
+        """Returns boolean that indicates presence (True) or absence (False) of one or more multi-option
+        short syntax switch characters.
+
+        :type mops_needles: tuple of one or more expected single character switches
+        :returns: boolean"""
+
+        return self.mops.contains(mops_needles)
+
     def contains_definitions(self, *def_needles):
         """Returns boolean that indicates presence (True) or absence (False) of one or more definition options
 

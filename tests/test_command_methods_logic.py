@@ -79,6 +79,40 @@ def test_command_contains_switches_noargs():
 
 
 #
+# Mops
+#
+
+def test_command_contains_mops_single():
+    set_sysargv(test_command_9)
+    c = Command()
+    assert c.contains_mops("m") == True
+
+
+def test_command_contains_mops_single_false():
+    set_sysargv(test_command_9)
+    c = Command()
+    assert c.contains_mops("r") == False
+
+
+def test_command_contains_mops_multiple():
+    set_sysargv(test_command_9)
+    c = Command()
+    assert c.contains_mops("m", "p", "s") == True
+
+
+def test_command_contains_mops_multiple_false():
+    set_sysargv(test_command_9)
+    c = Command()
+    assert c.contains_mops("m", "p", "r") == False
+
+
+def test_command_contains_mops_noargs():
+    set_sysargv(test_command_empty_1)
+    c = Command()
+    assert c.contains_mops("m") == False
+
+
+#
 # Definitions
 #
 
