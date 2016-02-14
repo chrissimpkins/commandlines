@@ -112,6 +112,12 @@ def test_command_contains_mops_noargs():
     assert c.contains_mops("m") == False
 
 
+def test_command_contains_mops_nomops():
+    set_sysargv(test_command_1)
+    c = Command()
+    assert c.contains_mops("m") == False
+
+
 #
 # Definitions
 #
