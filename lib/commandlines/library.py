@@ -4,12 +4,12 @@
 """The commandlines.library module contains the Command, Arguments, Definitions, Mops, MultiDefinitions, and Switches
 classes.  These objects are used to parse command line argument strings to command line syntax specific Python objects.
 
-The Command class is a high level object that is intended to be the public facing portion of the library API.  The
+The Command class is a high level object that is intended to be the public facing portion of the library.  The
 commandlines Command object can be imported into projects with the following import statement:
 
 `from commandlines import Command`
 
-Exceptions raised by this module are contained in the `commandlines.exceptions` module.
+Exceptions raised by this module are in the `commandlines.exceptions` module.
 """
 
 import sys
@@ -44,9 +44,6 @@ class Command(object):
         self.has_defs = (len(self.defs) > 0)
         self.has_mdefs = (len(self.mdefs) > 0)
 
-    # v0.3.0
-    # [X] add support for double dash command line idiom (e.g. -- -badfilename)
-    # [X] add support for multiple same option definitions (e.g. -o <path1> -o <path2>) - New MultiDefinitions class
     # v0.4.0
     # TODO: support for default arguments in definitions
     # TODO: implement mandatory argument test that supports short / long option alternatives
