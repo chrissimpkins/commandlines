@@ -1,2 +1,2 @@
-recursive-include docs/LICENSE
-recursive-include docs/README.rst
+include docs/LICENSE
+include docs/README.rst
