@@ -7,7 +7,8 @@ Contents:
 .. toctree::
    :maxdepth: 4
 
-   commandlines
+   Library API <commandlines.library>
+   Exceptions <commandlines.exceptions>
 
 
 
