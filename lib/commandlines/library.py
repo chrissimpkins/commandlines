@@ -1,12 +1,27 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""The commandlines.library module contains the Command, Arguments, Definitions, Mops, MultiDefinitions, and Switches
+classes.  These objects are used to parse command line argument strings to command line syntax specific Python objects.
+
+The Command class is a high level object that is intended to be the public facing portion of the library API.  The
+commandlines Command object can be imported into projects with the following import statement:
+
+`from commandlines import Command`
+
+Exceptions raised by this module are contained in the `commandlines.exceptions` module.
+"""
+
 import sys
 from commandlines.exceptions import IndexOutOfRangeError, MissingArgumentError, MissingDictionaryKeyError
 
 
 class Command(object):
-    """An object that is parsed from a command line command string"""
+    """An object that maintains syntax specific components of a command line string and provides methods to support
+    the development of Python command line applications.
+
+    The class is instantiated from the list of command line arguments that are passed to a Python script in `sys.argv`.
+    """
     def __init__(self):
         self.argv = sys.argv[1:]
         self.arguments = Arguments(self.argv)
@@ -49,38 +64,38 @@ class Command(object):
     # //////////////////////////////////////////////////////////////
 
     def does_not_validate_missing_args(self):
-        """Command string validation for missing arguments to the executable
+        """Command string validation for missing arguments to the executable.
 
-        :returns: boolean"""
+        :returns: boolean. True = does not validate. False = validates"""
 
         return self.argc == 0
 
     def does_not_validate_missing_defs(self):
         """Command string validation for missing definitions to the executable
 
-        :returns: boolean"""
+        :returns: boolean. True = does not validate. False = validates"""
 
         return len(self.defs) == 0 and len(self.mdefs) == 0
 
     def does_not_validate_missing_mops(self):
         """Command string validation for missing multi-option short syntax arguments to the executable
 
-        :returns: boolean"""
+        :returns: boolean. True = does not validate. False = validates"""
 
         return len(self.mops) == 0
 
     def does_not_validate_missing_switches(self):
         """Command string validation for missing switches to the executable
 
-        :returns: boolean"""
+        :returns: boolean. True = does not validate. False = validates"""
 
         return len(self.switches) == 0
 
     def does_not_validate_n_args(self, number):
         """Command string validation for inclusion of exactly n arguments to executable.
 
-           :param number: an integer that defines the number of expected arguments for this test
-           :returns: boolean"""
+           :param number: (integer) Defines the number of expected arguments for this test
+           :returns: boolean. True = does not validate. False = validates"""
 
         if self.argc == number:
             return False
@@ -90,14 +105,14 @@ class Command(object):
     def validates_includes_args(self):
         """Command string validation for inclusion of at least one argument to the executable
 
-        :returns: boolean"""
+        :returns: boolean. True = validates. False = does not validate."""
 
         return self.argc > 0
 
     def validates_includes_definitions(self):
         """Command string validation for inclusion of at least one definition (option-argument) to the executable
 
-        :returns: boolean"""
+        :returns: boolean. True = validates. False = does not validate."""
 
         return len(self.defs) > 0
 
@@ -105,22 +120,22 @@ class Command(object):
         """Command string validation for inclusion of at least one multi-option short syntax argument to the
         executable.
 
-        :returns: boolean"""
+        :returns: boolean. True = validates. False = does not validate."""
 
         return len(self.mops) > 0
 
     def validates_includes_switches(self):
         """Command string validation for inclusion of at least one switch argument to the executable.
 
-        :returns: boolean"""
+        :returns: boolean. True = validates. False = does not validate."""
 
         return len(self.switches) > 0
 
     def validates_includes_n_args(self, number):
-        """Command string validation for inclusion of exactly `number` arguments to executable.
+        """Command string validation for inclusion of exactly `number` arguments to the executable.
 
-        :param number: an integer that defines the number of expected arguments for this test
-        :returns: boolean"""
+        :param number: (integer)  Defines the number of expected arguments for this test
+        :returns: boolean. True = validates. False = does not validate."""
 
         return self.argc == number
 
@@ -134,9 +149,11 @@ class Command(object):
     # //////////////////////////////////////////////////////////////
 
     def contains_switches(self, *switch_needles):
-        """Returns boolean that indicates presence (True) or absence (False) of one or more switches.
+        """Test for the presence of one or more switches in the command string. Returns boolean that indicates presence
+        (True) or absence (False) of switches.  Dashes should not be used at the beginning of the strings in the
+        `switch_needles` parameter.
 
-        :param switch_needles: a tuple of one or more expected switch strings
+        :param switch_needles: (tuple) One or more expected switch strings.
         :returns: boolean"""
 
         return self.switches.contains(switch_needles)
@@ -151,18 +168,24 @@ class Command(object):
         return self.mops.contains(mops_needles)
 
     def contains_definitions(self, *def_needles):
-        """Returns boolean that indicates presence (True) or absence (False) of one or more definition options
+        """Test for the presence of one or more option-argument definitions in the command string.  Returns boolean
+        that indicates presence (True) or absence (False) of definition options.  Dashes should not be used at the
+        beginning of the strings in the `def_needles` parameter.
 
-        :param def_needles: a tuple of one or more expected definition key(s)
+        :param def_needles: (tuple) One or more expected definition option key(s).
         :returns: boolean"""
 
         return self.defs.contains(def_needles)
 
     def contains_multi_definitions(self, *def_needles):
-        """Returns boolean that indicates presence (True) or absence (False) of one or more multi definition
-        options
+        """Test for the presence of multiple option-argument definitions that use the same option string.  An example is
 
-        :param def_needles: a tuple of one or more expected definition key(s)
+        `$ executable -o file1 -o file2`
+
+        The dashes in the argument strings should not be included in the `def_needles` parameter. Returns boolean that
+        indicates presence (True) or absence (False) of one or more multi-definition options.
+
+        :param def_needles: (tuple) One or more expected definition option key(s).
         :returns: boolean"""
 
         return self.mdefs.contains(def_needles)
@@ -171,7 +194,7 @@ class Command(object):
         """Test for a sequence of command line tokens in the command string.  The test begins at index position 0
         of the argument list and is case-sensitive.
 
-        :param cmd_list: tuple of expected commands in expected order starting at Command.argv index 0
+        :param cmd_list: (tuple) Expected commands in expected order starting at Command.argv index position 0
         :returns: boolean"""
 
         if len(cmd_list) > len(self.argv):   # request does not inlude more args than the Command.argv property includes
@@ -186,11 +209,11 @@ class Command(object):
             return True
 
     def has_args_after(self, argument_needle, number=1):
-        """Test for presence of at least one or more positional arguments (indicated by numbers) following an existing
-        argument (argument_needle).
+        """Test for the presence of at least one (default) positional arguments following an existing argument
+        (argument_needle).  The number of expected arguments is modified by definining the number method parameter.
 
-        :param number: The number of expected arguments after the test argument
-        :param argument_needle: The test argument that is known to be present in the command
+        :param number: (integer) The number of expected arguments after the test argument
+        :param argument_needle: (string) The test argument that is known to be present in the command
         :raises: MissingArgumentError when argument_needle is not found in the parsed argument list"""
 
         if argument_needle in self.arguments:
@@ -206,8 +229,8 @@ class Command(object):
         """Test for the presence of a supported argument in the n+1 index position for a known argument at the
         n position.  start_argument is called as the full argument string including any expected dashes.
 
-        :param start_argument: The argument string including any expected dashes
-        :param supported_at_next_position: list of strings that define supported arguments in the n+1 index position
+        :param start_argument: (string) The argument string including any beginning dashes as used on the command line.
+        :param supported_at_next_position: (list) list of strings that define supported arguments in the n+1 index
         :raises: MissingArgumentError when start_argument is not found in the parsed argument list"""
 
         if start_argument in self.arguments:
@@ -227,7 +250,9 @@ class Command(object):
     # //////////////////////////////////////////////////////////////
 
     def has_double_dash(self):
-        """Test for the presence of the double dash `--` command line idiom and return boolean."""
+        """Test for the presence of the double dash `--` command line idiom.
+
+        :returns: boolean. True = has double dash token. False = does not contain double dash token."""
 
         if "--" in self.arguments:
             return True
@@ -241,28 +266,28 @@ class Command(object):
     # //////////////////////////////////////////////////////////////
 
     def get_definition(self, def_needle):
-        """Returns the argument to an option that is part of an option-argument pair.
+        """Returns the argument to an option that is part of an option-argument definition pair.
 
-        :param def_needle: The option string of the option-argument pair
+        :param def_needle: (string) The option string of the option-argument pair
         :returns: string
         :raises: MissingDictionaryKeyError when the option string is not found"""
 
         return self.defs.get_def_argument(def_needle)
 
     def get_multiple_definitions(self, def_needle):
-        """Returns the list of arguments to an option that is included multiple times in an option-argument
-        syntax on the command line.
+        """Returns a list of argument strings to an option that is included multiple times using option-argument
+        syntax on the command line (e.g. `$ executable -o file1 -o file2`)
 
-        :param def_needle: The option string of the option-argument pair
+        :param def_needle: (string) The option string of the option-argument pair
         :returns: string
         :raises: MissingDictionaryKeyError when the option string is not found"""
 
         return self.mdefs.get_def_argument(def_needle)
 
     def get_arg_after(self, target_arg):
-        """Returns the next positional argument at position n + 1 to a command line argument at index position n
+        """Returns the next positional argument at index position n + 1 to a command line argument at index position n.
 
-           :param target_arg: argument string for the search
+           :param target_arg: (string) Argument string for the test.
            :returns: string
            :raises: MissingArgumentError when target_arg is not found in the parsed argument list
            :raises: IndexOutOfRangeError when target_arg is the last positional argument"""
@@ -274,7 +299,9 @@ class Command(object):
             raise MissingArgumentError(target_arg)
 
     def get_double_dash_args(self):
-        """Returns the arguments after the double dash `--` command line idiom as a list."""
+        """Returns the arguments after the double dash `--` command line idiom as a list.
+
+        :returns: list of strings"""
 
         if "--" in self.arguments:
             dd_position = self.arguments.get_arg_position("--")
@@ -290,9 +317,9 @@ class Command(object):
     # /////////////////////////////////////////////////////////////
 
     def is_help_request(self):
-        """Tests for -h and --help options in command string
+        """Tests for `-h` and `--help` options in command string
 
-        :returns: boolean"""
+        :returns: boolean. True = included help request option. False = did not include help request option."""
 
         if "help" in self.switches or "h" in self.switches:
             return True
@@ -300,9 +327,9 @@ class Command(object):
             return False
 
     def is_usage_request(self):
-        """Tests for --usage option in command string
+        """Tests for `--usage` option in command string
 
-        :returns: boolean"""
+        :returns: boolean. True = included usage request option. False = did not include usage request option."""
 
         if "usage" in self.switches:
             return True
@@ -310,9 +337,9 @@ class Command(object):
             return False
 
     def is_version_request(self):
-        """Tests for -v and --version options in command string.
+        """Tests for `-v` and `--version` options in command string.
 
-        :returns: boolean"""
+        :returns: boolean. True = included version request option. False = did not include version request option."""
 
         if "version" in self.switches or "v" in self.switches:
             return True
@@ -326,7 +353,9 @@ class Command(object):
     # /////////////////////////////////////////////////////////////
 
     def obj_string(self):
-        """Returns a string of the instance attributes of the Command object intended for display.
+        """Returns a string of the instance attributes of the Command object intended for standard output use
+        as a display of parsed Command object attributes.  Intended for use by a developer who would like a simple way
+        to print these values to the standard output of a terminal emulator for testing purposes.
 
         :returns: string"""
 
@@ -358,10 +387,12 @@ class Command(object):
 
 
 class Arguments(list):
-    """A class that includes all command line arguments with positional order maintained.  Instantiated with a list
-    of strings.
+    """A class that includes all command line arguments with positional argument order maintained.  Instantiated with
+    a list of command line string tokens.
 
-      The class is derived from the Python list type."""
+      The class is derived from the Python list type.
+
+      :param argv: A list of command line arguments that maintain the argument order that was entered on command line"""
     def __init__(self, argv):
         list.__init__(self, argv)
 
@@ -398,9 +429,9 @@ class Arguments(list):
             return ""   # intentionally set as empty string rather than raise exception for Command obj instantation
 
     def get_argument(self, position):
-        """Returns argument by argument index position in the Argument object list.
+        """Returns an argument string by the argument list index position.
 
-        :param position: The command line index position
+        :param position: (integer) The command line index position
         :returns: string
         :raises: IndexOutOfRangeError if the requested index falls outside of the list index range"""
 
@@ -410,10 +441,11 @@ class Arguments(list):
             raise IndexOutOfRangeError()
 
     def get_arg_position(self, test_arg):
-        """Returns the index position of a candidate argument string (test_arg).  The argument string should include
-        any expected dashes at the beginning of the argument string.
+        """Returns the index position of the `test_arg` parameter candidate argument string.  The argument string
+        should include the dashes at the beginning of the argument string that would be expected with use on the
+        command line.
 
-        :param test_arg: the argument string for which the index position is requested
+        :param test_arg: (string) The argument string for which the index position is requested
         :returns: string
         :raises: MissingArgumentError if the requested argument is not in the Argument list"""
 
@@ -423,11 +455,11 @@ class Arguments(list):
             raise MissingArgumentError(test_arg)
 
     def get_arg_next(self, position):
-        """Returns the next argument at index position + 1 in the command sequence.
+        """Returns the next argument at index `position` + 1 in the command sequence.
 
-        :param position: the argument string for which the next positional argument is requested
+        :param position: (integer) The argument index position in the Argument list
         :returns: string
-        :raises: IndexOutOfRangeError if the position + 1 falls outside of the index range"""
+        :raises: IndexOutOfRangeError if the `position` + 1 index falls outside of the existing index range"""
 
         if len(self) > (position + 1):
             return self[position + 1]
@@ -435,9 +467,10 @@ class Arguments(list):
             raise IndexOutOfRangeError()
 
     def contains(self, needle):
-        """Returns boolean that indicates the presence (True) or absence (False) of a tuple of test arguments
+        """Returns boolean that indicates the presence (True) or absence (False) of a tuple of one or more test
+        arguments.
 
-        :param needle: an iterable that contains one or more test argument strings
+        :param needle: (iterable) An iterable that contains one or more test argument strings.
         :returns: boolean"""
 
         for expected_argument in needle:
@@ -451,9 +484,12 @@ class Arguments(list):
 
 class Switches(set):
     """A class that is instantiated with all command line switches that have the syntax `-s`, `--longswitch`,
-    or `-longswitch`
+    or `-mops`.
 
-       The class is derived from the Python set type and arguments with this syntax are saved as set items."""
+    The class is derived from the Python set type and arguments with this syntax are saved as set items.
+
+    :param argv: (list) A list of command line arguments that maintain the argument order that was entered on command line
+    """
     def __init__(self, argv):
         set.__init__(self, self._make_switch_set(argv))
 
@@ -478,9 +514,10 @@ class Switches(set):
         return "{" + switch_string + "}"
 
     def _make_switch_set(self, argv):
-        """Returns a set that includes all switches that are parsed from the command string.
+        """Returns a set that includes all switches that are parsed from the command string.  Used to instantiate Switch
+        objects.
 
-        :param argv: a list of ordered command line argument strings
+        :param argv: (list) A list of command line arguments that maintain the argument order that was entered on command line
         :returns: set"""
 
         switchset = set()
@@ -500,7 +537,7 @@ class Switches(set):
         Switch parameters in needle tuple should be passed without initial dash character(s) in the test switch
         argument name.
 
-        :type needle: an iterable that contains one or more test argument strings
+        :param needle: (iterable) An iterable that contains one or more test argument strings.
         :returns: boolean"""
 
         for expected_argument in needle:
@@ -513,12 +550,17 @@ class Switches(set):
 
 
 class Mops(set):
-    """A class that is instantiated with unique switches from multi-option command line options that use the
-    short syntax.
+    """A class that is instantiated with unique switches from multi-option command line options that use short,
+    single dash syntax.
 
     Examples: -rnj -tlx
 
-    The class is derived from the Python set type and the single character option switches are stored as set items."""
+    Each alphabetic character in the option token is parsed to a separate option token.
+
+    The class is derived from the Python set type and the single character option switches are stored as set items.
+
+    :param argv: (list) A list of command line arguments that maintain the argument order that was entered on command line
+    """
 
     def __init__(self, argv):
         set.__init__(self, self._make_mops_set(argv))
@@ -545,9 +587,9 @@ class Mops(set):
 
     def _make_mops_set(self, argv):
         """Returns a set of multi-option short syntax option characters that are parsed from a list of ordered
-        command string arguments in argv
+        command string arguments in the parameter `argv`.
 
-        :param argv: ordered list of command line arguments
+        :param argv: (list) A list of command line arguments that maintain the argument order that was entered on command line
         :returns: set"""
 
         mopsset = set()
@@ -562,9 +604,10 @@ class Mops(set):
 
     def contains(self, needle):
         """Returns boolean that indicates the presence (True) or absence (False) of a tuple of test Mops syntax option
-        switches.  These should be a single character list of one or more expected options without dashes.
+        switches.  The test strings should each be a single character without the dash that is used at the beginning of
+        the entire token.
 
-        :type needle: an iterable that contains one or more test argument strings
+        :param needle: (iterable) An iterable that contains one or more test argument characters as strings.
         :returns: boolean"""
 
         for expected_argument in needle:
@@ -578,17 +621,22 @@ class Mops(set):
 
 class Definitions(dict):
     """A class that is instantiated with all command line definition options as defined by the syntax
-       `-s <defintion argument>` or `--longoption <defintion argument>` or
-        `--longoption=<definition argument>` or `-longoption <definition argument>`.
+    `-s <defintion argument>`,  `--longoption <defintion argument>`,
+    `--longoption=<definition argument>`, or `-longoption <definition argument>`.
 
-        To parse as a definition option, the argument to the option must not contain any dashes at the beginning of
-        the argument string.  For example, `-o --long` is not considered a definition option-arg pair, whereas
-        `-o long` is.
+    To parse as a definition option, the argument to the option must not contain any dashes at the beginning of
+    the argument string.  For example, `-o --long` is not considered a definition option-arg pair, whereas
+    `-o long` is.
 
-        This class is derived from the Python dictionary type.  The mapping is:
+    This class is derived from the Python dictionary type.  The mapping is:
 
-        key = option string with all dash '-' character(s) at the beginning of the string removed
-        value = definition argument string"""
+    key = option string with all dash '-' character(s) at the beginning of the string removed.  Internal dashes are
+    maintained.
+
+    value = definition argument string.
+
+    :param argv: (list) A list of command line arguments that maintain the argument order that was entered on command line
+    """
     def __init__(self, argv):
         dict.__init__(self, self._make_definitions_obj(argv))
 
@@ -597,8 +645,8 @@ class Definitions(dict):
         is used to instantiate the Definitions class.  Option string keys are stripped of dash characters before the
         first alphabetic character in the option name.
 
-        :param argv: ordered list of command line string arguments
-        :returns: dictionary with key = option string : value = definition argument string mapping"""
+        :param argv: (list) A list of command line arguments that maintain the argument order that was entered on command line
+        :returns: dictionary with {key = option string : value = definition argument string} mapping"""
 
         defmap = {}
         arglist_length = len(argv)
@@ -624,10 +672,13 @@ class Definitions(dict):
         return defmap
 
     def contains(self, needle):
-        """Returns boolean that indicates the presence (True) or absence (False) of a tuple of test definitions.
-        The definitions should be passed without initial dash characters in the definition argument name.
+        """Returns boolean that indicates the presence (True) or absence (False) of a tuple of option-argument
+        definitions by option match attempt.
 
-        :type needle: tuple of one or more definition argument strings for contains test
+        The definition option string should be used without any initial dash characters in the definition argument name
+        in contrast to how they were used on the command line.
+
+        :param needle: (tuple) A tuple of one or more option strings from expected definition option-argument string pairs
         :returns: boolean"""
 
         for expected_definition in needle:
@@ -639,11 +690,11 @@ class Definitions(dict):
         return True  # if all tests above pass returns True
 
     def get_def_argument(self, needle):
-        """Returns the defintion option string for an option needle.  The needle parameter should not include
-        dash characters at the beginning of the option string (i.e. use 'test' rather than '--test' and
-        't' rather than '-t'.
+        """Returns the definition argument string for a definition option test.  The needle parameter should not include
+        dash characters at the beginning of the option string (i.e. use 'test' rather than '--test' and 't' rather than
+        '-t').
 
-        :param needle: the requested definition option string.
+        :param needle: (string) The requested option string from the definition option-argument pair.
         :returns: string
         :raises: MissingDictionaryKeyError if the option needle is not a key defined in the Definitions object"""
 
@@ -654,6 +705,24 @@ class Definitions(dict):
 
 
 class MultiDefinitions(Definitions):
+    """A class that is used to parse option-argument definitions from a command line argument list where command line
+    use includes multiple same option strings with different argument definitions.  An example is:
+
+    `$ executable -o file1 -o file2`
+
+    The class is derived from the commandlines.Definitions class (which is derived from Python dict). The
+    commandlines.Definitions.contains and commandlines.Definitions.get_def_arguments methods are inherited from the
+    Definitions class.
+
+    The dictionary mapping is:
+
+    key = option string with all dash '-' character(s) at the beginning of the string removed.  Internal dashes are
+    maintained.
+
+    value = list of all argument strings associated with the option string on the command line
+
+    :param argv: (list) A list of command line arguments that maintain the argument order that was entered on command line
+    """
     def __init__(self, argv):
         Definitions.__init__(self, argv)
 
