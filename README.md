@@ -14,7 +14,7 @@ Commandlines is a Python library for command line application development that s
 
 ## How Do I Use It?
 
-Commandlines supports explicit, expressive command line application source code with a broad, permissive command syntax range. The goal is to make application logic simple to implement, instantly understandable, and easy to maintain.  
+Commandlines supports explicit, expressive command line application source code with a broad, permissive command syntax range. The goal is to make application logic simple to implement, intuitive, and easy to maintain.  
 
 The command line string to your executable script is parsed to multiple objects that are derived from builtin Python types.
 
@@ -35,8 +35,9 @@ and you have access to:
 
 | Command Line Arguments  | Command Example  | Accessed/Tested With |
 | :------------: |:---------------:| :---------------:|
-| Command suite sub-commands | `$ spam eggs` | `c.subcmd` |
-| Command suite sub-sub-commands | `$ spam eggs overeasy` | `c.subsubcmd` |
+| Length of arg list | `$ spam eggs -t --out file` | `c.argc == 4` |
+| Command suite sub-commands | `$ spam eggs` | `c.subcmd == "eggs"` |
+| Command suite sub-sub-commands | `$ spam eggs overeasy` | `c.subsubcmd == "overeasy"` |
 | Short switch syntax | `$ spam -e` | `c.contains_switches('e')` |
 | Long switch syntax | `$ spam --eggs` | `c.contains_switches('eggs')` | 
 | Multiple switches | `$ spam -e --eggs --bacon`| `c.contains_switches('e', 'eggs', 'bacon')`|
@@ -44,7 +45,7 @@ and you have access to:
 | Long opt-arg definition syntax | `$ spam --out eggs` | `c.get_definition('out')`|
 | Alt long opt-arg definition syntax | `$ spam --out=eggs` | `c.get_definition('out')`|
 | Multiple same option definitions | `$ spam -o eggs -o omelets` | `c.get_multiple_definitions('o')` |
-| Multi-option short syntax switches | `$ spam -mpns eggs` | `"m" in c.mops` |
+| Multi-option short syntax switches | `$ spam -mpns eggs` | `c.contains_mops('m')` |
 | Next positional argument | `$ spam eggs test/path` | `c.get_arg_after('eggs')`|
 
 #### Positional Arguments
