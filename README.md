@@ -4,7 +4,7 @@
 <img src="https://raw.githubusercontent.com/chrissimpkins/commandlines/images/images/commandlines.png" width="740" alt="commandlines">
 
 
-## What is commandlines?
+## What is Commandlines?
 
 Commandlines is a Python library for command line application development that supports command line argument parsing, command string validation testing, & application logic.  It has no external dependencies and provides broad Python interpreter support for Python 2.6+, Python 3.3+, pypy, and pypy3 across OS X, Linux, and Windows platforms.
 
@@ -19,7 +19,7 @@ Commandlines supports explicit, expressive command line application source code 
 The command line string to your executable script is parsed to multiple objects that are derived from builtin Python types.
 
 
-#### The Command Object
+### The Command Object
 
 Instantiate a `commandlines` Command object:
 
@@ -45,6 +45,7 @@ and you have access to:
 | Alt long opt-arg definition syntax | `$ spam --out=eggs` | `c.get_definition('out')`|
 | Multiple same option definitions | `$ spam -o eggs -o omelets` | `c.get_multiple_definitions('o')` |
 | Multi-option short syntax switches | `$ spam -mpns eggs` | `"m" in c.mops` |
+| Next positional argument | `$ spam eggs test/path` | `c.get_arg_after('eggs')`|
 
 #### Positional Arguments
 
@@ -100,6 +101,7 @@ Positional arguments use a 0 based index starting at the first argument to the e
 | Usage request | `$ spam --usage` | `c.is_usage_request()` |
 | Version request, short | `$ spam -v` | `c.is_version_request()`|
 | Version request, long| `$ spam --version` | `c.is_version_request()`|
+
 
 
 ## How to Include Commandlines in Your Project
