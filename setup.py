@@ -30,7 +30,7 @@ def version_read():
 setup(
     name='commandlines',
     version=version_read(),
-    description='A Python command line parser',
+    description='Command line argument to object parsing library for command line application development',
     long_description=(docs_read('README.rst')),
     url='https://github.com/chrissimpkins/commandlines',
     license='MIT license',
@@ -43,6 +43,19 @@ setup(
     keywords='CLI,command line,parser,shell,application,command line application,argument,argument parser',
     include_package_data=True,
     classifiers=[
-        'Development Status :: 3 - Alpha'
+        'Development Status :: 4 - Beta',
+        'Intended Audience :: Developers',
+        'Natural Language :: English',
+        'License :: OSI Approved :: MIT License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.6',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Topic :: Software Development :: Libraries :: Python Modules',
     ],
 )
