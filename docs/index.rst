@@ -226,9 +226,7 @@ Help, Usage, and Version Request Testing Methods
 API Documentation
 ~~~~~~~~~~~~~~~~~
 
-The Command class is designed to be the public facing library object.
-You can view full documentation of this Python class
-`here <https://commandlines.github.io/commandlines.library.html#commandlines.library.Command>`__.
+You can view full documentation of the Command class `here <https://commandlines.github.io/commandlines.library.html#commandlines.library.Command>`__.
 
 If you would like to dig into lower level objects in the commandlines
 package, you can view the `library API
