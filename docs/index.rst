@@ -17,9 +17,6 @@ and provides broad Python interpreter support for Python 2.6+, Python
 How Do I Use It?
 ----------------
 
-Commandlines supports explicit, expressive command line application
-source code with a broad, permissive command syntax range.
-
 The command line string to your executable script is parsed to multiple
 objects that are derived from builtin Python types.
 
