@@ -101,7 +101,7 @@ Positional arguments use a 0 based index starting at the first argument to the e
 
 ### API Documentation
 
-The Command class is designed to be the public facing library object.  You can view full documentation of this Python class [here](https://commandlines.github.io/commandlines.library.html#commandlines.library.Command).
+The Command class is designed to be the public facing library object.  You can view full documentation of this class [here](https://commandlines.github.io/commandlines.library.html#commandlines.library.Command).
 
 If you would like to dig into lower level objects in the commandlines package, you can view the [library API documentation](https://commandlines.github.io/commandlines.library.html).
 
