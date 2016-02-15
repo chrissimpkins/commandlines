@@ -8,9 +8,6 @@
 
 Commandlines is a Python library for command line application development that supports command line argument parsing, command string validation testing, & application logic.  It has no external dependencies and provides broad Python interpreter support for Python 2.6+, Python 3.3+, pypy, and pypy3 across OS X, Linux, and Windows platforms.
 
-## Project Status
-
-*Commandlines is in active development and, while it is tested and usable in the current release version, there is no assurance of a stable API or backwards compatibility across minor and patch versions at this stage of development. Please freeze the library version in your deployment/installation scripts or include the Commandlines library modules released in the master branch of the repository as part of your own project if you elect to use it in a production environment. This message will disappear when this is no longer the case and at that stage the library will be released as version 1.0.0 under [semantic versioning specifications](http://semver.org/).*
 
 ## How Do I Use It?
 
@@ -121,12 +118,10 @@ Add the `commandlines` package dependency to your project `setup.py` file in the
 ```python
 setup(
     ...
-    install_requires=["commandlines == x.x.x"],
+    install_requires=["commandlines"],
 	...
 )
 ```
-
-It is **highly recommended** that you explicitly define the library version by replacing `x.x.x` with the version that you used for testing.  The project is in active development and backwards compatibility is not assured at this stage.
 
 Then, enter the following command to test your project locally:
 
