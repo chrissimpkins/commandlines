@@ -21,6 +21,36 @@ class Command(object):
     the development of Python command line applications.
 
     The class is instantiated from the list of command line arguments that are passed to a Python script in `sys.argv`.
+
+    Attributes:
+        arg0 : (string)
+               Argument at index position 0
+        arg1 : (string)
+               Argument at index position 1
+        arg2 : (string)
+               Argument at index position 2
+        arg3 : (string)
+               Argument at index position 3
+        arg4 : (string)
+               Argument at index position 4
+        argc : (int)
+               Length of the arguments list
+        arglp : (string)
+                Argument at last index position in the arguments list
+        arguments: (Arguments, list)
+                   List of all ordered positional arguments in the command string
+        defs: (Definitions, dict)
+               Dictionary of key=option : value=argument definition pairs
+        mdefs: (MultiDefinitions, Definitions, dict)
+                Dictionary of key=option : value=argument definition pairs for options included more than once in command
+        mops: (set)
+               Set of multi-option short syntax (i.e. single dash) switches
+        subcmd: (string)
+                 The first positional argument (=arg0)
+        subsubcmd: (string)
+               The second positional argument (=arg1)
+        switches: (set)
+               Set of long and short switch syntax arguments
     """
     def __init__(self):
         self.argv = sys.argv[1:]
@@ -44,6 +74,8 @@ class Command(object):
         self.has_defs = (len(self.defs) > 0)
         self.has_mdefs = (len(self.mdefs) > 0)
 
+    # v0.3.1
+    # TODO: add object string support for testing
     # v0.4.0
     # TODO: support for default arguments in definitions
     # TODO: implement mandatory argument test that supports short / long option alternatives
@@ -207,7 +239,7 @@ class Command(object):
 
     def has_args_after(self, argument_needle, number=1):
         """Test for the presence of at least one (default) positional arguments following an existing argument
-        (argument_needle).  The number of expected arguments is modified by definining the number method parameter.
+        (argument_needle).  The number of expected arguments is modified by defining the `number` method parameter.
 
         :param number: (integer) The number of expected arguments after the test argument
         :param argument_needle: (string) The test argument that is known to be present in the command
