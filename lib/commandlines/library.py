@@ -388,11 +388,12 @@ class Command(object):
 
         :returns: string"""
 
-        the_string = "obj.arguments = " + str(self.arguments)
+        the_string = "obj.argc = " + str(self.argc)
+        the_string = the_string + "\n" + "obj.arguments = " + str(self.arguments)
         the_string = the_string + "\n" + "obj.switches = " + str(self.switches)
         the_string = the_string + "\n" + "obj.defs = " + str(self.defs)
+        the_string = the_string + "\n" + "obj.mdefs = " + str(self.mdefs)
         the_string = the_string + "\n" + "obj.mops = " + str(self.mops)
-        the_string = the_string + "\n" + "obj.argc = " + str(self.argc)
         the_string = the_string + "\n" + "obj.arg0 = " + self._get_obj_string_format_arg(self.arg0)
         the_string = the_string + "\n" + "obj.arg1 = " + self._get_obj_string_format_arg(self.arg1)
         the_string = the_string + "\n" + "obj.arg2 = " + self._get_obj_string_format_arg(self.arg2)
