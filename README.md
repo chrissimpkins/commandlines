@@ -57,7 +57,6 @@ Positional arguments use a 0 based index starting at the first argument to the e
 | Last positional argument | `$ spam eggs -b --toast filepath` | `c.arglp` |
 | All positional arguments |  `$ spam eggs -b --toast filepath` | `c.arguments` |
 
-
 #### Special Command Line Idioms
 
 | Command Line Idioms  | Command Example  | Accessed/Tested With |
@@ -97,6 +96,40 @@ Positional arguments use a 0 based index starting at the first argument to the e
 | Usage request | `$ spam --usage` | `c.is_usage_request()` |
 | Version request, short | `$ spam -v` | `c.is_version_request()`|
 | Version request, long| `$ spam --version` | `c.is_version_request()`|
+
+
+### Development with Commandlines
+
+To facilitate development with Commandlines, you can print the string returned by the Command `obj_string()` method to view a list of the parsed arguments from example commands:
+
+```python
+from commandlines import Command
+
+c = Command()
+
+print(c.obj_string())
+sys.exit(0)
+```
+
+If you execute your script with the command `spam eggs --toast -b --drink=milk filepath` and include the above print statement in your source, you will see the following in your terminal emulator:
+
+```shell
+$ spam eggs --toast -b --drink=milk filepath
+obj.argc = 5
+obj.arguments = ['eggs', '--toast', '-b', '--drink=milk', 'filepath']
+obj.switches = {'toast', 'b'}
+obj.defs = {'drink': 'milk'}
+obj.mdefs = {}
+obj.mops = {}
+obj.arg0 = 'eggs'
+obj.arg1 = '--toast'
+obj.arg2 = '-b'
+obj.arg3 = '--drink=milk'
+obj.arg4 = 'filepath'
+obj.arglp = 'filepath'
+obj.subcmd = 'eggs'
+obj.subsubcmd = '--toast'
+```
 
 
 ### API Documentation

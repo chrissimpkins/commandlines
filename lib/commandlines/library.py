@@ -382,9 +382,8 @@ class Command(object):
     # /////////////////////////////////////////////////////////////
 
     def obj_string(self):
-        """Returns a string of the instance attributes of the Command object intended for standard output use
-        as a display of parsed Command object attributes.  Intended for use by a developer who would like a simple way
-        to print these values to the standard output of a terminal emulator for testing purposes.
+        """Returns a string of the instance attributes of the Command object intended for standard output use.
+        Print the returned string to view the parsed arguments in the standard output stream.
 
         :returns: string"""
 
