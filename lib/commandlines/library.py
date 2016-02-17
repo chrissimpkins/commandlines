@@ -513,7 +513,7 @@ class Arguments(list):
 
 class Switches(set):
     """A class that is instantiated with all command line switches that have the syntax `-s`, `--longswitch`,
-    or `-mops`.
+    or `-onedashlong`.
 
     The class is derived from the Python set type and arguments with this syntax are saved as set items.
 
