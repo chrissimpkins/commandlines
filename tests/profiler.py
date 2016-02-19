@@ -14,10 +14,19 @@ def profile():
     # ------------------------------------------------------------------------------
     # Optional: include setup code here
 
+    import sys
+    sys.argv = "executable test --long -s --other=alternate bogus -- -stuff -here"
     # ------------------------------------------------------------------------------
     # Start profiler
     # ------------------------------------------------------------------------------
     pr.enable()
+
+    for _ in xrange(10000):
+        from commandlines import Command
+        c = Command()
+        # "-" in xstring[0]
+        # "-" in ystring[0]
+
 
     # ------------------------------------------------------------------------------
     # BEGIN profiled code block

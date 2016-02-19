@@ -74,8 +74,9 @@ class Command(object):
         self.has_defs = (len(self.defs) > 0)
         self.has_mdefs = (len(self.mdefs) > 0)
 
-    # v0.3.1
-    # TODO: add object string support for testing
+    # v0.3.2
+    # [X] refactor string testing in the instantiation of Switches, Mops, Definitions, MultiDefinitions objects
+    #     for significant Command object instantiation performance improvement
     # v0.4.0
     # TODO: support for default arguments in definitions
     # TODO: implement mandatory argument test that supports short / long option alternatives
@@ -551,7 +552,7 @@ class Switches(set):
 
         switchset = set()
         for switch_candidate in argv:
-            if switch_candidate.startswith("-") and "=" not in switch_candidate:
+            if "-" in switch_candidate[0] and "=" not in switch_candidate:
                 # ignore everything after the double dash idiom, no longer considered switch context
                 if switch_candidate == "--":
                     break
@@ -623,7 +624,7 @@ class Mops(set):
 
         mopsset = set()
         for mops_candidate in argv:
-            if mops_candidate.startswith("-") and "=" not in mops_candidate:
+            if "-" in mops_candidate[0] and "=" not in mops_candidate:
                 if len(mops_candidate) > 2:  # the argument includes '-' and more than one character following dash
                     if mops_candidate[1] != "-":  # it is not long option syntax (e.g. --long)
                         mops_candidate = mops_candidate.replace("-", "")
@@ -681,17 +682,20 @@ class Definitions(dict):
         arglist_length = len(argv)
         counter = 0
         for def_candidate in argv:
+            # performance improvement to eliminate multiple string testing calls within this loop
+            # dash_truth_test = def_candidate.startswith("-")
+            dash_truth_test = ("-" in def_candidate[0])
             # ignore all definition syntax strings after the double dash `--` command line idiom
-            if def_candidate == "--":
+            if dash_truth_test is True and def_candidate == "--":
                 break
             else:
                 # defines -option=definition syntax
-                if def_candidate.startswith("-") and "=" in def_candidate:
+                if dash_truth_test is True and "=" in def_candidate:
                     split_def = def_candidate.split("=")
                     cleaned_key = split_def[0].lstrip("-")  # remove dash characters from the option
                     defmap[cleaned_key] = split_def[1]
                 # defines -d <positional def> or --define <positional def> syntax
-                elif counter < (arglist_length - 1) and def_candidate.startswith("-"):
+                elif counter < (arglist_length - 1) and dash_truth_test is True:
                     if not argv[counter + 1].startswith("-"):
                         def_candidate = def_candidate.lstrip("-")
                         defmap[def_candidate] = argv[counter + 1]
@@ -760,12 +764,15 @@ class MultiDefinitions(Definitions):
         arglist_length = len(argv)
         counter = 0
         for def_candidate in argv:
+            # performance improvement to eliminate multiple string testing calls within this loop
+            # dash_truth_test = def_candidate.startswith("-")
+            dash_truth_test = ("-" in def_candidate[0])
             # ignore all definition syntax strings after the double dash `--` command line idiom
-            if def_candidate == "--":
+            if dash_truth_test is True and def_candidate == "--":
                 break
             else:
                 # defines -option=definition syntax
-                if def_candidate.startswith("-") and "=" in def_candidate:
+                if dash_truth_test is True and "=" in def_candidate:
                     split_def = def_candidate.split("=")
                     cleaned_key = split_def[0].lstrip("-")  # remove dash characters from the option
                     if cleaned_key in defmap.keys():
@@ -773,7 +780,7 @@ class MultiDefinitions(Definitions):
                     else:
                         defmap[cleaned_key] = [split_def[1]]
                 # defines -d <positional def> or --define <positional def> syntax
-                elif counter < (arglist_length - 1) and def_candidate.startswith("-"):
+                elif counter < (arglist_length - 1) and dash_truth_test is True:
                     if not argv[counter + 1].startswith("-"):
                         def_candidate = def_candidate.lstrip("-")
                         if def_candidate in defmap.keys():
