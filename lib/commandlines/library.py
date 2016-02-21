@@ -74,9 +74,8 @@ class Command(object):
         self.has_defs = (len(self.defs) > 0)
         self.has_mdefs = (len(self.mdefs) > 0)
 
-    # v0.3.2
-    # [X] refactor string testing in the instantiation of Switches, Mops, Definitions, MultiDefinitions objects
-    #     for significant Command object instantiation performance improvement
+    # v0.3.3
+    # TODO:  --quiet & --verbose switches
     # v0.4.0
     # TODO: support for default arguments in definitions
     # TODO: implement mandatory argument test that supports short / long option alternatives
@@ -168,9 +167,6 @@ class Command(object):
         :returns: boolean. True = validates. False = does not validate."""
 
         return self.argc == number
-
-    # def validates_includes_mandatory_args(self, arglist):
-    #     pass
 
     # //////////////////////////////////////////////////////////////
     #
@@ -342,16 +338,26 @@ class Command(object):
 
     # /////////////////////////////////////////////////////////////
     #
-    #  Default help, usage, and version parser methods
+    #  Default parsing methods for commonly used options/switches
+    #    - Includes support for POSIX / Gnu standard options
     #
     # /////////////////////////////////////////////////////////////
 
     def is_help_request(self):
         """Tests for `-h` and `--help` options in command string
 
-        :returns: boolean. True = included help request option. False = did not include help request option."""
+        :returns: boolean. True = included help option. False = did not include help option."""
 
         if "help" in self.switches or "h" in self.switches:
+            return True
+        else:
+            return False
+
+    def is_quiet_request(self):
+        """Tests for `--quiet` option in command string
+
+        :returns: boolean. True = included quiet option.  False = did not include quiet option."""
+        if "quiet" in self.switches:
             return True
         else:
             return False
@@ -359,9 +365,18 @@ class Command(object):
     def is_usage_request(self):
         """Tests for `--usage` option in command string
 
-        :returns: boolean. True = included usage request option. False = did not include usage request option."""
+        :returns: boolean. True = included usage option. False = did not include usage option."""
 
         if "usage" in self.switches:
+            return True
+        else:
+            return False
+
+    def is_verbose_request(self):
+        """Tests for `--verbose` option in command string
+
+        :returns: boolean. True = included verbose option. False = did not include verbose option."""
+        if "verbose" in self.switches:
             return True
         else:
             return False
@@ -369,7 +384,7 @@ class Command(object):
     def is_version_request(self):
         """Tests for `-v` and `--version` options in command string.
 
-        :returns: boolean. True = included version request option. False = did not include version request option."""
+        :returns: boolean. True = included version option. False = did not include version option."""
 
         if "version" in self.switches or "v" in self.switches:
             return True

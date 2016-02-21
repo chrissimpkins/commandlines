@@ -15,6 +15,8 @@ test_command_help_2 = "executable -h"
 test_command_usage_1 = "executable --usage"
 test_command_version_1 = "executable --version"
 test_command_version_2 = "executable -v"
+test_command_verbose_1 = "exectuable --verbose"
+test_command_quiet_1 = "executable --quiet"
 
 
 def set_sysargv(argstring):
@@ -40,6 +42,18 @@ def test_command_default_help_when_nothelp():
     set_sysargv(test_command_usage_1)
     c = Command()
     assert c.is_help_request() == False
+
+
+def test_command_default_quiet():
+    set_sysargv(test_command_quiet_1)
+    c = Command()
+    assert c.is_quiet_request() == True
+
+
+def test_command_default_quiet_when_notquiet():
+    set_sysargv(test_command_help_1)
+    c = Command()
+    assert c.is_quiet_request() == False
 
 
 def test_command_default_usage():
@@ -70,3 +84,17 @@ def test_command_default_version_when_notversion():
     set_sysargv(test_command_help_1)
     c = Command()
     assert c.is_version_request() == False
+
+
+def test_command_default_verbose():
+    set_sysargv(test_command_verbose_1)
+    c = Command()
+    assert c.is_verbose_request() == True
+
+
+def test_command_default_verbose_when_notverbose():
+    set_sysargv(test_command_help_1)
+    c = Command()
+    assert c.is_verbose_request() == False
+
+
