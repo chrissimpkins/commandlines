@@ -199,6 +199,11 @@ from commandlines import Command
 c = Command()
 ```
 
+## Changes
+
+You can view library changes in the [changelog](CHANGELOG.md).
+
+
 ## License
 
 Commandlines is licensed under the [MIT license](docs/LICENSE).

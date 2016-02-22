@@ -1,3 +1,8 @@
+### v0.3.3
+
+- added verbose option testing method to Command class
+- added quiet option testing method to Command class
+
 ### v0.3.2
 
 - Command object string parsing performance improvements
