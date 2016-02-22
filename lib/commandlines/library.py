@@ -75,7 +75,9 @@ class Command(object):
         self.has_mdefs = (len(self.mdefs) > 0)
 
     # v0.3.3
-    # TODO:  --quiet & --verbose switches
+    # [X]  --quiet & --verbose switch testing support
+    # v0.3.4
+    # TODO: refactor contains methods to perform test, not call another method
     # v0.4.0
     # TODO: support for default arguments in definitions
     # TODO: implement mandatory argument test that supports short / long option alternatives
@@ -357,6 +359,7 @@ class Command(object):
         """Tests for `--quiet` option in command string
 
         :returns: boolean. True = included quiet option.  False = did not include quiet option."""
+
         if "quiet" in self.switches:
             return True
         else:
@@ -376,6 +379,7 @@ class Command(object):
         """Tests for `--verbose` option in command string
 
         :returns: boolean. True = included verbose option. False = did not include verbose option."""
+
         if "verbose" in self.switches:
             return True
         else:
