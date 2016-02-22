@@ -64,11 +64,11 @@ Arguments
 | definition      |                                   |                                     |
 | syntax          |                                   |                                     |
 +-----------------+-----------------------------------+-------------------------------------+
-| Long opt-arg    | ``$ spam --out egg s``            | ``c.get_definition('out')``         |
+| Long opt-arg    | ``$ spam --out eggs``             | ``c.get_definition('out')``         |
 | definition      |                                   |                                     |
 | syntax          |                                   |                                     |
 +-----------------+-----------------------------------+-------------------------------------+
-| Alt long        | ``$ spam --out=egg s``            | ``c.get_definition('out')``         |
+| Alt long        | ``$ spam --out=eggs``             | ``c.get_definition('out')``         |
 | opt-arg         |                                   |                                     |
 | definition      |                                   |                                     |
 | syntax          |                                   |                                     |
@@ -77,7 +77,7 @@ Arguments
 | option          |                                   |                                     |
 | definitions     |                                   |                                     |
 +-----------------+-----------------------------------+-------------------------------------+
-| Multi-option    | ``$ spam -mpns egg s``            | ``c.contains_mops('m')``            |
+| Multi-option    | ``$ spam -mpns eggs``             | ``c.contains_mops('m')``            |
 | short syntax    |                                   |                                     |
 | switches        |                                   |                                     |
 +-----------------+-----------------------------------+-------------------------------------+
@@ -125,6 +125,34 @@ the ``arguments`` attribute.
 | All positional  | ``$ spam eggs -b - -toast filepath``   | ``c.arguments``    |
 | arguments       |                                        |                    |
 +-----------------+----------------------------------------+--------------------+
+
+Help, Usage, and Version Request Testing Methods
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
++--------------------------+------------------------+------------------------------+
+| Test Type                | Command Example        | Tested With                  |
++==========================+========================+==============================+
+| Help request, short      | ``$ spam -h``          | ``c.is_help_request()``      |
++--------------------------+------------------------+------------------------------+
+| Help request, long       | ``$ spam --help``      | ``c.is_help_request()``      |
++--------------------------+------------------------+------------------------------+
+| Usage request            | ``$ spam --usage``     | ``c.is_usage_request()``     |
++--------------------------+------------------------+------------------------------+
+| Version request, short   | ``$ spam -v``          | ``c.is_version_request()``   |
++--------------------------+------------------------+------------------------------+
+| Version request, long    | ``$ spam --version``   | ``c.is_version_request()``   |
++--------------------------+------------------------+------------------------------+
+
+Testing Methods for Other Commonly Used Switches
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
++---------------------------+-----------------------------+------------------------------+
+| Test Type                 | Command Example             | Tested With                  |
++===========================+=============================+==============================+
+| Verbose standard output   | ``$ spam eggs --verbose``   | ``c.is_verbose_request()``   |
++---------------------------+-----------------------------+------------------------------+
+| Quiet standard output     | ``$ spam eggs --quiet``     | ``c.is_quiet_request()``     |
++---------------------------+-----------------------------+------------------------------+
 
 Special Command Line Idioms
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -203,22 +231,6 @@ Command String Validation Methods
 | switches        |                         |                                              |
 +-----------------+-------------------------+----------------------------------------------+
 
-Help, Usage, and Version Request Testing Methods
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-+--------------------------+------------------------+------------------------------+
-| Test Type                | Command Example        | Tested With                  |
-+==========================+========================+==============================+
-| Help request, short      | ``$ spam -h``          | ``c.is_help_request()``      |
-+--------------------------+------------------------+------------------------------+
-| Help request, long       | ``$ spam --help``      | ``c.is_help_request()``      |
-+--------------------------+------------------------+------------------------------+
-| Usage request            | ``$ spam --usage``     | ``c.is_usage_request()``     |
-+--------------------------+------------------------+------------------------------+
-| Version request, short   | ``$ spam -v``          | ``c.is_version_request()``   |
-+--------------------------+------------------------+------------------------------+
-| Version request, long    | ``$ spam --version``   | ``c.is_version_request()``   |
-+--------------------------+------------------------+------------------------------+
 
 Development with Commandlines
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -236,7 +248,7 @@ parsed arguments from example commands:
     print(c.obj_string())
     sys.exit(0)
 
-If you execute your script with the command
+For example, if you execute your script with the command
 ``spam eggs --toast -b --drink=milk filepath`` and include the above
 print statement in your source, you will see the following in your
 terminal emulator:

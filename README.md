@@ -57,6 +57,26 @@ Positional arguments use a 0 based index starting at the first argument to the e
 | Last positional argument | `$ spam eggs -b --toast filepath` | `c.arglp` |
 | All positional arguments |  `$ spam eggs -b --toast filepath` | `c.arguments` |
 
+
+#### Help, Usage, and Version Request Testing Methods
+
+| Test Type  | Command Example  | Tested With |
+| :------------: |:---------------:| :---------------:|
+| Help request, short | `$ spam -h` | `c.is_help_request()`|
+| Help request, long | `$ spam --help` | `c.is_help_request()`|
+| Usage request | `$ spam --usage` | `c.is_usage_request()` |
+| Version request, short | `$ spam -v` | `c.is_version_request()`|
+| Version request, long| `$ spam --version` | `c.is_version_request()`|
+
+
+#### Testing Methods for Other Commonly Used Switches
+
+| Test Type  | Command Example  | Tested With |
+| :------------: |:---------------:| :---------------:|
+| Verbose standard output | `$ spam eggs --verbose` | `c.is_verbose_request()`|
+| Quiet standard output | `$ spam eggs --quiet` | `c.is_quiet_request()`|
+
+
 #### Special Command Line Idioms
 
 | Command Line Idioms  | Command Example  | Accessed/Tested With |
@@ -87,16 +107,6 @@ Positional arguments use a 0 based index starting at the first argument to the e
 | Missing switches | `$ spam eggs` | `c.does_not_validate_missing_switches()` |
 | Missing multi-option short syntax switches | `$ spam -o eggs` | `c.does_not_validate_missing_mops()` |
 
-#### Help, Usage, and Version Request Testing Methods
-
-| Test Type  | Command Example  | Tested With |
-| :------------: |:---------------:| :---------------:|
-| Help request, short | `$ spam -h` | `c.is_help_request()`|
-| Help request, long | `$ spam --help` | `c.is_help_request()`|
-| Usage request | `$ spam --usage` | `c.is_usage_request()` |
-| Version request, short | `$ spam -v` | `c.is_version_request()`|
-| Version request, long| `$ spam --version` | `c.is_version_request()`|
-
 
 ### Development with Commandlines
 
@@ -111,7 +121,7 @@ print(c.obj_string())
 sys.exit(0)
 ```
 
-If you execute your script with the command `spam eggs --toast -b --drink=milk filepath` and include the above print statement in your source, you will see the following in your terminal emulator:
+For example, if you execute your script with the command `spam eggs --toast -b --drink=milk filepath` and include the above print statement in your source, you will see the following in your terminal emulator:
 
 ```shell
 $ spam eggs --toast -b --drink=milk filepath
