@@ -15,15 +15,16 @@ def profile():
     # Optional: include setup code here
 
     import sys
-    sys.argv = "executable test --long -s --other=alternate bogus -- -stuff -here"
+    from commandlines import Command
+    sys.argv = "executable test --long -s --other=alternate bogus -- -stuff -here --help"
+    c = Command()
     # ------------------------------------------------------------------------------
     # Start profiler
     # ------------------------------------------------------------------------------
     pr.enable()
 
-    for _ in xrange(10000):
-        from commandlines import Command
-        c = Command()
+    for _ in xrange(1000000):
+        c.is_help_request()
         # "-" in xstring[0]
         # "-" in ystring[0]
 
