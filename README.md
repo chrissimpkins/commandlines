@@ -9,6 +9,13 @@
 Commandlines is a Python library for command line application development that supports command line argument parsing, command string validation testing, & application logic.  It has no external dependencies and provides broad Python interpreter support for Python 2.6+, Python 3.3+, pypy, and pypy3 across OS X, Linux, and Windows platforms.
 
 
+The library supports application development with POSIX guideline compliant<sup>[*]</sup> command argument styles, the [GNU argument style extensions
+to the POSIX guidelines](https://www.gnu.org/prep/standards/standards.html#Command_002dLine-Interfaces) (including long option syntax and variable position of options among arguments), and command suite applications that utilize subcommands to the executable.
+
+
+[*] <small>with the exception of the short single option-argument definition syntax that does not include an intervening space character (e.g. `-ofile`)</small>
+
+
 ## How Do I Use It?
 
 The command line string to your executable script is parsed to multiple objects that are derived from builtin Python types.
