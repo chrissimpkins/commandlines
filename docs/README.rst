@@ -16,7 +16,7 @@ and provides broad Python interpreter support for Python 2.6+, Python
 
 The library supports application development with POSIX guideline compliant [*]_ command argument styles, the `GNU argument style extensions
 to the POSIX guidelines <https://www.gnu.org/prep/standards/standards.html#Command_002dLine-Interfaces>`__
-(including long option syntax and variable position of options among arguments), and command suite applications that utilize subcommands to the executable.
+(including long option syntax and variable position of options among arguments), and command suite style application arguments that include one or more sub-commands to the executable.
 
 .. [*] with the exception of the short single option-argument definition syntax that does not include an intervening space character (e.g. ``-ofile``)
 
