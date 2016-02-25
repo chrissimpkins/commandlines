@@ -59,17 +59,17 @@ def test_command_obj_string():
     returned_string_list = returned_string.split("\n")
     assert returned_string_list[0] == "obj.argc = 9"
     assert returned_string_list[1] == """obj.arguments = ['subcmd', '-s', '--long', '-n', 'shortdef', '--name', 'longdef', '--nameeq=longdefeq', 'lastpos']"""
-
-    assert returned_string_list[4] == """obj.mdefs = {}"""
-    assert returned_string_list[5] == """obj.mops = {}"""
-    assert returned_string_list[6] == """obj.arg0 = 'subcmd'"""
-    assert returned_string_list[7] == """obj.arg1 = '-s'"""
-    assert returned_string_list[8] == """obj.arg2 = '--long'"""
-    assert returned_string_list[9] == """obj.arg3 = '-n'"""
-    assert returned_string_list[10] == """obj.arg4 = 'shortdef'"""
-    assert returned_string_list[11] == """obj.arglp = 'lastpos'"""
-    assert returned_string_list[12] == """obj.subcmd = 'subcmd'"""
-    assert returned_string_list[13] == """obj.subsubcmd = '-s'"""
+    assert returned_string_list[2] == """obj.defaults = {}"""
+    assert returned_string_list[5] == """obj.mdefs = {}"""
+    assert returned_string_list[6] == """obj.mops = {}"""
+    assert returned_string_list[7] == """obj.arg0 = 'subcmd'"""
+    assert returned_string_list[8] == """obj.arg1 = '-s'"""
+    assert returned_string_list[9] == """obj.arg2 = '--long'"""
+    assert returned_string_list[10] == """obj.arg3 = '-n'"""
+    assert returned_string_list[11] == """obj.arg4 = 'shortdef'"""
+    assert returned_string_list[12] == """obj.arglp = 'lastpos'"""
+    assert returned_string_list[13] == """obj.subcmd = 'subcmd'"""
+    assert returned_string_list[14] == """obj.subsubcmd = '-s'"""
 
 
 def test_command_obj_string_2():
@@ -77,7 +77,7 @@ def test_command_obj_string_2():
     c = Command()
     returned_string = c.obj_string()
     returned_string_list = returned_string.split("\n")
-    assert returned_string_list[10] == "obj.arg4 = ''"
+    assert returned_string_list[11] == "obj.arg4 = ''"
 
 
 def test_command_obj_string_3():
@@ -85,7 +85,7 @@ def test_command_obj_string_3():
     c = Command()
     returned_string = c.obj_string()
     returned_string_list = returned_string.split("\n")
-    assert returned_string_list[3] == """obj.defs = {'long': 'test'}"""
+    assert returned_string_list[4] == """obj.defs = {'long': 'test'}"""
 
 
 def test_command_obj_string_4():
@@ -93,4 +93,14 @@ def test_command_obj_string_4():
     c = Command()
     returned_string = c.obj_string()
     returned_string_list = returned_string.split("\n")
-    assert returned_string_list[3] == """obj.defs = {'m': 'initial commit'}"""
+    assert returned_string_list[4] == """obj.defs = {'m': 'initial commit'}"""
+
+
+def test_command_obj_defaults_set():
+    set_sysargv(test_command_7)
+    c = Command()
+    c.set_defaults({'test': 'arg'})
+    returned_string = c.obj_string()
+    returned_string_list = returned_string.split("\n")
+    assert returned_string_list[2] == """obj.defaults = {'test': 'arg'}"""
+

@@ -78,8 +78,8 @@ class Command(object):
         self.has_mdefs = (len(self.mdefs) > 0)
 
     # v0.4.0
-    # TODO: support for default arguments in definitions
-    # TODO: implement mandatory argument test that supports short / long option alternatives
+    # [X] support for default argument definitions
+    # TODO: implement support for short / long option alternatives
 
     def __repr__(self):
         return "< Command object > instantiated from arguments: " + self.argv.__str__()
@@ -450,6 +450,7 @@ class Command(object):
 
         the_string = "obj.argc = " + str(self.argc)
         the_string = the_string + "\n" + "obj.arguments = " + str(self.arguments)
+        the_string = the_string + "\n" + "obj.defaults = " + str(self.defaults)
         the_string = the_string + "\n" + "obj.switches = " + str(self.switches)
         the_string = the_string + "\n" + "obj.defs = " + str(self.defs)
         the_string = the_string + "\n" + "obj.mdefs = " + str(self.mdefs)
