@@ -39,6 +39,8 @@ class Command(object):
                 Argument at last index position in the arguments list
         arguments: (Arguments, list)
                    List of all ordered positional arguments in the command string
+        defaults: (dict)
+                  Dictionary of default key : value mapped as option : argument value
         defs: (Definitions, dict)
                Dictionary of key=option : value=argument definition pairs
         mdefs: (MultiDefinitions, Definitions, dict)
@@ -55,6 +57,7 @@ class Command(object):
     def __init__(self):
         self.argv = sys.argv[1:]
         self.arguments = Arguments(self.argv)
+        self.defaults = {}
         self.switches = Switches(self.argv)
         self.mops = Mops(self.argv)
         self.defs = Definitions(self.argv)
@@ -74,10 +77,6 @@ class Command(object):
         self.has_defs = (len(self.defs) > 0)
         self.has_mdefs = (len(self.mdefs) > 0)
 
-    # v0.3.3
-    # [X]  --quiet & --verbose switch testing support
-    # v0.3.4
-    # TODO: refactor contains methods to perform test, not call another method
     # v0.4.0
     # TODO: support for default arguments in definitions
     # TODO: implement mandatory argument test that supports short / long option alternatives
@@ -169,6 +168,48 @@ class Command(object):
         :returns: boolean. True = validates. False = does not validate."""
 
         return self.argc == number
+
+    # //////////////////////////////////////////////////////////////
+    #
+    # Default option:argument mapping methods
+    #
+    # //////////////////////////////////////////////////////////////
+
+    def set_defaults(self, default_dictionary):
+        """Sets default option : argument definitions with a dictionary parameter. The option key(s) should not include
+        dashes at the beginning of the option string(s).  One or more key:value pairs can be included in the
+        default_dictionary parameter.
+
+        :param default_dictionary: (dict) Defines the default key=option : value=argument mapping
+        :returns: None"""
+
+        self.defaults.update(default_dictionary)
+
+    def contains_defaults(self, *default_needles):
+        """Tests for the presence of one or more default option : argument definitions in the Command.defaults parameter
+
+        :param default_needles: (tuple) One or more test default option strings
+        :returns: boolean.  True = the default options are defined. False = the default options are not defined"""
+
+        for needle in default_needles:
+            if needle in self.defaults.keys():
+                pass
+            else:
+                return False   # if any needle is absent, returns False
+        return True   # if all tests pass, returns True
+
+    def get_default(self, default_needle):
+        """Gets the value for an existing default option : argument definition in the Command.defaults
+        parameter.  The default_needle option string should not include dashes at the beginning of the string.
+
+        :param default_needle: (string) The existing default option for which a value is requested
+        :returns: User-specified type.  A value of any type that is permissible as a value in Python dictionaries
+        :raises: MissingDictionaryKeyError if the key is not found in the Command.defaults dictionary"""
+
+        if default_needle in self.defaults.keys():
+            return self.defaults[default_needle]
+        else:
+            raise MissingDictionaryKeyError(default_needle)
 
     # //////////////////////////////////////////////////////////////
     #

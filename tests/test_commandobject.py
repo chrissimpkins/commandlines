@@ -185,6 +185,32 @@ def test_commandobj_property_arguments():
 
 # ////////////////////////////////////////////////////////////
 #
+# TESTS : Parsing >>> Command object defaults property
+#
+# ////////////////////////////////////////////////////////////
+
+def test_commandobj_property_defaults_type():
+    set_sys_argv()
+    c = Command()
+    assert isinstance(c.defaults, dict)
+
+
+def test_commandobj_property_defaults_startsempty():
+    set_sys_argv()
+    c = Command()
+    assert len(c.defaults) == 0
+
+
+def test_commandobj_property_defaults_dict_updates():
+    set_sys_argv()
+    c = Command()
+    c.defaults.update({'thekey': 'thevalue'})
+    assert len(c.defaults) == 1
+    assert c.defaults['thekey'] == 'thevalue'
+
+
+# ////////////////////////////////////////////////////////////
+#
 # TESTS : Parsing >>> Command object Switches property
 #
 # ////////////////////////////////////////////////////////////
