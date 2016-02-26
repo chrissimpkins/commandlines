@@ -52,7 +52,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'commandlines'
-copyright = u'2016, Christopher Simpkins'
+copyright = u'2016, Christopher Simpkins. CC BY 4.0 license'
 author = u'2016, Christopher Simpkins'
 
 # The version info for the project you're documenting, acts as replacement for
