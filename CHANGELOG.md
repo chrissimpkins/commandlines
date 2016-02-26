@@ -1,3 +1,12 @@
+### v0.4.0
+
+- added support for default option-argument assignments
+- new `Command.defaults` instance attribute (Python dictionary)
+- new `Command.set_defaults()` method
+- new `Command.contains_defaults()` method
+- new `Command.get_default()` method
+- updated string returned by `Command.obj_string()` method with parsed default option-argument definitions
+
 ### v0.3.3
 
 - added verbose option testing method to Command class
