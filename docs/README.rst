@@ -5,6 +5,10 @@ Commandlines Library Documentation
 commandlines |Build Status| |Build status| |codecov.io| |Code Health|
 ---------------------------------------------------------------------
 
+Source Repository: `chrissimpkins/commandlines <https://github.com/chrissimpkins/commandlines>`__
+
+Documentation: `commandlines.github.io <https://commandlines.github.io>`__
+
 What is Commandlines?
 ---------------------
 
