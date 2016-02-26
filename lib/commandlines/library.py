@@ -176,8 +176,8 @@ class Command(object):
     # //////////////////////////////////////////////////////////////
 
     def set_defaults(self, default_dictionary):
-        """Sets default option : argument definitions with a dictionary parameter. The option key(s) should not include
-        dashes at the beginning of the option string(s).  One or more key:value pairs can be included in the
+        """Sets default option : argument definitions with a dictionary parameter. The option keys should not include
+        dashes at the beginning of the option string.  One or more key:value pairs can be included in the
         default_dictionary parameter.
 
         :param default_dictionary: (dict) Defines the default key=option : value=argument mapping
