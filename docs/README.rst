@@ -37,7 +37,7 @@ Instantiate a ``commandlines`` Command object:
 
     c = Command()
 
-and you have access to:
+and use the following instance attributes and methods to develop your application:
 
 Arguments
 ^^^^^^^^^
@@ -132,8 +132,67 @@ the ``arguments`` attribute.
 | arguments       |                                        |                    |
 +-----------------+----------------------------------------+--------------------+
 
+
+Default Option-Argument Definitions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Define option-argument defaults in a ``defaults`` Command instance
+attribute. This attribute is defined as an empty Python dictionary upon
+instantiation of the Command object. Use standard key index-based Python
+dictionary assignments or the ``set_defaults`` assignment method in the
+Command class to define default values. Default values can take any type
+that is permissible as a Python dictionary value.
+
+Here are examples of each approach that define defaults for ``output``
+and ``level`` options:
+
+Key Index-Based Default Assignments
+'''''''''''''''''''''''''''''''''''
+
+.. code:: python
+
+    from commandlines import Command
+
+    c = Command()
+
+    c.defaults['output'] = "test.txt"
+    c.defaults['level'] = 10
+
+Method-Based Default Assignments
+''''''''''''''''''''''''''''''''
+
+.. code:: python
+
+    from commandlines import Command
+
+    c = Command()
+
+    default_options = {
+        'output' : 'test.txt',
+        'level'  : 10
+    }
+    c.set_defaults(default_options)
+
+To test for the presence of a default option definition and obtain its
+value, use the ``contains_defaults`` and ``get_default`` methods,
+respectively:
+
+.. code:: python
+
+    # continued from code examples above
+
+    if c.contains_definitions('output'):
+        dosomething(c.get_definition('output'))
+    elif c.contains_defaults('output'):
+        dosomething(c.get_default('output'))
+    else:
+        dosomethingelse()
+
+
 Help, Usage, and Version Request Testing Methods
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Help, usage, and version command line requests are tested with methods:
 
 +--------------------------+------------------------+------------------------------+
 | Test Type                | Command Example        | Tested With                  |
@@ -162,6 +221,11 @@ Testing Methods for Other Commonly Used Switches
 
 Special Command Line Idioms
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The double dash idiom escapes all subsequent tokens from option/argument
+parsing. Methods are available to determine whether a double dash token
+is present in a command and obtain an ordered list of all command line
+arguments that follow this idiom:
 
 +-----------------+----------------------------------------+----------------------------------------+
 | Command Line    | Command Example                        | Accessed/Tested                        |
@@ -264,6 +328,7 @@ terminal emulator:
     $ spam eggs --toast -b --drink=milk filepath
     obj.argc = 5
     obj.arguments = ['eggs', '--toast', '-b', '--drink=milk', 'filepath']
+    obj.defaults = {}
     obj.switches = {'toast', 'b'}
     obj.defs = {'drink': 'milk'}
     obj.mdefs = {}
