@@ -1,3 +1,9 @@
+### v0.4.1
+
+- improved performance of Command object instantiation
+- refactored Definitions object argument parsing loops (performance optimization)
+- refactored MultiDefinitions object argument parsing loops (performance optimization)
+
 ### v0.4.0
 
 - added support for default option-argument assignments

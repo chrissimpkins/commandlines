@@ -17,8 +17,9 @@ test_command_19 = "executable -mops -t --test=bogus --test=another --help me"
 def set_sysargv(argstring):
     sys.argv = shlex.split(argstring)
 
-set_sysargv(test_command_1)
+set_sysargv(test_command_13)
 
 c = Command()
 print(c.obj_string())
+
 

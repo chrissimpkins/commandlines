@@ -77,8 +77,9 @@ class Command(object):
         self.has_defs = (len(self.defs) > 0)
         self.has_mdefs = (len(self.mdefs) > 0)
 
-    # v0.4.0
-    # [X] support for default argument definitions
+    # v0.4.1
+    #  [X] optimize performance of Definitions and MultiDefinitions instantiation loops
+    #  [X] refactored initial dash testing block to eliminate repeat tests
     # TODO: implement support for short / long option alternatives
 
     def __repr__(self):
@@ -746,22 +747,23 @@ class Definitions(dict):
             # performance improvement to eliminate multiple string testing calls within this loop
             # dash_truth_test = def_candidate.startswith("-")
             dash_truth_test = ("-" in def_candidate[0])
-            # ignore all definition syntax strings after the double dash `--` command line idiom
-            if dash_truth_test is True and def_candidate == "--":
-                break
-            else:
-                # defines -option=definition syntax
-                if dash_truth_test is True and "=" in def_candidate:
-                    split_def = def_candidate.split("=")
-                    cleaned_key = split_def[0].lstrip("-")  # remove dash characters from the option
-                    defmap[cleaned_key] = split_def[1]
-                # defines -d <positional def> or --define <positional def> syntax
-                elif counter < (arglist_length - 1) and dash_truth_test is True:
-                    if not argv[counter + 1].startswith("-"):
-                        def_candidate = def_candidate.lstrip("-")
-                        defmap[def_candidate] = argv[counter + 1]
+            if dash_truth_test is True:
+                # ignore all definition syntax strings after the double dash `--` command line idiom
+                if def_candidate == "--":
+                    break
+                else:
+                    # defines -option=definition syntax
+                    if "=" in def_candidate:
+                        split_def = def_candidate.split("=")
+                        cleaned_key = split_def[0].lstrip("-")  # remove dash characters from the option
+                        defmap[cleaned_key] = split_def[1]
+                    # defines -d <positional def> or --define <positional def> syntax
+                    elif counter < (arglist_length - 1):
+                        if not argv[counter + 1].startswith("-"):
+                            def_candidate = def_candidate.lstrip("-")
+                            defmap[def_candidate] = argv[counter + 1]
 
-                counter += 1
+            counter += 1
 
         return defmap
 
@@ -828,28 +830,29 @@ class MultiDefinitions(Definitions):
             # performance improvement to eliminate multiple string testing calls within this loop
             # dash_truth_test = def_candidate.startswith("-")
             dash_truth_test = ("-" in def_candidate[0])
-            # ignore all definition syntax strings after the double dash `--` command line idiom
-            if dash_truth_test is True and def_candidate == "--":
-                break
-            else:
-                # defines -option=definition syntax
-                if dash_truth_test is True and "=" in def_candidate:
-                    split_def = def_candidate.split("=")
-                    cleaned_key = split_def[0].lstrip("-")  # remove dash characters from the option
-                    if cleaned_key in defmap.keys():
-                        defmap[cleaned_key].append(split_def[1])
-                    else:
-                        defmap[cleaned_key] = [split_def[1]]
-                # defines -d <positional def> or --define <positional def> syntax
-                elif counter < (arglist_length - 1) and dash_truth_test is True:
-                    if not argv[counter + 1].startswith("-"):
-                        def_candidate = def_candidate.lstrip("-")
-                        if def_candidate in defmap.keys():
-                            defmap[def_candidate].append(argv[counter + 1])
+            if dash_truth_test is True:
+                # ignore all definition syntax strings after the double dash `--` command line idiom
+                if def_candidate == "--":
+                    break
+                else:
+                    # defines -option=definition syntax
+                    if "=" in def_candidate:
+                        split_def = def_candidate.split("=")
+                        cleaned_key = split_def[0].lstrip("-")  # remove dash characters from the option
+                        if cleaned_key in defmap.keys():
+                            defmap[cleaned_key].append(split_def[1])
                         else:
-                            defmap[def_candidate] = [argv[counter + 1]]
+                            defmap[cleaned_key] = [split_def[1]]
+                    # defines -d <positional def> or --define <positional def> syntax
+                    elif counter < (arglist_length - 1):
+                        if not argv[counter + 1].startswith("-"):
+                            def_candidate = def_candidate.lstrip("-")
+                            if def_candidate in defmap.keys():
+                                defmap[def_candidate].append(argv[counter + 1])
+                            else:
+                                defmap[def_candidate] = [argv[counter + 1]]
 
-                counter += 1
+            counter += 1
 
         # keep only the dictionary key:value pairs that include multiple values from key:value items parsed above
         multi_map = {}
@@ -858,5 +861,3 @@ class MultiDefinitions(Definitions):
                 multi_map[key] = defmap[key]
 
         return multi_map
-
-

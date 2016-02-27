@@ -17,17 +17,15 @@ def profile():
     import sys
     from commandlines import Command
     sys.argv = "executable test --long -s --other=alternate bogus -- -stuff -here --help"
-    c = Command()
     # ------------------------------------------------------------------------------
     # Start profiler
     # ------------------------------------------------------------------------------
     pr.enable()
 
-    for _ in xrange(1000000):
-        c.is_help_request()
+    for _ in xrange(10000):
+        c = Command()
         # "-" in xstring[0]
         # "-" in ystring[0]
-
 
     # ------------------------------------------------------------------------------
     # BEGIN profiled code block
