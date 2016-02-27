@@ -77,9 +77,6 @@ class Command(object):
         self.has_defs = (len(self.defs) > 0)
         self.has_mdefs = (len(self.mdefs) > 0)
 
-    # v0.4.1
-    #  [X] optimize performance of Definitions and MultiDefinitions instantiation loops
-    #  [X] refactored initial dash testing block to eliminate repeat tests
     # TODO: implement support for short / long option alternatives
 
     def __repr__(self):

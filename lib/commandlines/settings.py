@@ -11,4 +11,4 @@ lib_name = 'commandlines'
 # ------------------------------------------------------------------------------
 major_version = "0"
 minor_version = "4"
-patch_version = "0"
+patch_version = "1"
